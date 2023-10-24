@@ -66,26 +66,35 @@ class RegisterController extends Controller
 
     public function create(Request $request)
     {
-        /*$rpc_host = config('multichain.rpc_host');
-        $rpc_port = config('multichain.rpc_port');
-        $rpc_user = config('multichain.rpc_user');
-        $rpc_password = config('multichain.rpc_password');
-        $use_ssl = config('multichain.rpc_use_ssl');
-
-        $mc = new MultichainClient($rpc_host, $rpc_port, $rpc_user, $rpc_password, $use_ssl);
-        $mc->setoption(MC_OPT_CHAIN_NAME, 'asset-blockchain');
-        $mc->setoption(MC_OPT_USE_CURL,true);*/
-
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users', // Ensure email is unique in the 'users' table
-            'password' => 'required|string|min:8',
+            'password' => 'required|string',
         ]);
 
-        return User::create([
+        $user = User::create([
             'name' => $request->get('name'),
             'email' => $request->get('email'),
             'password' => Hash::make($request->get('password')),
         ]);
+
+        if ($user !== null) {
+            $rpc_host = config('multichain.rpc_host');
+            $rpc_port = config('multichain.rpc_port');
+            $rpc_user = config('multichain.rpc_user');
+            $rpc_password = config('multichain.rpc_password');
+            $use_ssl = config('multichain.rpc_use_ssl');
+
+            $mc = new MultichainClient($rpc_host, $rpc_port, $rpc_user, $rpc_password, $use_ssl);
+            $mc->setoption(MC_OPT_CHAIN_NAME, 'asset-blockchain');
+            $mc->setoption(MC_OPT_USE_CURL,true);
+
+            $new_address = $mc->getnewaddress();
+
+            $user->wallet_address = $new_address;
+            $user->save();
+        }
+
+        return response()->json(['data' => $user]);
     }
 }
