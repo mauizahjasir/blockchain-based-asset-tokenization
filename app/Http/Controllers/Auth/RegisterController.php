@@ -95,6 +95,6 @@ class RegisterController extends Controller
             $user->save();
         }
 
-        return response()->json(['data' => $user]);
+        return view('registration-success');
     }
 }
