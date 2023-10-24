@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
 use App\Models\User;
-use App\Services\MultichainClient;
+use App\Providers\RouteServiceProvider;
+use App\Services\MultichainService;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -76,22 +76,16 @@ class RegisterController extends Controller
             'name' => $request->get('name'),
             'email' => $request->get('email'),
             'password' => Hash::make($request->get('password')),
+            'user_type' => 'client',
         ]);
 
         if ($user !== null) {
-            $rpc_host = config('multichain.rpc_host');
-            $rpc_port = config('multichain.rpc_port');
-            $rpc_user = config('multichain.rpc_user');
-            $rpc_password = config('multichain.rpc_password');
-            $use_ssl = config('multichain.rpc_use_ssl');
+            $multichainService = new MultichainService();
 
-            $mc = new MultichainClient($rpc_host, $rpc_port, $rpc_user, $rpc_password, $use_ssl);
-            $mc->setoption(MC_OPT_CHAIN_NAME, 'asset-blockchain');
-            $mc->setoption(MC_OPT_USE_CURL,true);
+            $newAddress = $multichainService->setBlockChain('asset-blockchain')
+                ->getNewAddress();
 
-            $new_address = $mc->getnewaddress();
-
-            $user->wallet_address = $new_address;
+            $user->wallet_address = $newAddress;
             $user->save();
         }
 
