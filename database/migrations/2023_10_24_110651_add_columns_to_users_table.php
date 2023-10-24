@@ -15,6 +15,7 @@ return new class extends Migration
             $table->uuid('id')->change();
             $table->string('meta_id')->index();
             $table->string('wallet_address')->nullable();
+            $table->string('user_type')->nullable();
         });
     }
 
