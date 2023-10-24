@@ -40,29 +40,8 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    // Add the registration form view
-    public function showRegistrationForm()
+    public function index()
     {
-        return view('auth.register');
-    }
-
-    public function register(Request $request)
-    {
-        $rpchost = '127.0.0.1'; // change if multichaind is not running locally
-        $rpcport = 8340; // usually default-rpc-port in blockchain parameters
-        $rpcuser = 'multichainrpc'; // see multichain.conf in blockchain directory
-        $rpcpassword = 'HpADQYMNEawqxxHWJ3A8tuFShoMfV3j7mbR5CaqbHXox'; // see multichain.conf in blockchain directory
-        $usessl = false; // use with SSL requires an proxy for MultiChain API endpoint
-
-        $mc = new MultichainClient($rpchost, $rpcport, $rpcuser, $rpcpassword, $usessl);
-        $mc->setoption(MC_OPT_CHAIN_NAME, 'asset-blockchain');
-        $mc->setoption(MC_OPT_USE_CURL,true);
-
-
-        /*return User::create([
-            'name' => $request->get('name'),
-            'email' => $request->get('email'),
-            'password' => Hash::make($request->get('password')),
-        ]);*/
+        return view('auth.login');
     }
 }

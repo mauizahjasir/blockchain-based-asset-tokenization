@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
+use App\Services\MultichainClient;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -41,6 +43,12 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
+    // Add the registration form view
+    public function index()
+    {
+        return view('auth.register');
+    }
+
     /**
      * Get a validator for an incoming registration request.
      *
@@ -56,18 +64,28 @@ class RegisterController extends Controller
         ]);
     }
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\Models\User
-     */
-    protected function create(array $data)
+    public function create(Request $request)
     {
+        /*$rpc_host = config('multichain.rpc_host');
+        $rpc_port = config('multichain.rpc_port');
+        $rpc_user = config('multichain.rpc_user');
+        $rpc_password = config('multichain.rpc_password');
+        $use_ssl = config('multichain.rpc_use_ssl');
+
+        $mc = new MultichainClient($rpc_host, $rpc_port, $rpc_user, $rpc_password, $use_ssl);
+        $mc->setoption(MC_OPT_CHAIN_NAME, 'asset-blockchain');
+        $mc->setoption(MC_OPT_USE_CURL,true);*/
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users', // Ensure email is unique in the 'users' table
+            'password' => 'required|string|min:8',
+        ]);
+
         return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+            'name' => $request->get('name'),
+            'email' => $request->get('email'),
+            'password' => Hash::make($request->get('password')),
         ]);
     }
 }
