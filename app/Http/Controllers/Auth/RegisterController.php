@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Role;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use App\Services\MultichainService;
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -76,10 +78,17 @@ class RegisterController extends Controller
             'name' => $request->get('name'),
             'email' => $request->get('email'),
             'password' => Hash::make($request->get('password')),
-            'user_type' => 'client',
+            'user_type' => Role::CLIENT,
         ]);
 
         if ($user !== null) {
+            // Attach the role to the user
+            $role = Role::where('title', Role::CLIENT)->first();
+            $user->roles()->attach($role, [
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ]);
+
             $multichainService = new MultichainService();
 
             $newAddress = $multichainService->setBlockChain('asset-blockchain')
