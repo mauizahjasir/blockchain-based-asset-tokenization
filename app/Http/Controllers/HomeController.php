@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -23,6 +25,17 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $user = Auth::user();
+
+        return $user->isAdmin()
+            ? $this->adminView()
+            : view('admin.home');
+    }
+
+    private function adminView()
+    {
+        $users = User::all();
+
+        return view('admin.home', compact('users'));
     }
 }

@@ -15,8 +15,8 @@ class RoleSeeder extends Seeder
     {
         // Define sample roles
         $roles = [
-            ['title' => 'Admin', 'description' => 'Administrator role'],
-            ['title' => 'Client', 'description' => 'Regular user role'],
+            ['title' => 'admin', 'description' => 'Administrator role'],
+            ['title' => 'client', 'description' => 'Regular user role'],
         ];
 
         // Insert roles into the database
