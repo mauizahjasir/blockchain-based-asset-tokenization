@@ -89,10 +89,9 @@ class RegisterController extends Controller
                 'updated_at' => Carbon::now(),
             ]);
 
-            $multichainService = new MultichainService();
+            $multichainService = app('multichainService');
 
-            $newAddress = $multichainService->setBlockChain('asset-blockchain')
-                ->getNewAddress();
+            $newAddress = $multichainService->getNewAddress();
 
             $user->wallet_address = $newAddress;
             $user->save();

@@ -37,4 +37,9 @@ class MultichainService implements IMultichainInterface
     {
         return $this->multichainService->getnewaddress();
     }
+
+    public function getInfo()
+    {
+        return $this->multichainService->getinfo();
+    }
 }
