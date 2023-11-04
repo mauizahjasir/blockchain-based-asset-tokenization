@@ -50,6 +50,11 @@ class MultichainService implements IMultichainInterface
 
     public function getAddressWithPermission(string $permission = '')
     {
-        return $this->multichainService->listpermissions($permission);
+        return collect($this->multichainService->listpermissions($permission))->first();
+    }
+
+    public function issueAsset($address, $name, $quantity, $unit)
+    {
+        return $this->multichainService->issue($address, ['name' => $name], (int)$quantity, (float)$unit);
     }
 }
