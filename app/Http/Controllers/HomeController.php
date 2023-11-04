@@ -29,7 +29,7 @@ class HomeController extends Controller
 
         return $user->isAdmin()
             ? $this->adminView()
-            : view('admin.home');
+            : view('home');
     }
 
     private function adminView()

@@ -33,7 +33,7 @@ class MultichainClient
         $this->error_message = "";
     }
 
-    function setoption($option, $value)
+    function setOption($option, $value)
     {
         switch($option)
         {

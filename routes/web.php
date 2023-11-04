@@ -29,3 +29,4 @@ Route::get('/register', [RegisterController::class, 'index'])->name('register');
 Route::post('/register', [RegisterController::class, 'create']);
 
 Route::get('/get-information', [MultichainController::class, 'getInfo'])->name('get-information');
+Route::get('/create-asset', [MultichainController::class, 'createAssetForm'])->name('create-asset');

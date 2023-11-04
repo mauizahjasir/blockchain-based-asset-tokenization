@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Services\MultichainClient;
 use App\Services\MultichainService;
 
 class MultichainController extends Controller
@@ -16,4 +15,13 @@ class MultichainController extends Controller
 
         return view('admin.get-info', ['data' => $information]);
     }
+
+    public function createAssetForm()
+    {
+        /** @var MultichainService $multichainClient */
+        $multichainClient = app('multichainService');
+
+        $validAddress = $multichainClient->getAddressWithPermission('issue');
+    }
 }
+

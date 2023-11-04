@@ -23,12 +23,12 @@ class MultichainService implements IMultichainInterface
         $this->rpcUseSsl = config('multichain.rpc_use_ssl');
 
         $this->multichainService = new MultichainClient($this->rpcHost, $this->rpcPort, $this->rpcUser, $this->rpcPassword, $this->rpcUseSsl);
-        $this->multichainService->setoption(MC_OPT_USE_CURL,true);
+        $this->multichainService->setOption(MC_OPT_USE_CURL,true);
     }
 
     public function setBlockChain($chain = ''): MultichainService
     {
-        $this->multichainService->setoption(MC_OPT_CHAIN_NAME, 'asset-blockchain');
+        $this->multichainService->setOption(MC_OPT_CHAIN_NAME, 'asset-blockchain');
 
         return $this;
     }
@@ -41,5 +41,15 @@ class MultichainService implements IMultichainInterface
     public function getInfo()
     {
         return $this->multichainService->getinfo();
+    }
+
+    public function multichain()
+    {
+        return $this->multichainService;
+    }
+
+    public function getAddressWithPermission(string $permission = '')
+    {
+        return $this->multichainService->listpermissions($permission);
     }
 }
