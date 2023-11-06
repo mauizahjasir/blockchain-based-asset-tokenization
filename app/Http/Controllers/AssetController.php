@@ -1,24 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Asset;
 use App\Services\MultichainService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
-class MultichainController extends Controller
+class AssetController extends Controller
 {
-    public function getInfo()
-    {
-        /** @var MultichainService $multichainService */
-        $multichainService = app('multichainService');
-        $information = $multichainService->getInfo();
-
-        return view('admin.get-info', ['data' => $information]);
-    }
-
     public function createAssetForm()
     {
         return view('admin.create-asset');
@@ -60,4 +50,3 @@ class MultichainController extends Controller
         return redirect()->route('create-asset');
     }
 }
-

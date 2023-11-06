@@ -55,6 +55,7 @@ class MultichainService implements IMultichainInterface
 
     public function issueAsset($address, $name, $quantity, $unit)
     {
-        return $this->multichainService->issue($address, ['name' => $name], (int)$quantity, (float)$unit);
+        return $this->multichainService->issue($address, ['name' => $name, 'open' => true], (int)$quantity, (float)$unit, 0,
+            ['origin' => 'US']);
     }
 }

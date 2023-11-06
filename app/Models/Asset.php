@@ -14,6 +14,12 @@ class Asset extends Model
         'name',
         'creator_wallet_address',
         'quantity',
-        'unit'
+        'unit',
+        'tx_id',
+        'details',
+    ];
+
+    protected $casts = [
+        'details' => 'array'
     ];
 }
