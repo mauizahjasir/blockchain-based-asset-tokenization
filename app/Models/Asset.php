@@ -22,4 +22,9 @@ class Asset extends Model
     protected $casts = [
         'details' => 'array'
     ];
+
+    public function assetType()
+    {
+        $this->hasMany(AssetType::class);
+    }
 }

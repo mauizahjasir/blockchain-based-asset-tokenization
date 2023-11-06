@@ -9,28 +9,28 @@ use Illuminate\Support\Facades\Session;
 
 class AssetController extends Controller
 {
-    public function createAssetForm()
+    public function index()
     {
         return view('admin.create-asset');
     }
 
-    public function createAsset(Request $request)
+    public function store(Request $request)
     {
         // Validate the input
         $request->validate([
-            'asset_name' => 'required|string',
-            'asset_quantity' => 'required|integer',
-            'asset_unit' => 'required|string',
+            'name' => 'required|string',
+            'quantity' => 'required|integer',
+            'unit' => 'required|string',
         ]);
 
-        $assetName = $request->input('asset_name');
-        $assetQuantity = $request->input('asset_quantity');
-        $assetUnit = $request->input('asset_unit');
+        $assetName = $request->input('name');
+        $assetQuantity = $request->input('quantity');
+        $assetUnit = $request->input('unit');
 
         $asset = Asset::create([
-            'name' => $request->input('asset_name'),
-            'quantity' => $request->input('asset_quantity'),
-            'unit' => $request->input('asset_unit')
+            'name' => $assetName,
+            'quantity' => $assetQuantity,
+            'unit' => $assetUnit
         ]);
 
         if ($asset !== null) {

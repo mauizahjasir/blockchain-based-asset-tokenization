@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AssetController;
+use App\Http\Controllers\AssetTypeController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\MultichainController;
@@ -34,7 +35,10 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('multichain')->group(function () {
         Route::get('/get-information', [MultichainController::class, 'getInfo'])->name('get-information');
 
-        Route::get('assets/create-asset', [AssetController::class, 'createAssetForm'])->name('create-asset');
-        Route::post('assets/create-asset', [AssetController::class, 'createAsset'])->name('create-asset');
+        Route::get('assets/create-asset', [AssetController::class, 'index'])->name('create-asset');
+        Route::post('assets/create-asset', [AssetController::class, 'store'])->name('create-asset');
+
+        Route::get('assets/create-asset-type', [AssetTypeController::class, 'index'])->name('create-asset-type');
+        Route::post('assets/create-asset-type', [AssetTypeController::class, 'store'])->name('create-asset-type');
     });
 });

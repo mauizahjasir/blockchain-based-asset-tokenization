@@ -11,16 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('assets', function (Blueprint $table) {
+        Schema::create('asset_types', function (Blueprint $table) {
             $table->uuid('id');
             $table->string('meta_id')->index();
             $table->string('name');
-            $table->string('creator_wallet_address')->nullable();
-            $table->unsignedBigInteger('quantity')->nullable();
-            $table->foreignUuid('asset_type_id')->nullable();
-            $table->string('tx_id')->nullable();
-            $table->json('details')->nullable();
-            $table->unsignedFloat('unit')->nullable();
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('assets');
+        Schema::dropIfExists('asset_type');
     }
 };
