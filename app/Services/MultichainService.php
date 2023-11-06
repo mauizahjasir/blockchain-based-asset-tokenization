@@ -28,7 +28,7 @@ class MultichainService implements IMultichainInterface
 
     public function setBlockChain($chain = ''): MultichainService
     {
-        $this->multichainService->setOption(MC_OPT_CHAIN_NAME, 'asset-blockchain');
+        $this->multichainService->setOption(MC_OPT_CHAIN_NAME, $chain);
 
         return $this;
     }
@@ -53,9 +53,8 @@ class MultichainService implements IMultichainInterface
         return collect($this->multichainService->listpermissions($permission))->first();
     }
 
-    public function issueAsset($address, $name, $quantity, $unit)
+    public function issueAsset($address, $name, $quantity = 0, $unit = 0, $customFields = [])
     {
-        return $this->multichainService->issue($address, ['name' => $name, 'open' => true], (int)$quantity, (float)$unit, 0,
-            ['origin' => 'US']);
+        return $this->multichainService->issue($address, ['name' => $name, 'open' => true], (int)$quantity, (float)$unit, 0, $customFields);
     }
 }

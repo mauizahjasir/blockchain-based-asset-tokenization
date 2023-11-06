@@ -1,0 +1,10 @@
+/* Make all labels bold */
+label {
+    font-weight: bold;
+}
+
+/* Add additional styling for other HTML elements as needed */
+/* For example, make all paragraphs italic */
+p {
+    font-style: italic;
+}

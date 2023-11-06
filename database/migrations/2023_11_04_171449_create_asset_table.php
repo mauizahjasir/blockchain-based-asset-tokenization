@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('assets', function (Blueprint $table) {
-            $table->uuid('id');
+            $table->uuid('id')->unique();
             $table->string('meta_id')->index();
             $table->string('name');
             $table->string('creator_wallet_address')->nullable();

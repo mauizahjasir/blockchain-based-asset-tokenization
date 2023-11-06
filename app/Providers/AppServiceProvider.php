@@ -13,7 +13,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton('multichainService', function ($app) {
-            return (new MultichainService())->setBlockChain('asset-blockchain');
+            return (new MultichainService())->setBlockChain(config('multichain.blockchain_name'));
         });
     }
 
