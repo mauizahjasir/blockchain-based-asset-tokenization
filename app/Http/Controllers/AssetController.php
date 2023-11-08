@@ -15,6 +15,13 @@ class AssetController extends Controller
 {
     public function index()
     {
+        $assets = Asset::all();
+
+        return view('admin.assets', compact('assets'));
+    }
+
+    public function createAssetForm()
+    {
         $assetTypes = AssetType::all();
 
         return view('admin.create-asset', compact('assetTypes'));
@@ -64,6 +71,7 @@ class AssetController extends Controller
             'details' => $details,
             'creator_wallet_address' => $validAddress,
             'tx_id' => $txId,
+            'alias' => StringHelper::hyphenated($name)
         ]);
 
         Session::flash('success', 'Asset created successfully');

@@ -35,7 +35,8 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('multichain')->group(function () {
         Route::get('/get-information', [MultichainController::class, 'getInfo'])->name('get-information');
 
-        Route::get('assets/create-asset', [AssetController::class, 'index'])->name('create-asset');
+        Route::get('assets', [AssetController::class, 'index'])->name('assets');
+        Route::get('assets/create-asset', [AssetController::class, 'createAssetForm'])->name('create-asset');
         Route::post('assets/create-asset', [AssetController::class, 'store'])->name('create-asset');
 
         Route::get('assets/create-asset-type', [AssetTypeController::class, 'index'])->name('create-asset-type');

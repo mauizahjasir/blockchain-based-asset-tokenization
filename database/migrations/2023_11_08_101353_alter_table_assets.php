@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('assets', function (Blueprint $table) {
-            $table->string('name')->unique()->change();
+//            $table->string('name')->unique()->change();
+            $table->string('alias')->nullable();
         });
     }
 

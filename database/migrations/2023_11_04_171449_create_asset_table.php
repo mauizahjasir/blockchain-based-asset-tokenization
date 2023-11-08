@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('tx_id')->nullable();
             $table->json('details')->nullable();
             $table->unsignedFloat('unit')->nullable();
-            $table->string('assets')->nullable();
+            $table->string('alias')->nullable();
             $table->timestamps();
         });
     }
