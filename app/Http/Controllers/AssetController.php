@@ -47,8 +47,7 @@ class AssetController extends Controller
         $multichainClient = app('multichainService');
 
         $validAddress = $multichainClient->getAddressWithPermission('issue')['address'] ?? '';
-//        $customFields = array_merge($details, ['type' => AssetType::find($type)?->name]);
-        $customFields = array_merge($details, ['type' => 'retail']);
+        $customFields = array_merge($details, ['type' => AssetType::find($type)?->name]);
 
         $txId = $multichainClient->issueAsset($validAddress, $name, $quantity, $unit, $customFields);
 
