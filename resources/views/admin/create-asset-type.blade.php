@@ -13,6 +13,14 @@
                     </div>
                 @endif
 
+                @if (Session::has('errors'))
+                    <div class="alert alert-danger">
+                        @foreach(Session::get('errors') as $error)
+                            {{ $error . "\n"}}
+                        @endforeach
+                    </div>
+                @endif
+
                 <form method="POST" action="{{ route('create-asset-type') }}">
                     @csrf
 

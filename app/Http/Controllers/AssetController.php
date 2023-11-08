@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\StringHelper;
 use App\Models\Asset;
 use App\Models\AssetType;
 use App\Services\MultichainService;
@@ -47,9 +48,9 @@ class AssetController extends Controller
         $multichainClient = app('multichainService');
 
         $validAddress = $multichainClient->getAddressWithPermission('issue')['address'] ?? '';
-        $customFields = array_merge($details, ['type' => AssetType::find($type)?->name]);
+        $customFields = array_merge($details, ['type' => AssetType::find($type)?->alias]);
 
-        $txId = $multichainClient->issueAsset($validAddress, $name, $quantity, $unit, $customFields);
+        $txId = $multichainClient->issueAsset($validAddress, StringHelper::hyphenated($name), $quantity, $unit, $customFields);
 
         if ($txId === null) {
             return redirect()->back()->with('errors', ['There was an error with your submission. Please check the form and try again.']);

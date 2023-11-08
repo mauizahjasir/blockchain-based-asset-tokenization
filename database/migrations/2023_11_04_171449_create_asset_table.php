@@ -14,13 +14,14 @@ return new class extends Migration
         Schema::create('assets', function (Blueprint $table) {
             $table->uuid('id')->unique();
             $table->string('meta_id')->index();
-            $table->string('name');
+            $table->string('name')->unique();
             $table->string('creator_wallet_address')->nullable();
             $table->unsignedBigInteger('quantity')->nullable();
             $table->foreignUuid('asset_type_id')->nullable();
             $table->string('tx_id')->nullable();
             $table->json('details')->nullable();
             $table->unsignedFloat('unit')->nullable();
+            $table->string('assets')->nullable();
             $table->timestamps();
         });
     }

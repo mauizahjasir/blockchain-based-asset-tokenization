@@ -17,7 +17,8 @@ class Asset extends Model
         'unit',
         'tx_id',
         'details',
-        'asset_type_id'
+        'asset_type_id',
+        'alias'
     ];
 
     protected $casts = [

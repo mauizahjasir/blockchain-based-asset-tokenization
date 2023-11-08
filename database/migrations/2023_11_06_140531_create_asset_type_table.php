@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('asset_types', function (Blueprint $table) {
             $table->uuid('id')->unique();
             $table->string('meta_id')->index();
-            $table->string('name');
+            $table->string('name')->unique();
             $table->string('description')->nullable();
+            $table->string('alias')->nullable();
             $table->timestamps();
         });
     }
