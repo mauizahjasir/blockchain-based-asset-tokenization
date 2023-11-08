@@ -7,6 +7,8 @@ use App\Models\AssetType;
 use App\Services\MultichainService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class AssetController extends Controller
 {
@@ -20,12 +22,20 @@ class AssetController extends Controller
     public function store(Request $request)
     {
         // Validate the input
-        $request->validate([
-            'name' => 'required|string',
+        $validator = Validator::make($request->all(), [
+            'name' => [
+                'required',
+                'string',
+                Rule::unique('assets', 'name'),
+            ],
             'quantity' => 'required|integer',
             'unit' => 'required|string',
             'asset_type_id' => 'string',
         ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->with('errors', $validator->errors()->all());
+        }
 
         $name = $request->input('name', '');
         $quantity = $request->input('quantity', 0);
@@ -37,12 +47,13 @@ class AssetController extends Controller
         $multichainClient = app('multichainService');
 
         $validAddress = $multichainClient->getAddressWithPermission('issue')['address'] ?? '';
-        $customFields = array_merge($details, ['type' => AssetType::find($type)?->name]);
+//        $customFields = array_merge($details, ['type' => AssetType::find($type)?->name]);
+        $customFields = array_merge($details, ['type' => 'retail']);
 
         $txId = $multichainClient->issueAsset($validAddress, $name, $quantity, $unit, $customFields);
 
         if ($txId === null) {
-            return redirect()->back()->with('error', 'There was an error with your submission. Please check the form and try again.');
+            return redirect()->back()->with('errors', ['There was an error with your submission. Please check the form and try again.']);
         }
 
         Asset::create([

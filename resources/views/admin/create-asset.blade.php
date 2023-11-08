@@ -13,9 +13,11 @@
                     </div>
                 @endif
 
-                @if (Session::has('error'))
+                @if (Session::has('errors'))
                     <div class="alert alert-danger">
-                        {{ Session::get('error') }}
+                        @foreach(Session::get('errors') as $error)
+                            {{ $error . "\n"}}
+                        @endforeach
                     </div>
                 @endif
 
@@ -28,18 +30,6 @@
                     </div>
 
                     <br/>
-
-                    <div class="form-group">
-                        <label for="asset_type_id">Asset Type</label>
-                        <select name="asset_type_id" id="asset_type_id" class="form-control" required>
-                            <option value="">Select an Asset Type</option>
-                            @foreach($assetTypes as $assetType)
-                                <option value="{{ $assetType->id }}">{{ $assetType->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <br/>
                     <div class="form-group">
                         <label for="quantity">Asset Quantity</label>
                         <input type="number" name="quantity" id="quantity" class="form-control" required>
@@ -49,6 +39,18 @@
                     <div class="form-group">
                         <label for="unit">Asset Unit</label>
                         <input type="text" name="unit" id="unit" class="form-control" required>
+                    </div>
+
+                    <br/>
+
+                    <div class="form-group">
+                        <label for="asset_type_id">Asset Type</label>
+                        <select name="asset_type_id" id="asset_type_id" class="form-control" required>
+                            <option value="">Select an Asset Type</option>
+                            @foreach($assetTypes as $assetType)
+                                <option value="{{ $assetType->id }}">{{ $assetType->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
 
                     <br/>
