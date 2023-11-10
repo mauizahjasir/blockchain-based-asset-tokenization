@@ -1,13 +1,12 @@
-@extends('layouts.app')
+@extends('layouts.default')
 
 @section('content')
-    <div class="container">
+    <div class="container mt-5">
         <div class="row">
-            @include('sidebar')
             <div class="col-md-9">
-                <h1>Get Multichain Information</h1>
+                <h1>Multichain Information</h1>
 
-                <table class="table table-striped">
+                <table class="table table-bordered">
                     <thead>
                     <tr>
                         <th>Key</th>

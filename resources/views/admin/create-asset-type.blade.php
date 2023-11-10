@@ -1,9 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.default')
 
 @section('content')
-    <div class="container">
+    <div class="container mt-5">
         <div class="row">
-            @include('sidebar')
             <div class="col-md-9">
                 <h1>Create Asset</h1>
 
