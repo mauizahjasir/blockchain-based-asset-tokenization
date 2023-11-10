@@ -29,19 +29,15 @@
                         <input type="text" name="name" id="name" class="form-control" required>
                     </div>
 
-                    <br/>
                     <div class="form-group">
                         <label for="quantity">Asset Quantity</label>
                         <input type="number" name="quantity" id="quantity" class="form-control" required>
                     </div>
 
-                    <br/>
                     <div class="form-group">
                         <label for="unit">Asset Unit</label>
                         <input type="text" name="unit" id="unit" class="form-control" required>
                     </div>
-
-                    <br/>
 
                     <div class="form-group">
                         <label for="asset_type_id">Asset Type</label>
@@ -53,7 +49,6 @@
                         </select>
                     </div>
 
-                    <br/>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>

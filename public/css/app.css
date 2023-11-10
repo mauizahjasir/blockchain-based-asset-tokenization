@@ -1,6 +1,9 @@
-/* Make all labels bold */
-label {
+/* app.css */
+
+/* Make all labels and other form elements bold */
+label, input, textarea, select, button {
     font-weight: bold;
+    /* Add any other global styling you need */
 }
 
 /* Add additional styling for other HTML elements as needed */
