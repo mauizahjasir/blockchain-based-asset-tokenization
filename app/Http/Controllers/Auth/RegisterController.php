@@ -88,13 +88,6 @@ class RegisterController extends Controller
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ]);
-
-            $multichainService = app('multichainService');
-
-            $newAddress = $multichainService->getNewAddress();
-
-            $user->wallet_address = $newAddress;
-            $user->save();
         }
 
         return view('registration-success');

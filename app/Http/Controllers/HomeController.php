@@ -34,7 +34,7 @@ class HomeController extends Controller
 
     private function adminView()
     {
-        $users = User::all();
+        $users = User::whereNotNull('wallet_address')->get();
 
         return view('admin.home', compact('users'));
     }
