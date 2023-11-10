@@ -15,7 +15,7 @@ class AssetController extends Controller
 {
     public function index()
     {
-        $assets = Asset::all();
+        $assets = Asset::with('creator', 'assetType')->get();
 
         return view('admin.assets', compact('assets'));
     }

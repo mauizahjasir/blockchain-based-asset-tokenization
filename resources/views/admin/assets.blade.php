@@ -23,10 +23,10 @@
                         <tr>
                             <td>{{ $asset->meta_id }}</td>
                             <td>{{ $asset->name }}</td>
-                            <td>{{ $asset->creator_wallet_address }}</td>
+                            <td>{{ $asset->creator?->name }}</td>
                             <td>{{ $asset->quantity }}</td>
                             <td>{{ $asset->unit }}</td>
-                            <td>{{ $asset->asset_type_id }}</td>
+                            <td>{{ $asset->assetType->name }}</td>
                         </tr>
                     @endforeach
                     </tbody>
