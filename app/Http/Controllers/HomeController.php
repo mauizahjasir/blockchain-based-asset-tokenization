@@ -29,7 +29,7 @@ class HomeController extends Controller
 
         return $user->isAdmin()
             ? $this->adminView()
-            : view('home');
+            : $this->clientView();
     }
 
     private function adminView()
@@ -37,5 +37,10 @@ class HomeController extends Controller
         $users = User::whereNotNull('wallet_address')->get();
 
         return view('admin.home', compact('users'));
+    }
+
+    private function clientView()
+    {
+        return view('pages.table_list');
     }
 }
