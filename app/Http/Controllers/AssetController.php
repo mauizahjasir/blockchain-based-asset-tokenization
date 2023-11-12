@@ -80,4 +80,11 @@ class AssetController extends Controller
 
         return redirect()->route('create-asset');
     }
+
+    public function assetListForClient()
+    {
+        $assets = Asset::with('creator', 'assetType')->get();
+
+        return view('client.assets', compact('assets'));
+    }
 }

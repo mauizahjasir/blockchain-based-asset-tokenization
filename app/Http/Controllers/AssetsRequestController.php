@@ -7,16 +7,15 @@ use App\Models\Asset;
 use App\Models\AssetsRequest;
 use App\Services\MultichainService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
-class ClientAssetController extends Controller
+class AssetsRequestController extends Controller
 {
     public function index()
     {
-        $assets = Asset::with('creator', 'assetType')->get();
+        $assetsRequest = AssetsRequest::with('assets', 'requestor')->get();
 
-        return view('client.assets', compact('assets'));
+        return view('admin/assets-request', compact('assetsRequest'));
     }
 
     public function requestPurchase(Asset $asset, Request $request)

@@ -11,9 +11,9 @@ class Asset extends Model
 {
     use HasFactory, HasUUID;
 
-    const STATUS_NEW = 'new';
-    const STATUS_REQUESTED = 'purchase_requested';
-    const STATUS_SOLD = 'sold';
+    const STATUS_NEW = 'New';
+    const STATUS_REQUESTED = 'Purchase Requested';
+    const STATUS_SOLD = 'Sold';
 
     protected $fillable = [
         'name',

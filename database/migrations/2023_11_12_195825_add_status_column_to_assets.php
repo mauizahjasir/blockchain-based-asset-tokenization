@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('assets', function (Blueprint $table) {
-            $table->string('status')->default('new');
+            $table->string('status')->default('New');
         });
     }
 

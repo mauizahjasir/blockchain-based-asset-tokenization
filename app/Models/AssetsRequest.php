@@ -14,4 +14,14 @@ class AssetsRequest extends Model
       'asset_id',
       'requestor_id'
     ];
+
+    public function assets()
+    {
+        return $this->belongsTo(Asset::class,  'asset_id', 'id');
+    }
+
+    public function requestor()
+    {
+        return $this->belongsTo(User::class, 'requestor_id', 'id');
+    }
 }
