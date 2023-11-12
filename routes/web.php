@@ -4,6 +4,7 @@ use App\Http\Controllers\AssetController;
 use App\Http\Controllers\AssetTypeController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\ClientAssetController;
 use App\Http\Controllers\MultichainController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -36,10 +37,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/new-users', [UserController::class, 'index'])->name('new-users');
     Route::post('/approve/{user}', [UserController::class, 'approve'])->name('approve');
 
+    Route::get('client/assets', [ClientAssetController::class, 'index'])->name('client.assets');
+
     Route::prefix('multichain')->group(function () {
         Route::get('/get-information', [MultichainController::class, 'getInfo'])->name('get-information');
 
-        Route::get('assets', [AssetController::class, 'index'])->name('assets');
+        Route::get('admin/assets', [AssetController::class, 'index'])->name('assets');
         Route::get('assets/create-asset', [AssetController::class, 'createAssetForm'])->name('create-asset');
         Route::post('assets/create-asset', [AssetController::class, 'store'])->name('create-asset');
 

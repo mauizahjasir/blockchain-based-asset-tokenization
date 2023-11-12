@@ -1,8 +1,6 @@
 <div class="col-lg-5 col-xl-4 p-12 p-xl-20 position-fixed start-0 top-0 h-screen overflow-y-hidden bg-primary d-none d-lg-flex flex-column">
     <!-- Logo -->
-    <a class="d-block" href="#">
-        <img src="https://preview.webpixels.io/web/img/logos/clever-light.svg" class="h-10" alt="...">
-    </a>
+
     <!-- Title -->
     <div class="mt-32 mb-20">
         <h1 class="ls-tight font-bolder display-6 text-white mb-5">

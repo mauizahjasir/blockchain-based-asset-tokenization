@@ -4,7 +4,7 @@
     <div class="container mt-5">
         <div class="row">
             <div class="col-md-9">
-                <h1>Create Asset</h1>
+                <h1>Create Asset Type</h1>
 
                 @if (Session::has('success'))
                     <div class="alert alert-success">
