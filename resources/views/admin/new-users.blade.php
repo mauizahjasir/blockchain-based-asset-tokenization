@@ -1,4 +1,4 @@
-@extends('layouts.default', ['activePage' => 'table', 'titlePage' => __('Table List')])
+@extends('layouts.admin.default', ['activePage' => 'table', 'titlePage' => __('Table List')])
 @section('content')
     <div class="content">
 
@@ -43,7 +43,8 @@
                                                 <td>{{ $user->email }}</td>
                                                 <td>{{ $user->user_type }}</td>
                                                 <td>
-                                                    <form method="POST" action="{{ route('approve', ['user' => $user->meta_id]) }}">
+                                                    <form method="POST"
+                                                          action="{{ route('approve', ['user' => $user->meta_id]) }}">
                                                         @csrf
                                                         <button type="submit" class="w3-button w3-green">
                                                             Approve

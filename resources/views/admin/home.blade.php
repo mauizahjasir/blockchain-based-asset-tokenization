@@ -1,4 +1,4 @@
-@extends('layouts.default', ['activePage' => 'table', 'titlePage' => __('Table List')])
+@extends('layouts.admin.default', ['activePage' => 'table', 'titlePage' => __('Table List')])
 @section('content')
     <div class="content">
 

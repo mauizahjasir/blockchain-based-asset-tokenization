@@ -41,6 +41,6 @@ class HomeController extends Controller
 
     private function clientView()
     {
-        return view('pages.table_list');
+        return view('client.home');
     }
 }
