@@ -10,7 +10,9 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <style>
-        body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", sans-serif}
+        body, h1, h2, h3, h4, h5, h6 {
+            font-family: "Raleway", sans-serif
+        }
     </style>
 </head>
 <body class="w3-light-grey w3-content" style="max-width:1600px">
@@ -18,13 +20,14 @@
 <!-- Sidebar/menu -->
 <nav class="w3-sidebar w3-collapse w3-black w3-animate-left" style="z-index:3;width:300px;" id="mySidebar"><br>
     <div class="w3-container">
-        <a href="#" onclick="w3_close()" class="w3-hide-large w3-right w3-jumbo w3-padding w3-hover-grey" title="close menu">
+        <a href="#" onclick="w3_close()" class="w3-hide-large w3-right w3-jumbo w3-padding w3-hover-grey"
+           title="close menu">
             <i class="fa fa-remove"></i>
         </a>
 
         <h4 class="mb-5"><b>{{ config('app.name', 'Laravel') }}</b></h4>
     </div>
-    @include('sidebar')
+    @include('admin.sidebar')
     <div class="w3-panel w3-large w3-bottom">
         <i class="fa fa-facebook-official w3-hover-opacity"></i>
         <i class="fa fa-instagram w3-hover-opacity"></i>
@@ -36,7 +39,8 @@
 </nav>
 
 <!-- Overlay effect when opening sidebar on small screens -->
-<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer"
+     title="close side menu" id="myOverlay"></div>
 
 <!-- !PAGE CONTENT! -->
 <div class="w3-main" style="margin-left:300px">
@@ -47,7 +51,8 @@
                 <div style="color: white">Hi, {{ Auth::user()->name }} <i class="fa fa-caret-down"></i></div>
             </button>
             <div class="w3-dropdown-content w3-bar-block w3-border">
-                <a href="{{ route('logout') }}" class="w3-bar-item w3-button" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                <a href="{{ route('logout') }}" class="w3-bar-item w3-button"
+                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                     @csrf
                 </form>
