@@ -50,6 +50,11 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class, 'user_has_roles');
     }
 
+    public function assetsRequests()
+    {
+        return $this->hasMany(AssetsRequest::class, 'requestor_id', 'id');
+    }
+
     public function isAdmin(): bool
     {
         return !empty($this->roles->where('title', Role::ADMIN)?->first());

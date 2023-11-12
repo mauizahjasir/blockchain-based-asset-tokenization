@@ -57,4 +57,13 @@ class MultichainService implements IMultichainInterface
     {
         return $this->multichainService->issue($address, ['name' => $name, 'open' => true], (int)$quantity, (float)$unit, 0, $customFields);
     }
+
+    public function isValidAddress(string $address)
+    {
+        $response = $this->multichainService->validateaddress($address);
+
+        return is_array($response)
+            ? $response['isvalid']
+            : false;
+    }
 }

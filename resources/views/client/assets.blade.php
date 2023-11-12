@@ -2,19 +2,7 @@
 @section('content')
     <div class="content">
 
-        @if (Session::has('success'))
-            <div class="w3-panel w3-green">
-                <p>{{ Session::get('success') }}</p>
-            </div>
-        @endif
-
-        @if (Session::has('errors'))
-            <div class="w3-panel w3-red">
-                @foreach(Session::get('errors') as $error)
-                    <p>{{ $error }}</p>
-                @endforeach
-            </div>
-        @endif
+        @include('alert');
 
         <div class="container-fluid mt-2">
             <div class="row">
@@ -33,6 +21,7 @@
                                     <th>Quantity</th>
                                     <th>Units</th>
                                     <th>Asset Type</th>
+                                    <th>Action</th> <!-- Add this column for the action button -->
                                     </thead>
                                     <tbody>
 
@@ -44,6 +33,13 @@
                                             <td>{{ $asset->quantity }}</td>
                                             <td>{{ $asset->unit }}</td>
                                             <td>{{ $asset->assetType->name }}</td>
+                                            <td>
+                                                <form method="POST" action="{{ route('request-purchase', ['asset' => $asset->meta_id]) }}">
+                                                    @csrf
+                                                    <input type="hidden" name="asset_id" value="{{ $asset->id }}">
+                                                    <button type="submit" class="btn btn-primary" style="height: 30px; font-size: 12px">Submit Buy Request</button>
+                                                </form>
+                                            </td>
                                         </tr>
                                     @endforeach
                                     </tbody>

@@ -6,19 +6,7 @@
             <div class="col-md-9">
                 <h1>Create Asset Type</h1>
 
-                @if (Session::has('success'))
-                    <div class="alert alert-success">
-                        {{ Session::get('success') }}
-                    </div>
-                @endif
-
-                @if (Session::has('errors'))
-                    <div class="alert alert-danger">
-                        @foreach(Session::get('errors') as $error)
-                            {{ $error . "\n"}}
-                        @endforeach
-                    </div>
-                @endif
+                @include('alert')
 
                 <form method="POST" action="{{ route('create-asset-type') }}">
                     @csrf

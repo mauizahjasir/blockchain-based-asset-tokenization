@@ -37,7 +37,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/new-users', [UserController::class, 'index'])->name('new-users');
     Route::post('/approve/{user}', [UserController::class, 'approve'])->name('approve');
 
-    Route::get('client/assets', [ClientAssetController::class, 'index'])->name('client.assets');
+    Route::prefix('client')->group(function () {
+        Route::get('/assets', [ClientAssetController::class, 'index'])->name('client.assets');
+        Route::post('/assets/{asset}/request-purchase', [ClientAssetController::class, 'requestPurchase'])->name('request-purchase');
+    });
 
     Route::prefix('multichain')->group(function () {
         Route::get('/get-information', [MultichainController::class, 'getInfo'])->name('get-information');

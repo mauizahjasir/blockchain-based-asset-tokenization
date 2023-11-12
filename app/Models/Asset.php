@@ -11,6 +11,10 @@ class Asset extends Model
 {
     use HasFactory, HasUUID;
 
+    const STATUS_NEW = 'new';
+    const STATUS_REQUESTED = 'purchase_requested';
+    const STATUS_SOLD = 'sold';
+
     protected $fillable = [
         'name',
         'creator_wallet_address',
@@ -19,7 +23,8 @@ class Asset extends Model
         'tx_id',
         'details',
         'asset_type_id',
-        'alias'
+        'alias',
+        'status'
     ];
 
     protected $casts = [

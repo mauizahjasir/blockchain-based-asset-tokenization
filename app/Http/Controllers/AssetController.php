@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Psy\Util\Str;
 
 class AssetController extends Controller
 {
@@ -60,7 +61,7 @@ class AssetController extends Controller
         $txId = $multichainClient->issueAsset($validAddress, StringHelper::hyphenated($name), $quantity, $unit, $customFields);
 
         if ($txId === null) {
-            return redirect()->back()->with('errors', ['There was an error with your submission. Please check the form and try again.']);
+            return redirect()->back()->with('errors', [StringHelper::errorMessage()]);
         }
 
         Asset::create([
@@ -71,7 +72,8 @@ class AssetController extends Controller
             'details' => $details,
             'creator_wallet_address' => $validAddress,
             'tx_id' => $txId,
-            'alias' => StringHelper::hyphenated($name)
+            'alias' => StringHelper::hyphenated($name),
+            'status' => Asset::STATUS_NEW
         ]);
 
         Session::flash('success', 'Asset created successfully');
