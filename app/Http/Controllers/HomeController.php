@@ -41,6 +41,11 @@ class HomeController extends Controller
 
     private function clientView()
     {
-        return view('client.home');
+        /** @var User $user */
+        $user = Auth::user();
+
+        return $user->isVerified()
+            ? view('client.home')
+            : view('client.not-verified');
     }
 }

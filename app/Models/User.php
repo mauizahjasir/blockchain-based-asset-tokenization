@@ -54,4 +54,9 @@ class User extends Authenticatable
     {
         return !empty($this->roles->where('title', Role::ADMIN)?->first());
     }
+
+    public function isVerified()
+    {
+        return !empty($this->email_verified_at);
+    }
 }
