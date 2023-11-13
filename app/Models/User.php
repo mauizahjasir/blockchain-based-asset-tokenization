@@ -64,4 +64,15 @@ class User extends Authenticatable
     {
         return !empty($this->email_verified_at);
     }
+
+    public function myBalance()
+    {
+        $multichain = app('multichainService');
+
+        $addressBalances = $multichain->multichain()->getaddressbalances($this->wallet_address);
+        $currency =  config('multichain.currency');
+        $walletBalance = collect($addressBalances)->where('name', $currency)->first();
+
+        return empty($walletBalance) ? "0 $currency" : $walletBalance['qty'] . " $currency";
+    }
 }

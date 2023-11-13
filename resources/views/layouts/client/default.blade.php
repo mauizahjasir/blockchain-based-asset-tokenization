@@ -25,7 +25,13 @@
             <i class="fa fa-remove"></i>
         </a>
 
+        @php
+
+        @endphp
         <h4 class="mb-5"><b>{{ config('app.name', 'Laravel') }}</b></h4>
+        <h6 class="mb-5">
+          My Wallet Balance: {{ \Illuminate\Support\Facades\Auth::user()->myBalance() }}
+        </h6>
     </div>
     @include('client.sidebar')
     <div class="w3-panel w3-large w3-bottom">

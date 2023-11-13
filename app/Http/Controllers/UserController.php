@@ -30,4 +30,9 @@ class UserController extends Controller
 
         return redirect()->route('new-users');
     }
+
+    public function myBalance()
+    {
+        return '100';
+    }
 }

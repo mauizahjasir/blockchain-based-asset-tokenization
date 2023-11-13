@@ -7,4 +7,5 @@ return [
     'rpc_password' => env('RPC_PASSWORD', ''),
     'rpc_use_ssl'  => (bool) env('RPC_USE_SSL', false),
     'blockchain_name'  => env('CHAINNAME', ''),
+    'currency'   => env('CURRENCY', '')
 ];

@@ -40,6 +40,7 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('client')->group(function () {
         Route::get('/assets', [AssetController::class, 'assetListForClient'])->name('client.assets');
         Route::post('/assets/{asset}/request-purchase', [AssetsRequestController::class, 'requestPurchase'])->name('request-purchase');
+        Route::post('/my-balance', [UserController::class, 'myBalance'])->name('my-balance');
     });
 
     Route::prefix('multichain')->group(function () {
