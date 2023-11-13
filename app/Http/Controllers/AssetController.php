@@ -84,7 +84,7 @@ class AssetController extends Controller
 
     public function assetListForClient()
     {
-        $assets = Asset::with('creator', 'assetType')->get();
+        $assets = Asset::with('creator', 'assetType')->where('status', '!=', Asset::STATUS_SOLD)->get();
 
         return view('client.assets', compact('assets'));
     }

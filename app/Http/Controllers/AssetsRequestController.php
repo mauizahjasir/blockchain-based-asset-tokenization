@@ -6,6 +6,7 @@ use App\Helpers\MessageHelper;
 use App\Helpers\StringHelper;
 use App\Models\Asset;
 use App\Models\AssetsRequest;
+use App\Models\User;
 use App\Services\MultichainService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -23,7 +24,9 @@ class AssetsRequestController extends Controller
     {
         $request->validate(['asset_id' => 'required']);
 
+        /** @var User $user */
         $user = $request->user();
+        $commitAmount = $request->input('commit_amount', 0);
 
         /** @var MultichainService $multichain */
         $multichain = app('multichainService');
@@ -37,12 +40,26 @@ class AssetsRequestController extends Controller
             return redirect()->back()->with('errors', ["You have already requested the purchase of this Asset, please wait for administrator's response"]);
         }
 
+        if ($commitAmount > $user->walletBalance(false)) {
+            return redirect()->back()->with('errors', ['Your committed amount exceeds your wallet balance']);
+        }
+
+        $response = $multichain->multichain()->preparelockunspentfrom($user->wallet_address, [config('multichain.currency') => (int)$commitAmount]);
+
+        if (empty($response)) {
+            return redirect()->back()->with('errors', [MessageHelper::submissionFailure()]);
+        }
+
         $asset->status = Asset::STATUS_REQUESTED;
         $asset->save();
 
         AssetsRequest::create([
             'asset_id' => $asset->id,
             'requestor_id' => $user->id,
+            'additional_info' => $request->input('additional_info', 0),
+            'commit_amount' => $commitAmount,
+            'status' => AssetsRequest::UNDER_REVIEW,
+            'request_payload' => $response
         ]);
 
         Session::flash('success', 'Request submitted successfully');
@@ -71,5 +88,10 @@ class AssetsRequestController extends Controller
         // createrawsendfrom
         // signrawtransaction
         // sendrawtransaction
+    }
+
+    public function requestPurchasePage(Asset $asset, Request $request)
+    {
+        return view('client.request-purchase-form', compact('asset'));
     }
 }

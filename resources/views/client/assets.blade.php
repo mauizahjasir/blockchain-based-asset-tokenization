@@ -34,7 +34,7 @@
                                             <td>{{ $asset->unit }}</td>
                                             <td>{{ $asset->assetType->name }}</td>
                                             <td>
-                                                <form method="POST" action="{{ route('request-purchase', ['asset' => $asset->meta_id]) }}">
+                                                <form method="GET" action="{{ route('request-purchase', ['asset' => $asset->meta_id]) }}">
                                                     @csrf
                                                     <input type="hidden" name="asset_id" value="{{ $asset->id }}">
                                                     <button type="submit" class="btn btn-primary" style="height: 30px; font-size: 12px">Submit Buy Request</button>
