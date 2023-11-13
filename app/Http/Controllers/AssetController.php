@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\MessageHelper;
 use App\Helpers\StringHelper;
 use App\Models\Asset;
 use App\Models\AssetType;
@@ -61,7 +62,7 @@ class AssetController extends Controller
         $txId = $multichainClient->issueAsset($validAddress, StringHelper::hyphenated($name), $quantity, $unit, $customFields);
 
         if ($txId === null) {
-            return redirect()->back()->with('errors', [StringHelper::errorMessage()]);
+            return redirect()->back()->with('errors', [MessageHelper::submissionFailure()]);
         }
 
         Asset::create([

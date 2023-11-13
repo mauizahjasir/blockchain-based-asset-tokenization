@@ -55,7 +55,7 @@ class MultichainService implements IMultichainInterface
 
     public function issueAsset($address, $name, $quantity = 0, $unit = 0, $customFields = [])
     {
-        return $this->multichainService->issue($address, ['name' => $name, 'open' => true], (int)$quantity, (float)$unit, 0, $customFields);
+        return $this->multichainService->issue($address, ['name' => $name, 'open' => true], (int)$quantity, (float)$unit/*, 0, $customFields*/);
     }
 
     public function isValidAddress(string $address)
@@ -65,5 +65,13 @@ class MultichainService implements IMultichainInterface
         return is_array($response)
             ? $response['isvalid']
             : false;
+    }
+
+    public function hasPermission(array $permissions, string $address)
+    {
+        $response = $this->multichainService->listpermissions(implode(',', $permissions), $address);
+        $allPermissions = collect($response)->pluck('type')->all();
+
+        return empty(array_diff($permissions, $allPermissions));
     }
 }

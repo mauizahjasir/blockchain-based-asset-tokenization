@@ -53,5 +53,6 @@ Route::middleware(['auth'])->group(function () {
         Route::post('assets/create-asset-type', [AssetTypeController::class, 'store'])->name('create-asset-type');
 
         Route::get('assets/requests', [AssetsRequestController::class, 'index'])->name('asset-requests');
+        Route::post('assets/requests/{assetRequest}/approve', [AssetsRequestController::class, 'requestApprove'])->name('request-approve');
     });
 });
