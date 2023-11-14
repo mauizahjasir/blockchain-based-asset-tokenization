@@ -67,7 +67,7 @@ class MultichainService implements IMultichainInterface
             : false;
     }
 
-    public function hasPermission(array $permissions, string $address)
+    public function hasPermissions(array $permissions, string $address)
     {
         $response = $this->multichainService->listpermissions(implode(',', $permissions), $address);
         $allPermissions = collect($response)->pluck('type')->all();
@@ -78,5 +78,15 @@ class MultichainService implements IMultichainInterface
     public function permissions($address, $permissions = '*')
     {
         return $this->multichainService->listpermissions($permissions, $address);
+    }
+
+    public function grantPermission($address, $permission)
+    {
+        return $this->multichainService->grant($address, $permission);
+    }
+
+    public function revokePermission($address, $permission)
+    {
+        return $this->multichainService->revoke($address, $permission);
     }
 }

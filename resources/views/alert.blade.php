@@ -8,10 +8,16 @@
 
 @if (Session::has('errors'))
     <div class="alert-container">
-        @foreach(Session::get('errors') as $error)
+        @if(is_array(Session::get('errors')))
+            @foreach(Session::get('errors') as $error)
+                <div class="alert alert-danger">
+                    {{ $error }}
+                </div>
+            @endforeach
+        @else
             <div class="alert alert-danger">
-                {{ $error }}
+                {{ Session::get('errors') }}
             </div>
-        @endforeach
+        @endif
     </div>
 @endif

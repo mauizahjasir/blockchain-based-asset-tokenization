@@ -2,17 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\MultichainService;
+use App\Facades\MultichainService;
+use App\Models\Role;
+use App\Models\User;
 
 class MultichainController extends Controller
 {
     public function getInfo()
     {
-        /** @var MultichainService $multichainService */
-        $multichainService = app('multichainService');
-        $information = $multichainService->getInfo();
+        $information = MultichainService::getInfo();
 
         return view('admin.get-info', ['data' => $information]);
+    }
+
+    public function managePermissions()
+    {
+        $users = User::whereNotNull('email_verified_at')->where('user_type', Role::CLIENT)->get();
+
+        return view('admin.manage-permissions', compact('users'));
     }
 }
 

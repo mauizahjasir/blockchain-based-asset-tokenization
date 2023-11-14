@@ -75,7 +75,7 @@ class AssetsRequestController extends Controller
         $multichain = app('multichainService');
 
         $isValidPerson = $multichain->isValidAddress($assetRequest->requestor->wallet_address);
-        $hasPermission = $multichain->hasPermission(['receive'], $assetRequest->requestor->wallet_address);
+        $hasPermission = $multichain->hasPermissions(['receive'], $assetRequest->requestor->wallet_address);
 
         if (!$isValidPerson) {
             return redirect()->back()->with('errors', [MessageHelper::notAuthorizedUser()]);

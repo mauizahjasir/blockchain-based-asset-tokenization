@@ -23,4 +23,14 @@ class MessageHelper
     {
         return 'Transaction Failed';
     }
+
+    public static function permissionFailure($action = 'grant')
+    {
+        return "Unable to $action permission.";
+    }
+
+    public static function permissionSuccess($action = 'granted')
+    {
+        return "Permission $action successfully.";
+    }
 }

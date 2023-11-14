@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Facades\MultichainService;
+use App\Helpers\MessageHelper;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -31,8 +33,33 @@ class UserController extends Controller
         return redirect()->route('new-users');
     }
 
-    public function myBalance()
+    public function grantPermission(User $user, Request $request)
     {
-        return '100';
+        $request->validate([
+            'permission' => 'required'
+        ]);
+
+        $response = MultichainService::grantPermission($user->wallet_address, $request->get('permission'));
+
+        if (empty($response)) {
+            return redirect()->back()->with('errors', MessageHelper::permissionFailure());
+        }
+
+        return redirect()->back()->with('success', MessageHelper::permissionSuccess());
+    }
+
+    public function revokePermission(User $user, Request $request)
+    {
+        $request->validate([
+            'permission' => 'required'
+        ]);
+
+        $response = MultichainService::revokePermission($user->wallet_address, $request->get('permission'));
+
+        if (empty($response)) {
+            return redirect()->back()->with('errors', MessageHelper::permissionFailure('revoke'));
+        }
+
+        return redirect()->back()->with('success', MessageHelper::permissionSuccess('revoked'));
     }
 }

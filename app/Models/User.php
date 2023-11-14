@@ -84,7 +84,6 @@ class User extends Authenticatable
     {
         $permissions = MultichainService::permissions($this->wallet_address);
 
-        return collect($permissions)->pluck('type')->implode(', ');
-
+        return !empty($permissions) ? collect($permissions)->pluck('type')->implode(', ') : 'None';
     }
 }

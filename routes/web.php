@@ -41,11 +41,14 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/assets', [AssetController::class, 'assetListForClient'])->name('client.assets');
         Route::get('/assets/{asset}/request-purchase', [AssetsRequestController::class, 'requestPurchasePage'])->name('request-purchase');
         Route::post('/assets/{asset}/request-purchase', [AssetsRequestController::class, 'requestPurchase'])->name('request-purchase');
-        Route::post('/my-balance', [UserController::class, 'myBalance'])->name('my-balance');
     });
 
     Route::prefix('multichain')->group(function () {
         Route::get('/get-information', [MultichainController::class, 'getInfo'])->name('get-information');
+
+        Route::get('/manage-permissions', [MultichainController::class, 'managePermissions'])->name('manage-permissions');
+        Route::post('user/{user}/grant-permission', [UserController::class, 'grantPermission'])->name('grant-permission');
+        Route::post('user/{user}/revoke-permission', [UserController::class, 'revokePermission'])->name('revoke-permission');
 
         Route::get('admin/assets', [AssetController::class, 'index'])->name('assets');
         Route::get('assets/create-asset', [AssetController::class, 'createAssetForm'])->name('create-asset');
