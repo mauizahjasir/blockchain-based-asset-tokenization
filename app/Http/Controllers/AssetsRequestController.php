@@ -6,6 +6,8 @@ use App\Helpers\MessageHelper;
 use App\Helpers\StringHelper;
 use App\Models\Asset;
 use App\Models\AssetsRequest;
+use App\Models\ClientAsset;
+use App\Models\Transaction;
 use App\Models\User;
 use App\Services\MultichainService;
 use Illuminate\Http\Request;
@@ -83,7 +85,43 @@ class AssetsRequestController extends Controller
             return redirect()->back()->with('errors', [MessageHelper::doesNotHavePermission()]);
         }
 
-        // 177eEo7orJzX2Zy2SBBcXsPFzDy1z3eKGxiwfd
+        $txPayload = $assetRequest->request_payload;
+
+        $txHex = $multichain->multichain()->createrawexchange($txPayload['txid'], $txPayload['vout'], [$assetRequest->assets->alias => $assetRequest->assets->quantity]);
+        $decodedHex = $multichain->multichain()->decoderawexchange($txHex);
+
+        if (!$decodedHex['cancomplete']) {
+            return redirect()->back()->with('errors', [MessageHelper::transactionFailure()]);
+        }
+        $lockedHex = $multichain->multichain()->preparelockunspentfrom($request->user()->wallet_address, [$assetRequest->assets->alias => $assetRequest->assets->quantity]);
+        $appendedTx = $multichain->multichain()->appendrawexchange($txHex, $lockedHex['txid'], $lockedHex['vout'], [config('multichain.currency') => $assetRequest->commit_amount]);
+        $txId = $multichain->multichain()->sendrawtransaction($appendedTx['hex']);
+
+        if ($txId === null) {
+            return redirect()->back()->with('errors', [MessageHelper::transactionFailure()]);
+        }
+
+        $transaction = Transaction::create([
+            'tx_hex' => $txId
+        ]);
+
+        ClientAsset::create([
+            'asset_id' => $assetRequest->assets->id,
+            'owner_id' => $assetRequest->requestor->id,
+            'previous_owner_id' => '', // owner_id from assets table
+            'tx_id' => $transaction->id
+        ]);
+
+        $assetRequest->assets->status = Asset::STATUS_SOLD;
+        $assetRequest->assets->save();
+
+        $assetRequest->status = AssetsRequest::RESOLVED;
+        $assetRequest->save();
+
+
+        Session::flash('success', 'Transaction has been successful');
+
+        return redirect()->route('asset-requests');
 
         // createrawsendfrom
         // signrawtransaction
@@ -93,5 +131,15 @@ class AssetsRequestController extends Controller
     public function requestPurchasePage(Asset $asset, Request $request)
     {
         return view('client.request-purchase-form', compact('asset'));
+    }
+
+    public function requestDetails(AssetsRequest $assetRequest)
+    {
+        return view('admin.request-detail-form', compact('assetRequest'));
+    }
+
+    public function requestReject(AssetsRequest $assetRequest)
+    {
+
     }
 }

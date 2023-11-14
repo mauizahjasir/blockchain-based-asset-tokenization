@@ -70,6 +70,7 @@ class User extends Authenticatable
         $multichain = app('multichainService');
 
         $addressBalances = $multichain->multichain()->getaddressbalances($this->wallet_address);
+
         $currency =  config('multichain.currency');
         $walletBalance = collect($addressBalances)->where('name', $currency)->first();
 

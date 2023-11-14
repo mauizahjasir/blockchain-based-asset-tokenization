@@ -19,6 +19,7 @@
                                     <th>Requested Asset Name</th>
                                     <th>Reqestor Name</th>
                                     <th>Requestor Wallet Address</th>
+                                    <th>Status</th>
                                     <th>Action</th>
                                     </thead>
                                     <tbody>
@@ -29,11 +30,12 @@
                                             <td>{{ $request->assets?->name }}</td>
                                             <td>{{ $request->requestor?->name }}</td>
                                             <td>{{ $request->requestor?->wallet_address }}</td>
+                                            <td>{{ $request->status }}</td>
                                             <td>
-                                                <form method="POST" action="{{ route('request-approve', ['assetRequest' => $request->meta_id]) }}">
+                                                <form method="GET" action="{{ route('request-details', ['assetRequest' => $request->meta_id]) }}">
                                                     @csrf
                                                     <input type="hidden" name="request_id" value="{{ $request->id }}">
-                                                    <button type="submit" class="btn btn-primary" style="height: 30px; font-size: 12px">Approve</button>
+                                                    <button type="submit" class="btn btn-primary" style="height: 30px; font-size: 12px">View Details</button>
                                                 </form>
                                             </td>
                                         </tr>

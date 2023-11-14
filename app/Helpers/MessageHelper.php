@@ -18,4 +18,9 @@ class MessageHelper
     {
         return 'The user does not have required permission to perform the action';
     }
+
+    public static function transactionFailure()
+    {
+        return 'Transaction Failed';
+    }
 }
