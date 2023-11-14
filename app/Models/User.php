@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Facades\MultichainService;
 use App\Traits\HasUUID;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -77,5 +78,13 @@ class User extends Authenticatable
         $balance = empty($walletBalance) ? 0 : $walletBalance['qty'];
 
         return $withCurrency ? "$balance $currency" : $balance;
+    }
+
+    public function permissions()
+    {
+        $permissions = MultichainService::permissions($this->wallet_address);
+
+        return collect($permissions)->pluck('type')->implode(', ');
+
     }
 }

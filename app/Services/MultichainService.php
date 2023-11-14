@@ -74,4 +74,9 @@ class MultichainService implements IMultichainInterface
 
         return empty(array_diff($permissions, $allPermissions));
     }
+
+    public function permissions($address, $permissions = '*')
+    {
+        return $this->multichainService->listpermissions($permissions, $address);
+    }
 }
