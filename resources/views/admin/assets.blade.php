@@ -16,7 +16,7 @@
                                 <table class="table">
                                     <thead class=" text-primary">
                                     <th>Name</th>
-                                    <th>Amount</th>
+                                    <th>Quantity</th>
                                     </thead>
                                     <tbody>
 

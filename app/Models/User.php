@@ -68,9 +68,7 @@ class User extends Authenticatable
 
     public function walletBalance(bool $withCurrency = true)
     {
-        $multichain = app('multichainService');
-
-        $addressBalances = $multichain->multichain()->getaddressbalances($this->wallet_address);
+        $addressBalances = MultichainService::getAddressBalances($this->wallet_address);
 
         $currency =  config('multichain.currency');
         $walletBalance = collect($addressBalances)->where('name', $currency)->first();

@@ -26,6 +26,9 @@
         </a>
 
         <h4 class="mb-5"><b>{{ config('app.name', 'Laravel') }}</b></h4>
+        <h6 class="mb-5">
+            My Wallet Balance: {{ \Illuminate\Support\Facades\Auth::user()?->walletBalance() }}
+        </h6>
     </div>
     @include('admin.sidebar')
     <div class="w3-panel w3-large w3-bottom">
