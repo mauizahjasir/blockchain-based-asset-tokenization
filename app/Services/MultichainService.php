@@ -55,7 +55,7 @@ class MultichainService implements IMultichainInterface
 
     public function issueAsset($address, $name, $quantity = 0, $unit = 0, $customFields = [])
     {
-        return $this->multichainService->issue($address, ['name' => $name, 'open' => true], (int)$quantity, (float)$unit/*, 0, $customFields*/);
+        return $this->multichainService->issue($address, ['name' => $name, 'open' => true], (int)$quantity, (float)$unit, 0, $customFields);
     }
 
     public function isValidAddress(string $address)
@@ -93,5 +93,10 @@ class MultichainService implements IMultichainInterface
     public function getAddressBalances($address)
     {
         return $this->multichainService->getaddressbalances($address, 0);
+    }
+
+    public function assetInfo($asset = '')
+    {
+        return $this->multichainService->listassets($asset);
     }
 }

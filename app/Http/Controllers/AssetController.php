@@ -66,22 +66,6 @@ class AssetController extends Controller
         }
 
         return redirect()->back()->with('success', MessageHelper::createSuccess('Asset'));
-
-        /*Asset::create([
-            'name' => $name,
-            'quantity' => $quantity,
-            'unit' => $unit,
-            'asset_type_id' => $type,
-            'details' => $details,
-            'creator_wallet_address' => $validAddress,
-            'tx_id' => $txId,
-            'alias' => StringHelper::hyphenated($name),
-            'status' => Asset::STATUS_NEW
-        ]);
-
-        Session::flash('success', 'Asset created successfully');
-
-        return redirect()->route('create-asset');*/
     }
 
     public function assetListForClient()
