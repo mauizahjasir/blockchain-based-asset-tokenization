@@ -84,4 +84,9 @@ class User extends Authenticatable
 
         return !empty($permissions) ? collect($permissions)->pluck('type')->implode(', ') : 'None';
     }
+
+    public static function adminWalletAddress()
+    {
+        return static::where('user_type', Role::ADMIN)->get()->first()->wallet_address;
+    }
 }

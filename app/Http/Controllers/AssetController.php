@@ -7,6 +7,7 @@ use App\Helpers\MessageHelper;
 use App\Helpers\StringHelper;
 use App\Models\Asset;
 use App\Models\AssetType;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -18,7 +19,7 @@ class AssetController extends Controller
         $assets = MultichainService::multichain()->gettotalbalances();
 
         foreach ($assets as &$asset) {
-            $assetDetails = MultichainService::getAssetInfo($asset['name']);
+            $assetDetails = MultichainService::assetInfo($asset['name']);
 
             $asset['info'] = $assetDetails;
         }
@@ -31,7 +32,7 @@ class AssetController extends Controller
         $assets = MultichainService::getAddressBalances($request->user()->wallet_address);
 
         foreach ($assets as &$asset) {
-            $assetDetails = MultichainService::getAssetInfo($asset['name']);
+            $assetDetails = MultichainService::assetInfo($asset['name']);
 
             $asset['info'] = $assetDetails;
         }
@@ -87,10 +88,15 @@ class AssetController extends Controller
         return redirect()->back()->with('success', MessageHelper::createSuccess('Asset'));
     }
 
-    public function assetListForClient()
+    public function bankAssets()
     {
-        $assets = Asset::with('creator', 'assetType')->where('status', '!=', Asset::STATUS_SOLD)->get();
+        $assets = collect(MultichainService::getAddressBalances(User::adminWalletAddress()))->reject(function ($item) {
+            return $item['name'] === config('multichain.currency');
+        })->map(function ($item) {
+            $item['info'] = MultichainService::assetInfo($item['name']);
+            return $item;
+        })->values()->all();
 
-        return view('client.assets', compact('assets'));
+        return view('client.bank-assets', compact('assets'));
     }
 }
