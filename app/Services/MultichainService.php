@@ -58,6 +58,11 @@ class MultichainService implements IMultichainInterface
         return $this->multichainService->issue($address, ['name' => $name, 'open' => true], (int)$quantity, (float)$unit, 0, $customFields);
     }
 
+    public function sendAssetFrom($fromAddress, $toAddress, $name, $quantity = 0)
+    {
+        return $this->multichainService->sendfrom($fromAddress, $toAddress, [$name => $quantity]);
+    }
+
     public function isValidAddress(string $address)
     {
         $response = $this->multichainService->validateaddress($address);

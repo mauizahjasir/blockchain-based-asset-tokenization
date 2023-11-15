@@ -18,9 +18,16 @@ class UserController extends Controller
         return view('admin.new-users', compact('users'));
     }
 
-    public function approve(User $user)
+    public function approve(User $user, Request $request)
     {
         $newAddress = MultichainService::getNewAddress();
+
+        if (empty($newAddress)) {
+            return redirect()->back()->with('errors', MessageHelper::submissionFailure());
+        }
+
+        MultichainService::grantPermission($newAddress, 'receive');
+        MultichainService::sendAssetFrom($request->user()->wallet_address, $newAddress, config('multichain.currency'), (int)config('multichain.default_amount'));
 
         $user->wallet_address = $newAddress;
         $user->email_verified_at = Carbon::now();

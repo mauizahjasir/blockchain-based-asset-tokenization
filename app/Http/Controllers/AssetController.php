@@ -13,7 +13,7 @@ use Illuminate\Validation\Rule;
 
 class AssetController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $assets = MultichainService::multichain()->gettotalbalances();
 
