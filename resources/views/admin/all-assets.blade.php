@@ -17,6 +17,8 @@
                                     <thead class=" text-primary">
                                     <th>Name</th>
                                     <th>Quantity</th>
+                                    <th>Units</th>
+                                    <th>Type</th>
                                     </thead>
                                     <tbody>
 
@@ -24,6 +26,8 @@
                                         <tr>
                                             <td>{{ $asset['name'] }}</td>
                                             <td>{{ $asset['qty'] }}</td>
+                                            <td>{{ $asset['info'] && $asset['info']['units'] ? $asset['info']['units'] : '' }}</td>
+                                            <td>{{ $asset['info'] && $asset['info']['details'] ? $asset['info']['details']['type'] ?? '' : '' }}</td>
                                         </tr>
                                     @endforeach
                                     </tbody>

@@ -20,9 +20,7 @@ class UserController extends Controller
 
     public function approve(User $user)
     {
-        $multichainService = app('multichainService');
-
-        $newAddress = $multichainService->getNewAddress();
+        $newAddress = MultichainService::getNewAddress();
 
         $user->wallet_address = $newAddress;
         $user->email_verified_at = Carbon::now();

@@ -99,4 +99,14 @@ class MultichainService implements IMultichainInterface
     {
         return $this->multichainService->listassets($asset);
     }
+
+    public function getTotalBalances()
+    {
+        return $this->multichainService->gettotalbalances();
+    }
+
+    public function getAssetInfo(string $asset = '')
+    {
+        return $this->multichainService->getassetinfo($asset);
+    }
 }

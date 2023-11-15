@@ -50,7 +50,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('user/{user}/grant-permission', [UserController::class, 'grantPermission'])->name('grant-permission');
         Route::post('user/{user}/revoke-permission', [UserController::class, 'revokePermission'])->name('revoke-permission');
 
-        Route::get('admin/assets', [AssetController::class, 'index'])->name('assets');
+        Route::get('admin/assets', [AssetController::class, 'index'])->name('all-assets');
+        Route::get('admin/my-assets', [AssetController::class, 'myAssets'])->name('my-assets');
         Route::get('assets/create-asset', [AssetController::class, 'createAssetForm'])->name('create-asset');
         Route::post('assets/create-asset', [AssetController::class, 'store'])->name('create-asset');
 

@@ -13,11 +13,30 @@ use Illuminate\Validation\Rule;
 
 class AssetController extends Controller
 {
-    public function index(Request $request)
+    public function index()
+    {
+        $assets = MultichainService::multichain()->gettotalbalances();
+
+        foreach ($assets as &$asset) {
+            $assetDetails = MultichainService::getAssetInfo($asset['name']);
+
+            $asset['info'] = $assetDetails;
+        }
+
+        return view('admin.all-assets', compact('assets'));
+    }
+
+    public function myAssets(Request $request)
     {
         $assets = MultichainService::getAddressBalances($request->user()->wallet_address);
 
-        return view('admin.assets', compact('assets'));
+        foreach ($assets as &$asset) {
+            $assetDetails = MultichainService::getAssetInfo($asset['name']);
+
+            $asset['info'] = $assetDetails;
+        }
+
+        return view('admin.my-assets', compact('assets'));
     }
 
     public function createAssetForm()
