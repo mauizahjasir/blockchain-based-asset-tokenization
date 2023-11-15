@@ -2,22 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Facades\MultichainService;
 use App\Helpers\MessageHelper;
 use App\Helpers\StringHelper;
 use App\Models\Asset;
 use App\Models\AssetType;
-use App\Services\MultichainService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
-use Psy\Util\Str;
 
 class AssetController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $assets = Asset::with('creator', 'assetType')->get();
+        $assets = MultichainService::getAddressBalances($request->user()->wallet_address);
 
         return view('admin.assets', compact('assets'));
     }
@@ -52,20 +50,24 @@ class AssetController extends Controller
         $unit = $request->input('unit', 0);
         $type = $request->input('asset_type_id');
         $details = $request->input('details', []);
+        $user = $request->user();
 
-        /** @var MultichainService $multichainClient */
-        $multichainClient = app('multichainService');
+        $hasIssuePermission = MultichainService::hasPermissions(['issue'], $user->wallet_address);
 
-        $validAddress = $multichainClient->getAddressWithPermission('issue')['address'] ?? '';
-        $customFields = array_merge($details, ['type' => AssetType::find($type)?->alias]);
-
-        $txId = $multichainClient->issueAsset($validAddress, StringHelper::hyphenated($name), $quantity, $unit, $customFields);
-
-        if ($txId === null) {
-            return redirect()->back()->with('errors', [MessageHelper::submissionFailure()]);
+        if (!$hasIssuePermission) {
+            return redirect()->back()->with('errors', MessageHelper::doesNotHavePermission());
         }
 
-        Asset::create([
+        $customFields = array_merge($details, ['type' => AssetType::find($type)?->alias]);
+        $txId = MultichainService::issueAsset($user->wallet_address, StringHelper::hyphenated($name), $quantity, $unit, $customFields);
+
+        if ($txId === null) {
+            return redirect()->back()->with('errors', MessageHelper::submissionFailure());
+        }
+
+        return redirect()->back()->with('success', MessageHelper::createSuccess('Asset'));
+
+        /*Asset::create([
             'name' => $name,
             'quantity' => $quantity,
             'unit' => $unit,
@@ -79,7 +81,7 @@ class AssetController extends Controller
 
         Session::flash('success', 'Asset created successfully');
 
-        return redirect()->route('create-asset');
+        return redirect()->route('create-asset');*/
     }
 
     public function assetListForClient()

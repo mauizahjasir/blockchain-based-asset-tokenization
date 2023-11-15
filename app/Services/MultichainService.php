@@ -89,4 +89,9 @@ class MultichainService implements IMultichainInterface
     {
         return $this->multichainService->revoke($address, $permission);
     }
+
+    public function getAddressBalances($address)
+    {
+        return $this->multichainService->getaddressbalances($address, 0);
+    }
 }
