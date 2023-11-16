@@ -39,8 +39,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('client')->group(function () {
         Route::get('/bank-assets', [AssetController::class, 'bankAssets'])->name('bank-assets');
-        Route::get('/assets/{asset}/request-purchase', [AssetsRequestController::class, 'requestPurchasePage'])->name('request-purchase');
-        Route::post('/assets/{asset}/request-purchase', [AssetsRequestController::class, 'requestPurchase'])->name('request-purchase');
+        Route::get('/assets/request-purchase', [AssetsRequestController::class, 'requestPurchasePage'])->name('request-purchase');
+        Route::post('/assets/request-purchase', [AssetsRequestController::class, 'requestPurchase'])->name('request-purchase');
     });
 
     Route::prefix('multichain')->group(function () {

@@ -13,16 +13,16 @@
                         </div>
                         <div class="card-body">
                             <p>
-                                Please fill out the form below to request the purchase of the <b>{{ $asset->name }}</b>.
+                                Please fill out the form below to request the purchase of the <b>{{ $asset }}</b>.
                                 Enter the amount you want to commit in exchange for the asset, along with any additional information about your request.
                             </p>
 
                             <!-- Purchase Request Form -->
-                            <form method="POST" action="{{ route('request-purchase', ['asset' => $asset->meta_id]) }}">
+                            <form method="POST" action="{{ route('request-purchase') }}">
                                 @csrf
 
                                 <!-- Asset ID (you may use a hidden field if needed) -->
-                                <input type="hidden" name="asset_id" value="{{ $asset->id }}">
+                                <input type="hidden" name="asset" value="{{ $asset}}">
 
                                 <!-- Amount to commit -->
                                 <div class="form-group">
@@ -40,7 +40,7 @@
                                 <button type="submit" class="btn btn-primary">Submit Purchase Request</button>
 
                                 <!-- Back button to go to the client.assets route -->
-                                <a href="{{ route('client.assets') }}" class="btn btn-secondary">Back</a>
+                                <a href="{{ route('bank-assets') }}" class="btn btn-secondary">Back</a>
                             </form>
 
                         </div>

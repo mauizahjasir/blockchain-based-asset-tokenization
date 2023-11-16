@@ -109,4 +109,9 @@ class MultichainService implements IMultichainInterface
     {
         return $this->multichainService->getassetinfo($asset);
     }
+
+    public function lockAssetAmount($address, $asset, $amount)
+    {
+        return $this->multichainService->preparelockunspentfrom($address, [$asset => $amount]);
+    }
 }

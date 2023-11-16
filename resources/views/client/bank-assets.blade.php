@@ -19,6 +19,7 @@
                                     <th>Quantity</th>
                                     <th>Units</th>
                                     <th>Type</th>
+                                    <th>Action</th>
                                     </thead>
                                     <tbody>
 
@@ -28,13 +29,13 @@
                                             <td>{{ $asset['qty'] }}</td>
                                             <td>{{ $asset['info'] && $asset['info']['units'] ? $asset['info']['units'] : '' }}</td>
                                             <td>{{ $asset['info'] && $asset['info']['details'] ? $asset['info']['details']['type'] ?? '' : '' }}</td>
-                                            {{--<td>
-                                                <form method="GET" action="{{ route('request-purchase', ['asset' => $asset->meta_id]) }}">
+                                            <td>
+                                                <form method="GET" action="{{ route('request-purchase') }}">
                                                     @csrf
-                                                    <input type="hidden" name="asset_id" value="{{ $asset->id }}">
-                                                    <button type="submit" class="btn btn-primary" style="height: 30px; font-size: 12px">Submit Buy Request</button>
+                                                    <input type="hidden" name="asset" value="{{ $asset['name'] }}">
+                                                    <button type="submit" class="btn btn-primary" style="height: 30px; font-size: 12px">Submit Request</button>
                                                 </form>
-                                            </td>--}}
+                                            </td>
                                         </tr>
                                     @endforeach
                                     </tbody>

@@ -10,16 +10,17 @@ class AssetsRequest extends Model
 {
     use HasFactory, HasUUID;
 
-    public const UNDER_REVIEW = 'Under Review';
+    public const OPEN = 'Open';
     public const RESOLVED = 'Resolved';
     public const REJECTED = 'Rejected';
 
     protected $fillable = [
-        'asset_id',
+        'asset',
         'requestor_id',
-        'commit_amount',
+        'request_payload',
         'additional_info',
-        'request_payload'
+        'status',
+        'commit_amount'
     ];
 
     protected $casts = [

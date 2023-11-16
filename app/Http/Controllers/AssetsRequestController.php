@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Facades\MultichainService;
 use App\Helpers\MessageHelper;
 use App\Helpers\StringHelper;
 use App\Models\Asset;
@@ -9,7 +10,6 @@ use App\Models\AssetsRequest;
 use App\Models\ClientAsset;
 use App\Models\Transaction;
 use App\Models\User;
-use App\Services\MultichainService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -17,56 +17,51 @@ class AssetsRequestController extends Controller
 {
     public function index()
     {
-        $assetsRequest = AssetsRequest::with('assets', 'requestor')->get();
+        $assetsRequests = AssetsRequest::all();
 
-        return view('admin/assets-request', compact('assetsRequest'));
+        return view('admin/assets-request', compact('assetsRequests'));
     }
 
-    public function requestPurchase(Asset $asset, Request $request)
+    public function requestPurchase(Request $request)
     {
-        $request->validate(['asset_id' => 'required']);
+        $request->validate(['asset' => 'required', 'commit_amount' => 'required']);
 
         /** @var User $user */
         $user = $request->user();
-        $commitAmount = $request->input('commit_amount', 0);
+        $amount = (int)$request->get('commit_amount', 0);
+        $asset = $request->get('asset');
 
-        /** @var MultichainService $multichain */
-        $multichain = app('multichainService');
-        $isValidAddress = $multichain->isValidAddress($user?->wallet_address);
+        $isValidAddress = MultichainService::isValidAddress($user?->wallet_address);
 
         if (!$isValidAddress) {
-            return redirect()->back()->with('errors', [MessageHelper::submissionFailure()]);
+            return redirect()->back()->with('errors', [MessageHelper::notAuthorizedUser()]);
         }
 
-        if ($user->assetsRequests->where('asset_id', $asset->id)->isNotEmpty()) {
+        if ($user->assetsRequests->where('asset', $asset)->isNotEmpty()) {
             return redirect()->back()->with('errors', ["You have already requested the purchase of this Asset, please wait for administrator's response"]);
         }
 
-        if ($commitAmount > $user->walletBalance(false)) {
+        if ($amount > $user->walletBalance(false)) {
             return redirect()->back()->with('errors', ['Your committed amount exceeds your wallet balance']);
         }
 
-        $response = $multichain->multichain()->preparelockunspentfrom($user->wallet_address, [config('multichain.currency') => (int)$commitAmount]);
+        $response = MultichainService::lockAssetAmount($user->wallet_address, config('multichain.currency'), $amount);
+
 
         if (empty($response)) {
             return redirect()->back()->with('errors', [MessageHelper::submissionFailure()]);
         }
 
-        $asset->status = Asset::STATUS_REQUESTED;
-        $asset->save();
-
         AssetsRequest::create([
-            'asset_id' => $asset->id,
+            'asset' => $asset,
             'requestor_id' => $user->id,
-            'additional_info' => $request->input('additional_info', 0),
-            'commit_amount' => $commitAmount,
-            'status' => AssetsRequest::UNDER_REVIEW,
-            'request_payload' => $response
+            'additional_info' => $request->input('additional_info', null),
+            'status' => AssetsRequest::OPEN,
+            'request_payload' => $response,
+            'commit_amount'  => $amount
         ]);
 
-        Session::flash('success', 'Request submitted successfully');
-
-        return redirect()->route('client.assets');
+        return redirect()->route('bank-assets')->with('success', MessageHelper::submissionSuccess());
     }
 
     public function requestApprove(AssetsRequest $assetRequest, Request $request)
@@ -128,8 +123,10 @@ class AssetsRequestController extends Controller
         // sendrawtransaction
     }
 
-    public function requestPurchasePage(Asset $asset, Request $request)
+    public function requestPurchasePage(Request $request)
     {
+        $asset = $request->get('asset');
+
         return view('client.request-purchase-form', compact('asset'));
     }
 

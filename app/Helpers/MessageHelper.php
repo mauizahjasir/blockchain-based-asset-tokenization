@@ -9,6 +9,11 @@ class MessageHelper
         return 'There was an error with your submission. Please check the form and try again.';
     }
 
+    public static function submissionSuccess(): string
+    {
+        return 'Request submitted successfully.';
+    }
+
     public static function createSuccess(string $entity = ''): string
     {
         return "$entity created successfully";
