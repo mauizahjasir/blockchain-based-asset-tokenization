@@ -24,12 +24,12 @@
 
                                 <form action="{{ route('request-approve', $assetRequest->meta_id) }}" method="POST">
                                     @csrf
-                                    <button type="submit" class="btn btn-success mr-2">Approve</button>
+                                    <button type="submit" class="btn btn-success mr-2" {{ $assetRequest->status !== \App\Models\AssetsRequest::OPEN ? 'disabled' : '' }}>Approve</button>
                                 </form>
 
                                 <form action="{{ route('request-reject', $assetRequest->meta_id) }}" method="POST">
                                     @csrf
-                                    <button type="submit" class="btn btn-danger mr-2">Reject</button>
+                                    <button type="submit" class="btn btn-danger mr-2" {{ $assetRequest->status !== \App\Models\AssetsRequest::OPEN ? 'disabled' : '' }}>Reject</button>
                                 </form>
 
                                 <a href="{{ route('asset-requests') }}" class="btn btn-secondary mr-2">Back</a>

@@ -27,8 +27,9 @@ class AssetController extends Controller
         return view('admin.all-assets', compact('assets'));
     }
 
-    public function myAssets(Request $request)
+    public function adminAssets(Request $request)
     {
+        // For admin
         $assets = MultichainService::getAddressBalances($request->user()->wallet_address);
 
         foreach ($assets as &$asset) {
@@ -38,6 +39,20 @@ class AssetController extends Controller
         }
 
         return view('admin.my-assets', compact('assets'));
+    }
+
+    public function clientAssets(Request $request)
+    {
+        // For admin
+        $assets = MultichainService::getAddressBalances($request->user()->wallet_address);
+
+        foreach ($assets as &$asset) {
+            $assetDetails = MultichainService::assetInfo($asset['name']);
+
+            $asset['info'] = $assetDetails;
+        }
+
+        return view('client.my-assets', compact('assets'));
     }
 
     public function createAssetForm()

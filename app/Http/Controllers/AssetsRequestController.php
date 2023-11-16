@@ -58,7 +58,7 @@ class AssetsRequestController extends Controller
             'additional_info' => $request->input('additional_info', null),
             'status' => AssetsRequest::OPEN,
             'request_payload' => $response,
-            'commit_amount'  => $amount
+            'commit_amount' => $amount
         ]);
 
         return redirect()->route('bank-assets')->with('success', MessageHelper::submissionSuccess());
@@ -66,11 +66,8 @@ class AssetsRequestController extends Controller
 
     public function requestApprove(AssetsRequest $assetRequest, Request $request)
     {
-        /** @var MultichainService $multichain */
-        $multichain = app('multichainService');
-
-        $isValidPerson = $multichain->isValidAddress($assetRequest->requestor->wallet_address);
-        $hasPermission = $multichain->hasPermissions(['receive'], $assetRequest->requestor->wallet_address);
+        $isValidPerson = MultichainService::isValidAddress($assetRequest->requestor->wallet_address);
+        $hasPermission = MultichainService::hasPermissions(['receive'], $assetRequest->requestor->wallet_address);
 
         if (!$isValidPerson) {
             return redirect()->back()->with('errors', [MessageHelper::notAuthorizedUser()]);
@@ -81,46 +78,31 @@ class AssetsRequestController extends Controller
         }
 
         $txPayload = $assetRequest->request_payload;
+        $asset = MultichainService::assetInfo($assetRequest->asset);
 
-        $txHex = $multichain->multichain()->createrawexchange($txPayload['txid'], $txPayload['vout'], [$assetRequest->assets->alias => $assetRequest->assets->quantity]);
-        $decodedHex = $multichain->multichain()->decoderawexchange($txHex);
+        $txHex = MultichainService::multichain()->createrawexchange($txPayload['txid'], $txPayload['vout'], [$asset['name'] => $asset['issueqty']]);
+        $decodedHex = MultichainService::multichain()->decoderawexchange($txHex);
 
-        if (!$decodedHex['cancomplete']) {
+        if (empty($decodedHex) || !$decodedHex['cancomplete']) {
             return redirect()->back()->with('errors', [MessageHelper::transactionFailure()]);
         }
-        $lockedHex = $multichain->multichain()->preparelockunspentfrom($request->user()->wallet_address, [$assetRequest->assets->alias => $assetRequest->assets->quantity]);
-        $appendedTx = $multichain->multichain()->appendrawexchange($txHex, $lockedHex['txid'], $lockedHex['vout'], [config('multichain.currency') => $assetRequest->commit_amount]);
-        $txId = $multichain->multichain()->sendrawtransaction($appendedTx['hex']);
+
+        $lockedHex = MultichainService::multichain()->preparelockunspentfrom($request->user()->wallet_address, [$asset['name'] => $asset['issueqty']]);
+        $appendedTx = MultichainService::multichain()->appendrawexchange($txHex, $lockedHex['txid'], $lockedHex['vout'], [config('multichain.currency') => $assetRequest->commit_amount]);
+        $txId = MultichainService::multichain()->sendrawtransaction($appendedTx['hex']);
 
         if ($txId === null) {
             return redirect()->back()->with('errors', [MessageHelper::transactionFailure()]);
         }
 
-        $transaction = Transaction::create([
+        Transaction::create([
             'tx_hex' => $txId
         ]);
-
-        ClientAsset::create([
-            'asset_id' => $assetRequest->assets->id,
-            'owner_id' => $assetRequest->requestor->id,
-            'previous_owner_id' => '', // owner_id from assets table
-            'tx_id' => $transaction->id
-        ]);
-
-        $assetRequest->assets->status = Asset::STATUS_SOLD;
-        $assetRequest->assets->save();
 
         $assetRequest->status = AssetsRequest::RESOLVED;
         $assetRequest->save();
 
-
-        Session::flash('success', 'Transaction has been successful');
-
-        return redirect()->route('asset-requests');
-
-        // createrawsendfrom
-        // signrawtransaction
-        // sendrawtransaction
+        return redirect()->route('asset-requests')->with('success', 'Transaction has been successful');
     }
 
     public function requestPurchasePage(Request $request)
