@@ -2,7 +2,7 @@
 @section('content')
     <div class="content">
 
-        @include('alert');
+        @include('alert')
 
         <div class="container-fluid mt-2">
             <div class="row">

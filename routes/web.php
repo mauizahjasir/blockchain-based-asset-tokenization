@@ -44,7 +44,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/my-assets', [AssetController::class, 'clientAssets'])->name('client-assets');
     });
 
-    Route::prefix('multichain')->group(function () {
+    Route::prefix('multichain')->middleware(['admin'])->group(function () {
         Route::get('/get-information', [MultichainController::class, 'getInfo'])->name('get-information');
 
         Route::get('/manage-permissions', [MultichainController::class, 'managePermissions'])->name('manage-permissions');
@@ -64,4 +64,5 @@ Route::middleware(['auth'])->group(function () {
         Route::post('assets/requests/{assetRequest}/reject', [AssetsRequestController::class, 'requestReject'])->name('request-reject');
         Route::get('assets/requests/{assetRequest}/details', [AssetsRequestController::class, 'requestDetails'])->name('request-details');
     });
+
 });
