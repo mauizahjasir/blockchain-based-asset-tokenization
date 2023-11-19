@@ -89,4 +89,13 @@ class User extends Authenticatable
     {
         return static::where('user_type', Role::ADMIN)->get()->first()->wallet_address;
     }
+
+    public function assetsCount()
+    {
+        $assets = MultichainService::getAddressBalances($this->wallet_address);
+
+        return collect($assets)->filter(function ($item) {
+            return $item['name'] !== config('multichain.currency');
+        })->count();
+    }
 }

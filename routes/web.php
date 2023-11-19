@@ -36,6 +36,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/new-users', [UserController::class, 'index'])->name('new-users');
     Route::post('/approve/{user}', [UserController::class, 'approve'])->name('approve');
+    Route::post('/assets/put-on-sale', [\App\Http\Controllers\AssetOnSaleController::class, 'putOnSale'])->name('put-on-sale');
+    Route::post('/assets/remove-from-sale', [\App\Http\Controllers\AssetOnSaleController::class, 'removeFromSale'])->name('remove-from-sale');
 
     Route::prefix('client')->group(function () {
         Route::get('/bank-assets', [AssetController::class, 'bankAssets'])->name('bank-assets');

@@ -20,7 +20,8 @@ class AssetsRequest extends Model
         'request_payload',
         'additional_info',
         'status',
-        'commit_amount'
+        'commit_amount',
+        'owner_id'
     ];
 
     protected $casts = [

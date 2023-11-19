@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Facades\MultichainService;
 use App\Helpers\MessageHelper;
 use App\Helpers\StringHelper;
-use App\Models\Asset;
 use App\Models\AssetType;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -44,13 +43,15 @@ class AssetController extends Controller
     public function clientAssets(Request $request)
     {
         // For admin
-        $assets = MultichainService::getAddressBalances($request->user()->wallet_address);
+        $userAssets = MultichainService::getAddressBalances($request->user()->wallet_address);
 
-        foreach ($assets as &$asset) {
-            $assetDetails = MultichainService::assetInfo($asset['name']);
-
-            $asset['info'] = $assetDetails;
-        }
+        $assets = collect($userAssets)->reject(function ($item) {
+           return $item['name'] === config('multichain.currency');
+        })->map(function ($item) {
+            $assetDetails = MultichainService::assetInfo($item['name']);
+            $item['info'] = $assetDetails;
+            return $item;
+        });
 
         return view('client.my-assets', compact('assets'));
     }
