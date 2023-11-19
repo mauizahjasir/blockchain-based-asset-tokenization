@@ -49,24 +49,11 @@
                         <div class="card mb-3 widget-content bg-grow-early">
                             <div class="widget-content-wrapper text-white">
                                 <div class="widget-content-left">
-                                    <div class="widget-heading">Asset Requests</div>
+                                    <div class="widget-heading">Pending Transactions</div>
                                     <div class="widget-subheading">Total # of pending requests</div>
                                 </div>
                                 <div class="widget-content-right">
                                     <div class="widget-numbers text-white"><span>{{ \App\Models\AssetsRequest::where('status', \App\Models\AssetsRequest::OPEN)->get()->count() }}</span></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="d-xl-none d-lg-block col-md-6 col-xl-4">
-                        <div class="card mb-3 widget-content bg-premium-dark">
-                            <div class="widget-content-wrapper text-white">
-                                <div class="widget-content-left">
-                                    <div class="widget-heading">Products Sold</div>
-                                    <div class="widget-subheading">Revenue streams</div>
-                                </div>
-                                <div class="widget-content-right">
-                                    <div class="widget-numbers text-warning"><span>$14M</span></div>
                                 </div>
                             </div>
                         </div>

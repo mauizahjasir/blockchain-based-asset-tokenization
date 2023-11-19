@@ -67,6 +67,13 @@
                     </a>
 
                 </li>
+
+                <li class="app-sidebar__heading">Assets</li>
+                <li>
+                    <a href="#">
+                        Transactions
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
