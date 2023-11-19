@@ -12,6 +12,16 @@
 </div>
 --}}
 
+<style>
+    .badge {
+        background-color: #3f6ad8; /* Background color for the badge */
+        color: white; /* Text color for the badge */
+        padding: 6px; /* Adjust padding as needed */
+        border-radius: 50%; /* Make it a circle */
+        margin-left: 5px; /* Adjust margin as needed */
+    }
+</style>
+
 <div class="app-sidebar sidebar-shadow">
     <div class="app-header__logo">
         <div class="logo-src"></div>
@@ -60,7 +70,9 @@
                         All Users
                     </a>
                     <a href="{{ route('new-users') }}" class="{{ Request::is('new-users') ? 'mm-active' : '' }}">
-                        New Users
+                        New Users Request
+
+                        <span class="badge">{{ \App\Models\User::whereNull('wallet_address')->get()->count() }}</span>
                     </a>
                     <a href="{{ route('manage-permissions') }}" class="{{ Request::is('manage-permissions') ? 'mm-active' : '' }}">
                         Manage Permissions
@@ -70,8 +82,11 @@
 
                 <li class="app-sidebar__heading">Assets</li>
                 <li>
-                    <a href="#">
-                        Transactions
+                    <a href="{{ route('create-asset-type') }}" class="{{ Request::is('multichain/assets/create-asset-type') ? 'mm-active' : '' }}">
+                        Create Asset Type
+                    </a>
+                    <a href="{{ route('create-asset') }}" class="{{ Request::is('multichain/assets/create-asset') ? 'mm-active' : '' }}">
+                        Create Asset
                     </a>
                 </li>
             </ul>

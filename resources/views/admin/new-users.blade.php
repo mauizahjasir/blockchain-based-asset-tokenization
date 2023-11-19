@@ -35,7 +35,7 @@
                                                       action="{{ route('approve', ['user' => $user->meta_id]) }}">
                                                     @csrf
                                                     <button type="submit" id="PopoverCustomT-3"
-                                                            class="btn btn-primary btn-sm mt-2">Approve
+                                                            class="btn btn-primary btn-sm mt-3">Approve
                                                     </button>
                                                 </form>
                                             </td>
