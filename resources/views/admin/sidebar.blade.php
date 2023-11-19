@@ -62,6 +62,9 @@
                     <a href="{{ route('new-users') }}" class="{{ Request::is('new-users') ? 'mm-active' : '' }}">
                         New Users
                     </a>
+                    <a href="{{ route('manage-permissions') }}" class="{{ Request::is('manage-permissions') ? 'mm-active' : '' }}">
+                        Manage Permissions
+                    </a>
 
                 </li>
             </ul>

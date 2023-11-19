@@ -63984,6 +63984,7 @@ a.text-current:hover {
 
     .alert-container {
         margin-bottom: 20px;
+        width: 100%;
     }
 
     .alert {
@@ -63997,6 +63998,7 @@ a.text-current:hover {
         color: #3c763d;
         background-color: #dff0d8;
         border-color: #d6e9c6;
+        width: 100%;
     }
 
     .alert-danger {

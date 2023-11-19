@@ -7,8 +7,8 @@
         @include('admin.sidebar')
         <div class="app-main__outer">
             <div class="app-main__inner">
+                @include('alert')
                 <div class="row">
-                    @include('alert')
                     <div class="col-md-12">
                         <div class="main-card mb-3 card">
                             <div class="card-header">New Users Request</div>
