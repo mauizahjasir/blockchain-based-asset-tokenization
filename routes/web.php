@@ -45,7 +45,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::prefix('multichain')->middleware(['admin'])->group(function () {
-        Route::get('/get-information', [MultichainController::class, 'getInfo'])->name('get-information');
+        Route::get('/users', [UserController::class, 'allUsers'])->name('all-users');
 
         Route::get('/manage-permissions', [MultichainController::class, 'managePermissions'])->name('manage-permissions');
         Route::post('user/{user}/grant-permission', [UserController::class, 'grantPermission'])->name('grant-permission');

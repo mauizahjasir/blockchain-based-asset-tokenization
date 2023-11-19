@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Facades\MultichainService;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -34,9 +35,9 @@ class HomeController extends Controller
 
     private function adminView()
     {
-        $users = User::whereNotNull('wallet_address')->get();
+        $information = MultichainService::getInfo();
 
-        return view('admin.home', compact('users'));
+        return view('admin.home', ['data' => $information]);
     }
 
     private function clientView()

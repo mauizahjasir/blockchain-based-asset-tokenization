@@ -11,7 +11,7 @@
                     @include('alert')
                     <div class="col-md-12">
                         <div class="main-card mb-3 card">
-                            <div class="card-header">New Users Request</div>
+                            <div class="card-header">All Users</div>
                             <div class="table-responsive">
                                 <table class="align-middle mb-0 table table-borderless table-striped table-hover">
                                     <thead>
@@ -20,7 +20,8 @@
                                         <th>Name</th>
                                         <th>Email</th>
                                         <th>Type</th>
-                                        <th>Action</th>
+                                        <th>Wallet address</th>
+                                        <th>Permissions</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -30,15 +31,8 @@
                                             <td>{{ $user->name }}</td>
                                             <td>{{ $user->email }}</td>
                                             <td>{{ $user->user_type }}</td>
-                                            <td>
-                                                <form method="POST"
-                                                      action="{{ route('approve', ['user' => $user->meta_id]) }}">
-                                                    @csrf
-                                                    <button type="submit" id="PopoverCustomT-3"
-                                                            class="btn btn-primary btn-sm mt-2">Approve
-                                                    </button>
-                                                </form>
-                                            </td>
+                                            <td>{{ $user->wallet_address }}</td>
+                                            <td>{{ $user->permissions() }}</td>
                                         </tr>
                                     @endforeach
                                     </tbody>

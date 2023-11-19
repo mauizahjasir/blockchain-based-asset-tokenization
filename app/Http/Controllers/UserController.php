@@ -18,6 +18,13 @@ class UserController extends Controller
         return view('admin.new-users', compact('users'));
     }
 
+    public function allUsers()
+    {
+        $users = User::whereNotNull('wallet_address')->get();
+
+        return view('admin.all-users', compact('users'));
+    }
+
     public function approve(User $user, Request $request)
     {
         $newAddress = MultichainService::getNewAddress();
