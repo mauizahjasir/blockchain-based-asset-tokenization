@@ -75,14 +75,6 @@
                                                         @endif
                                                     </div>
                                                 </div>
-
-                                                {{--<form method="POST"
-                                                      action="{{ route('approve', ['user' => $user->meta_id]) }}">
-                                                    @csrf
-                                                    <button type="submit" id="PopoverCustomT-3"
-                                                            class="btn btn-primary btn-sm mt-2">Approve
-                                                    </button>
-                                                </form>--}}
                                             </td>
                                         </tr>
                                     @endforeach

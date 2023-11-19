@@ -18796,7 +18796,7 @@ a.text-current:hover {
 }
 
 .bg-primary {
-  background-color: #5C60F5 !important;
+  background-color: #3f6ad8 !important;
 }
 
 .bg-primary-hover:hover {
@@ -43599,6 +43599,12 @@ a.text-current:hover {
   .text-lg-current-hover:hover {
     color: currentColor !important;
   }
+
+    .btn-primary {
+        color: #FFFFFF;
+        background-color: #3f6ad8;
+        border-color: #3f6ad8
+    }
 
   .bg-lg-primary {
     background-color: #5C60F5 !important;
