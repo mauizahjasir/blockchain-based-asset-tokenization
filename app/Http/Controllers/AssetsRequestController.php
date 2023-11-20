@@ -4,14 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Facades\MultichainService;
 use App\Helpers\MessageHelper;
-use App\Helpers\StringHelper;
-use App\Models\Asset;
+use App\Models\AssetsOnSale;
 use App\Models\AssetsRequest;
-use App\Models\ClientAsset;
 use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 
 class AssetsRequestController extends Controller
 {
@@ -22,12 +19,33 @@ class AssetsRequestController extends Controller
         return view('admin/assets-request', compact('assetsRequests'));
     }
 
-    public function requestPurchase(Request $request)
+    public function requestPurchase(AssetsOnSale $assetOnSale, Request $request)
     {
-        $request->validate(['asset' => 'required', 'commit_amount' => 'required']);
-
         /** @var User $user */
         $user = $request->user();
+
+        if ($user->assetsRequests->where('asset', $assetOnSale->asset)->isNotEmpty()) {
+            return redirect()->back()->with('errors', ["You have already requested the purchase of this Asset, please wait for administrator's response"]);
+        }
+
+        $assetInfo = MultichainService::assetInfo($assetOnSale->asset);
+        $assetValue = $assetInfo['units'] * $assetInfo['issueqty'];
+
+        if ($assetValue > $user->walletBalance(false)) {
+            return redirect()->back()->with('errors', ['You do not have enough balance to purchase this asset']);
+        }
+
+        AssetsRequest::create([
+            'asset' => $assetOnSale->asset,
+            'requestor_id' => $user->id,
+            'owner_id' => $assetOnSale->owner_id,
+            'status' => AssetsRequest::AWAITING_OWNER_APPROVAL,
+            'commit_amount' => $assetValue
+        ]);
+
+        return redirect()->back()->with('success', MessageHelper::submissionSuccess());
+
+        /*$user = $request->user();
         $amount = (int)$request->get('commit_amount', 0);
         $asset = $request->get('asset');
 
@@ -47,7 +65,6 @@ class AssetsRequestController extends Controller
 
         $response = MultichainService::lockAssetAmount($user->wallet_address, config('multichain.currency'), $amount);
 
-
         if (empty($response)) {
             return redirect()->back()->with('errors', [MessageHelper::submissionFailure()]);
         }
@@ -61,7 +78,7 @@ class AssetsRequestController extends Controller
             'commit_amount' => $amount
         ]);
 
-        return redirect()->route('bank-assets')->with('success', MessageHelper::submissionSuccess());
+        return redirect()->route('bank-assets')->with('success', MessageHelper::submissionSuccess());*/
     }
 
     public function requestApprove(AssetsRequest $assetRequest, Request $request)

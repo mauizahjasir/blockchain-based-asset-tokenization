@@ -41,10 +41,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/assets/remove-from-sale', [AssetOnSaleController::class, 'removeFromSale'])->name('remove-from-sale');
     Route::post('/assets/remove-from-sale', [AssetOnSaleController::class, 'removeFromSale'])->name('remove-from-sale');
     Route::get('/assets/assets-on-sale', [AssetOnSaleController::class, 'assetsOnSalePage'])->name('assets-on-sale');
+    Route::post('/assets/{assetOnSale}/request-purchase', [AssetsRequestController::class, 'requestPurchase'])->name('request-purchase');
 
     Route::prefix('client')->group(function () {
         Route::get('/bank-assets', [AssetController::class, 'bankAssets'])->name('bank-assets');
-        Route::post('/assets/request-purchase', [AssetsRequestController::class, 'requestPurchase'])->name('request-purchase');
         Route::get('/my-assets', [AssetController::class, 'clientAssets'])->name('client-assets');
     });
 

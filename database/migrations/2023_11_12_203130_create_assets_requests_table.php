@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('asset');
             $table->foreignUuid('requestor_id')->constrained('users');
             $table->string('status')->default('Under Review');
-            $table->text('additional_info')->default('Under Review');
+            $table->text('additional_info')->nullable();
             $table->unsignedBigInteger('commit_amount')->default(0);
             $table->json('request_payload')->nullable();
             $table->timestamps();

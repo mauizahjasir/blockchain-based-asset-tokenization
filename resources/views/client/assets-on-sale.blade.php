@@ -31,10 +31,10 @@
                                             <td>{{ $asset->info ? $asset->info['units'] : '' }}</td>
                                             <td>{{ $asset->info && !empty($asset->info->details) && array_key_exists('type', $asset->info->details) ? $asset->info->details['type'] : '' }}</td>
                                             <td>
-                                                <form method="POST" action="{{ route('request-purchase') }}">
+                                                <form method="POST" action="{{ route('request-purchase', ['assetOnSale' => $asset->meta_id]) }}">
                                                     @csrf
                                                     <!-- Asset ID (you may use a hidden field if needed) -->
-                                                    <input type="hidden" name="asset" value="{{ $asset }}">
+                                                    {{--<input type="hidden" name="sale_id" value="{{ $asset->id }}">--}}
 
                                                     <!-- Submit Button -->
                                                     <button type="submit" class="btn btn-primary mt-2">Submit Purchase Request</button>

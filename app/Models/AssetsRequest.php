@@ -13,6 +13,7 @@ class AssetsRequest extends Model
     public const OPEN = 'Open';
     public const RESOLVED = 'Resolved';
     public const REJECTED = 'Rejected';
+    public const AWAITING_OWNER_APPROVAL = 'Awaiting Owner Approval';
 
     protected $fillable = [
         'asset',
