@@ -6,6 +6,7 @@ use App\Http\Controllers\AssetTypeController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\AssetsRequestController;
+use App\Http\Controllers\IncomingRequestController;
 use App\Http\Controllers\MultichainController;
 use App\Http\Controllers\OutgoingRequestController;
 use App\Http\Controllers\UserController;
@@ -47,6 +48,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/{assetOnSale}/request-purchase', [AssetsRequestController::class, 'requestPurchase'])->name('request-purchase');
         Route::post('/{assetOnSale}/request-purchase', [AssetsRequestController::class, 'requestPurchase'])->name('request-purchase');
         Route::get('/request/outgoing-requests', [OutgoingRequestController::class, 'index'])->name('outgoing-requests');
+        Route::get('/request/incoming-requests', [IncomingRequestController::class, 'index'])->name('incoming-requests');
+        Route::post('/request/incoming-requests/{assetRequest}/approve', [IncomingRequestController::class, 'approve'])->name('incoming-requests-approve');
     });
 
     Route::prefix('client')->group(function () {

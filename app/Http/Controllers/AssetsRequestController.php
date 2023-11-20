@@ -44,41 +44,6 @@ class AssetsRequestController extends Controller
         ]);
 
         return redirect()->back()->with('success', MessageHelper::submissionSuccess());
-
-        /*$user = $request->user();
-        $amount = (int)$request->get('commit_amount', 0);
-        $asset = $request->get('asset');
-
-        $isValidAddress = MultichainService::isValidAddress($user?->wallet_address);
-
-        if (!$isValidAddress) {
-            return redirect()->back()->with('errors', [MessageHelper::notAuthorizedUser()]);
-        }
-
-        if ($user->assetsRequests->where('asset', $asset)->isNotEmpty()) {
-            return redirect()->back()->with('errors', ["You have already requested the purchase of this Asset, please wait for administrator's response"]);
-        }
-
-        if ($amount > $user->walletBalance(false)) {
-            return redirect()->back()->with('errors', ['Your committed amount exceeds your wallet balance']);
-        }
-
-        $response = MultichainService::lockAssetAmount($user->wallet_address, config('multichain.currency'), $amount);
-
-        if (empty($response)) {
-            return redirect()->back()->with('errors', [MessageHelper::submissionFailure()]);
-        }
-
-        AssetsRequest::create([
-            'asset' => $asset,
-            'requestor_id' => $user->id,
-            'additional_info' => $request->input('additional_info', null),
-            'status' => AssetsRequest::OPEN,
-            'request_payload' => $response,
-            'commit_amount' => $amount
-        ]);
-
-        return redirect()->route('bank-assets')->with('success', MessageHelper::submissionSuccess());*/
     }
 
     public function requestApprove(AssetsRequest $assetRequest, Request $request)
