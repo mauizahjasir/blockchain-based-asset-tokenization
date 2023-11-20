@@ -18,6 +18,7 @@
                                     <tr>
                                         <th>Request for</th>
                                         <th>Owner's Approval</th>
+                                        <th>Your Approval</th>
                                     </tr>
                                     </thead>
 
@@ -26,6 +27,25 @@
                                             <td>{{ $request->asset }}</td>
                                             <td>
                                                 @if($request->status === \App\Models\AssetsRequest::AWAITING_OWNER_APPROVAL)
+                                                    <div class="badge badge-warning">Pending</div>
+                                                @else
+                                                    <div class="badge badge-success">Done</div>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if($request->status === \App\Models\AssetsRequest::AWAITING_BUYERS_APPROVAL)
+
+                                                    <form method="POST"
+                                                          action="{{ route('outgoing-requests-approve', ['assetRequest' => $request->meta_id]) }}">
+                                                        @csrf
+                                                        <!-- Submit Button -->
+                                                        <div class="mb-1 ml-1">
+                                                            <button type="submit" class="btn btn-primary">Approve
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                    <div class="badge badge-warning">Pending</div>
+                                                @elseif ($request->status === \App\Models\AssetsRequest::AWAITING_OWNER_APPROVAL)
                                                     <div class="badge badge-warning">Pending</div>
                                                 @else
                                                     <div class="badge badge-success">Done</div>

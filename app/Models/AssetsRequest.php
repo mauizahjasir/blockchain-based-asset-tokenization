@@ -15,6 +15,7 @@ class AssetsRequest extends Model
     public const REJECTED = 'Rejected';
     public const AWAITING_OWNER_APPROVAL = 'Awaiting Owner Approval';
     public const AWAITING_BUYERS_APPROVAL = 'Awaiting Buyers Approval';
+    public const AWAITING_ADMINS_APPROVAL = 'Awaiting Admin Approval';
 
     protected $fillable = [
         'asset',

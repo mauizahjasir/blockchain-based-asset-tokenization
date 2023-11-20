@@ -50,6 +50,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/request/outgoing-requests', [OutgoingRequestController::class, 'index'])->name('outgoing-requests');
         Route::get('/request/incoming-requests', [IncomingRequestController::class, 'index'])->name('incoming-requests');
         Route::post('/request/incoming-requests/{assetRequest}/approve', [IncomingRequestController::class, 'approve'])->name('incoming-requests-approve');
+        Route::post('/request/outgoing-requests/{assetRequest}/approve', [OutgoingRequestController::class, 'approve'])->name('outgoing-requests-approve');
     });
 
     Route::prefix('client')->group(function () {
