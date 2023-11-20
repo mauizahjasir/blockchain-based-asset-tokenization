@@ -14,13 +14,13 @@
     <link href="https://demo.dashboardpack.com/architectui-html-free/main.css" rel="stylesheet">
 </head>
 
-<script type="text/javascript" src="https://demo.dashboardpack.com/architectui-html-free/assets/scripts/main.js"></script>
+<script type="text/javascript"
+        src="https://demo.dashboardpack.com/architectui-html-free/assets/scripts/main.js"></script>
 <script src="http://maps.google.com/maps/api/js?sensor=true"></script>
 <!-- Include Font Awesome CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
 <style>
-
     .card-header {
         padding: 1.25rem 0.5rem;
         margin-bottom: 0;
@@ -29,5 +29,4 @@
         border-bottom: 1px solid #E7EAF0;
         font-size: 16px;
     }
-
 </style>

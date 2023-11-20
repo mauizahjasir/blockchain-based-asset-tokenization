@@ -6,6 +6,16 @@
 </div>
 --}}
 
+<style>
+    .badge {
+        background-color: #3f6ad8; /* Background color for the badge */
+        color: white; /* Text color for the badge */
+        padding: 6px; /* Adjust padding as needed */
+        border-radius: 50%; /* Make it a circle */
+        margin-left: 5px; /* Adjust margin as needed */
+    }
+</style>
+
 <div class="app-sidebar sidebar-shadow">
     <div class="app-header__logo">
         <div class="logo-src"></div>
@@ -66,8 +76,9 @@
                         Incoming
                     </a>
 
-                    <a href="#">
+                    <a href="{{ route('outgoing-requests') }}" class="{{ Request::is('assets/request/outgoing-requests') ? 'mm-active' : '' }}">
                         Outgoing
+                        <span class="badge">{{ \App\Models\AssetsRequest::where('requestor_id', \Illuminate\Support\Facades\Auth::user()->id)->get()->count() }}</span>
                     </a>
                 </li>
 

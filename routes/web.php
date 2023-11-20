@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\AssetsRequestController;
 use App\Http\Controllers\MultichainController;
+use App\Http\Controllers\OutgoingRequestController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -37,11 +38,16 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/new-users', [UserController::class, 'index'])->name('new-users');
     Route::post('/approve/{user}', [UserController::class, 'approve'])->name('approve');
-    Route::post('/assets/put-on-sale', [AssetOnSaleController::class, 'putOnSale'])->name('put-on-sale');
-    Route::post('/assets/remove-from-sale', [AssetOnSaleController::class, 'removeFromSale'])->name('remove-from-sale');
-    Route::post('/assets/remove-from-sale', [AssetOnSaleController::class, 'removeFromSale'])->name('remove-from-sale');
-    Route::get('/assets/assets-on-sale', [AssetOnSaleController::class, 'assetsOnSalePage'])->name('assets-on-sale');
-    Route::post('/assets/{assetOnSale}/request-purchase', [AssetsRequestController::class, 'requestPurchase'])->name('request-purchase');
+
+    Route::prefix('assets')->group(function () {
+        Route::post('/put-on-sale', [AssetOnSaleController::class, 'putOnSale'])->name('put-on-sale');
+        Route::post('/remove-from-sale', [AssetOnSaleController::class, 'removeFromSale'])->name('remove-from-sale');
+        Route::post('/remove-from-sale', [AssetOnSaleController::class, 'removeFromSale'])->name('remove-from-sale');
+        Route::get('/assets-on-sale', [AssetOnSaleController::class, 'assetsOnSalePage'])->name('assets-on-sale');
+        Route::post('/{assetOnSale}/request-purchase', [AssetsRequestController::class, 'requestPurchase'])->name('request-purchase');
+        Route::post('/{assetOnSale}/request-purchase', [AssetsRequestController::class, 'requestPurchase'])->name('request-purchase');
+        Route::get('/request/outgoing-requests', [OutgoingRequestController::class, 'index'])->name('outgoing-requests');
+    });
 
     Route::prefix('client')->group(function () {
         Route::get('/bank-assets', [AssetController::class, 'bankAssets'])->name('bank-assets');
