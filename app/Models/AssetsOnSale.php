@@ -11,6 +11,7 @@ class AssetsOnSale extends Model
     use HasFactory, HasUUID;
 
     protected $fillable = [
-      'asset'
+        'asset',
+        'owner_id'
     ];
 }

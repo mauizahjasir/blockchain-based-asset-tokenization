@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AssetController;
+use App\Http\Controllers\AssetOnSaleController;
 use App\Http\Controllers\AssetTypeController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -36,12 +37,13 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/new-users', [UserController::class, 'index'])->name('new-users');
     Route::post('/approve/{user}', [UserController::class, 'approve'])->name('approve');
-    Route::post('/assets/put-on-sale', [\App\Http\Controllers\AssetOnSaleController::class, 'putOnSale'])->name('put-on-sale');
-    Route::post('/assets/remove-from-sale', [\App\Http\Controllers\AssetOnSaleController::class, 'removeFromSale'])->name('remove-from-sale');
+    Route::post('/assets/put-on-sale', [AssetOnSaleController::class, 'putOnSale'])->name('put-on-sale');
+    Route::post('/assets/remove-from-sale', [AssetOnSaleController::class, 'removeFromSale'])->name('remove-from-sale');
+    Route::post('/assets/remove-from-sale', [AssetOnSaleController::class, 'removeFromSale'])->name('remove-from-sale');
+    Route::get('/assets/assets-on-sale', [AssetOnSaleController::class, 'assetsOnSalePage'])->name('assets-on-sale');
 
     Route::prefix('client')->group(function () {
         Route::get('/bank-assets', [AssetController::class, 'bankAssets'])->name('bank-assets');
-        Route::get('/assets/request-purchase', [AssetsRequestController::class, 'requestPurchasePage'])->name('request-purchase');
         Route::post('/assets/request-purchase', [AssetsRequestController::class, 'requestPurchase'])->name('request-purchase');
         Route::get('/my-assets', [AssetController::class, 'clientAssets'])->name('client-assets');
     });

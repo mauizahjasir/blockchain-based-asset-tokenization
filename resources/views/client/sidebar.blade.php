@@ -47,9 +47,27 @@
                     <a href="{{ route('home') }}" class="{{ Request::is('home') ? 'mm-active' : '' }}">
                         Dashboard
                     </a>
+                </li>
 
+                <li class="app-sidebar__heading">Assets</li>
+                <li>
                     <a href="{{ route('client-assets') }}" class="{{ Request::is('client/my-assets') ? 'mm-active' : '' }}">
                         My Assets
+                    </a>
+
+                    <a href="{{ route('assets-on-sale') }}" class="{{ Request::is('assets/assets-on-sale') ? 'mm-active' : '' }}">
+                        Buy Assets
+                    </a>
+                </li>
+
+                <li class="app-sidebar__heading">Requests</li>
+                <li>
+                    <a href="#">
+                        Incoming
+                    </a>
+
+                    <a href="#">
+                        Outgoing
                     </a>
                 </li>
 

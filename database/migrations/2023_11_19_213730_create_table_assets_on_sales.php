@@ -15,6 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('meta_id')->index();
             $table->string('asset');
+            $table->foreignUuid('owner_id')->constrained('users');
             $table->timestamps();
         });
     }

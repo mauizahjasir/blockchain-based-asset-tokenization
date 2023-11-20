@@ -105,13 +105,6 @@ class AssetsRequestController extends Controller
         return redirect()->route('asset-requests')->with('success', 'Transaction has been successful');
     }
 
-    public function requestPurchasePage(Request $request)
-    {
-        $asset = $request->get('asset');
-
-        return view('client.request-purchase-form', compact('asset'));
-    }
-
     public function requestDetails(AssetsRequest $assetRequest)
     {
         return view('admin.request-detail-form', compact('assetRequest'));

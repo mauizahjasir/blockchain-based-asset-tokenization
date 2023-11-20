@@ -19,3 +19,15 @@
 <!-- Include Font Awesome CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
+<style>
+
+    .card-header {
+        padding: 1.25rem 0.5rem;
+        margin-bottom: 0;
+        color: rgba(22, 25, 44, 0.65);
+        background-color: transparent;
+        border-bottom: 1px solid #E7EAF0;
+        font-size: 16px;
+    }
+
+</style>
