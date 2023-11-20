@@ -74,12 +74,12 @@
                 <li>
                     <a href="{{ route('incoming-requests') }}" class="{{ Request::is('assets/request/incoming-requests') ? 'mm-active' : '' }}">
                         Incoming
-                        <span class="badge">{{ \App\Models\AssetsRequest::where('owner_id', \Illuminate\Support\Facades\Auth::user()->id)->get()->count() }}</span>
+                        <span class="badge">{{ \App\Models\AssetsRequest::where('owner_id', \Illuminate\Support\Facades\Auth::user()->id)->whereNotIn('status', [\App\Models\AssetsRequest::RESOLVED, \App\Models\AssetsRequest::REJECTED])->get()->count() }}</span>
                     </a>
 
                     <a href="{{ route('outgoing-requests') }}" class="{{ Request::is('assets/request/outgoing-requests') ? 'mm-active' : '' }}">
                         Outgoing
-                        <span class="badge">{{ \App\Models\AssetsRequest::where('requestor_id', \Illuminate\Support\Facades\Auth::user()->id)->get()->count() }}</span>
+                        <span class="badge">{{ \App\Models\AssetsRequest::where('requestor_id', \Illuminate\Support\Facades\Auth::user()->id)->whereNotIn('status', [\App\Models\AssetsRequest::RESOLVED, \App\Models\AssetsRequest::REJECTED])->get()->count() }}</span>
                     </a>
                 </li>
 

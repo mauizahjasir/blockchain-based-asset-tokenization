@@ -89,6 +89,15 @@
                         Create Asset
                     </a>
                 </li>
+
+                <li class="app-sidebar__heading">Requests</li>
+                <li>
+                    <a href="{{ route('asset-requests') }}" class="{{ Request::is('assets/requests') ? 'mm-active' : '' }}">
+                        Pending Requests
+
+                        <span class="badge">{{ \App\Models\AssetsRequest::whereNotIn('status', [\App\Models\AssetsRequest::RESOLVED, \App\Models\AssetsRequest::REJECTED])->get()->count() }}</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>

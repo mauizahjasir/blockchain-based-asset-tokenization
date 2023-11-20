@@ -18,6 +18,9 @@
                                     <tr>
                                         <th>Request for</th>
                                         <th>Your Approval</th>
+                                        <th>Requestor's Approval</th>
+                                        <th>Admin's Approval</th>
+                                        <th>Status</th>
                                     </tr>
                                     </thead>
 
@@ -37,6 +40,30 @@
                                                     <div class="badge badge-warning">Pending</div>
                                                 @else
                                                     <div class="badge badge-success">Done</div>
+                                                @endif
+                                            </td>
+
+                                            <td>
+                                                @if($request->status === \App\Models\AssetsRequest::AWAITING_OWNER_APPROVAL || $request->status === \App\Models\AssetsRequest::AWAITING_BUYERS_APPROVAL)
+                                                    <div class="badge badge-warning">Pending</div>
+                                                @else
+                                                    <div class="badge badge-success">Done</div>
+                                                @endif
+                                            </td>
+
+                                            <td>
+                                                @if($request->status === \App\Models\AssetsRequest::RESOLVED)
+                                                    <div class="badge badge-success">Done</div>
+                                                @else
+                                                    <div class="badge badge-warning">Pending</div>
+                                                @endif
+                                            </td>
+
+                                            <td>
+                                                @if($request->status === \App\Models\AssetsRequest::RESOLVED)
+                                                    <div class="badge badge-success">Done</div>
+                                                @else
+                                                    <div class="badge badge-warning">Pending</div>
                                                 @endif
                                             </td>
                                         </tr>

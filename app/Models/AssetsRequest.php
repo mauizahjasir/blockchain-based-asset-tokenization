@@ -35,4 +35,9 @@ class AssetsRequest extends Model
     {
         return $this->belongsTo(User::class, 'requestor_id', 'id');
     }
+
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'owner_id', 'id');
+    }
 }

@@ -19,6 +19,8 @@
                                         <th>Request for</th>
                                         <th>Owner's Approval</th>
                                         <th>Your Approval</th>
+                                        <th>Admin's Approval</th>
+                                        <th>Status</th>
                                     </tr>
                                     </thead>
 
@@ -49,6 +51,22 @@
                                                     <div class="badge badge-warning">Pending</div>
                                                 @else
                                                     <div class="badge badge-success">Done</div>
+                                                @endif
+                                            </td>
+
+                                            <td>
+                                                @if($request->status === \App\Models\AssetsRequest::RESOLVED)
+                                                    <div class="badge badge-success">Done</div>
+                                                @else
+                                                    <div class="badge badge-warning">Pending</div>
+                                                @endif
+                                            </td>
+
+                                            <td>
+                                                @if($request->status === \App\Models\AssetsRequest::RESOLVED)
+                                                    <div class="badge badge-success">Resolved</div>
+                                                @else
+                                                    <div class="badge badge-warning">Pending</div>
                                                 @endif
                                             </td>
                                         </tr>

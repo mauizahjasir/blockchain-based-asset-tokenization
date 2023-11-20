@@ -14,9 +14,9 @@ class AssetsRequestController extends Controller
 {
     public function index()
     {
-        $assetsRequests = AssetsRequest::all();
+        $requests = AssetsRequest::all();
 
-        return view('admin/assets-request', compact('assetsRequests'));
+        return view('admin/assets-request', compact('requests'));
     }
 
     public function requestPurchase(AssetsOnSale $assetOnSale, Request $request)
@@ -50,6 +50,7 @@ class AssetsRequestController extends Controller
     {
         $isValidPerson = MultichainService::isValidAddress($assetRequest->requestor->wallet_address);
         $hasPermission = MultichainService::hasPermissions(['receive'], $assetRequest->requestor->wallet_address);
+        $user = $request->user();
 
         if (!$isValidPerson) {
             return redirect()->back()->with('errors', [MessageHelper::notAuthorizedUser()]);
@@ -69,7 +70,7 @@ class AssetsRequestController extends Controller
             return redirect()->back()->with('errors', [MessageHelper::transactionFailure()]);
         }
 
-        $lockedHex = MultichainService::multichain()->preparelockunspentfrom($request->user()->wallet_address, [$asset['name'] => $asset['issueqty']]);
+        $lockedHex = MultichainService::multichain()->preparelockunspentfrom($user->wallet_address, [$asset['name'] => $asset['issueqty']]);
         $appendedTx = MultichainService::multichain()->appendrawexchange($txHex, $lockedHex['txid'], $lockedHex['vout'], [config('multichain.currency') => $assetRequest->commit_amount]);
         $txId = MultichainService::multichain()->sendrawtransaction($appendedTx['hex']);
 
@@ -77,9 +78,14 @@ class AssetsRequestController extends Controller
             return redirect()->back()->with('errors', [MessageHelper::transactionFailure()]);
         }
 
+        MultichainService::sendAssetFrom($user->wallet_address, $assetRequest->owner->wallet_address, config('multichain.currency'), (float)$assetRequest->commit_amount);
+
         Transaction::create([
             'tx_hex' => $txId
         ]);
+
+        AssetsOnSale::where('asset', $assetRequest->asset)
+            ->delete();
 
         $assetRequest->status = AssetsRequest::RESOLVED;
         $assetRequest->save();
@@ -87,9 +93,13 @@ class AssetsRequestController extends Controller
         return redirect()->route('asset-requests')->with('success', 'Transaction has been successful');
     }
 
-    public function requestDetails(AssetsRequest $assetRequest)
+    public function requestDetails(AssetsRequest $assetRequest, Request $request)
     {
-        return view('admin.request-detail-form', compact('assetRequest'));
+        $user = $request->user();
+
+        $assetTransferred = collect(MultichainService::getAddressBalances($user->wallet_address))->where('name', $assetRequest->asset)->isNotEmpty();
+
+        return view('admin.request-detail-form', compact('assetRequest', 'assetTransferred'));
     }
 
     public function requestReject(AssetsRequest $assetRequest)

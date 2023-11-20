@@ -77,6 +77,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('assets/requests/{assetRequest}/approve', [AssetsRequestController::class, 'requestApprove'])->name('request-approve');
         Route::post('assets/requests/{assetRequest}/reject', [AssetsRequestController::class, 'requestReject'])->name('request-reject');
         Route::get('assets/requests/{assetRequest}/details', [AssetsRequestController::class, 'requestDetails'])->name('request-details');
+        Route::get('assets/requests/{assetRequest}/details', [AssetsRequestController::class, 'requestDetails'])->name('request-details');
     });
 
 });

@@ -29,4 +29,21 @@
         border-bottom: 1px solid #E7EAF0;
         font-size: 16px;
     }
+
+    .stamp-card {
+        background-color: #f0f0f0; /* Light-colored background */
+        padding: 20px; /* Padding around the stamp-like card */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adding a shadow for depth */
+    }
+
+    .stamp-badge {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 5px;
+        background-color: #f2dede; /* Background color for the badge */
+    }
+
+    .white-text {
+        color: white;
+    }
 </style>
