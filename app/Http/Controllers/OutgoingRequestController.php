@@ -12,9 +12,9 @@ class OutgoingRequestController extends Controller
 {
     public function index(Request $request)
     {
-        $requests = AssetsRequest::where('requestor_id', $request->user()->id)->get();
+        $assetsRequest = AssetsRequest::where('requestor_id', $request->user()->id)->get();
 
-        return view('client.outgoing-requests', compact('requests'));
+        return view('client.outgoing-requests', compact('assetsRequest'));
     }
 
     public function approve(AssetsRequest $assetRequest, Request $request)

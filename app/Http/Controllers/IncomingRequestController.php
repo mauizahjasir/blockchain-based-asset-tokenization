@@ -5,9 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Facades\MultichainService;
 use App\Helpers\MessageHelper;
-use App\Models\AssetsOnSale;
 use App\Models\AssetsRequest;
-use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -15,9 +13,9 @@ class IncomingRequestController extends Controller
 {
     public function index(Request $request)
     {
-        $requests = AssetsRequest::where('owner_id', $request->user()->id)->get();
+        $assetsRequest = AssetsRequest::where('owner_id', $request->user()->id)->get();
 
-        return view('client.incoming-requests', compact('requests'));
+        return view('client.incoming-requests', compact('assetsRequest'));
     }
 
     public function approve(AssetsRequest $assetRequest, Request $request)

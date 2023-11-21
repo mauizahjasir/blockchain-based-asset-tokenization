@@ -98,4 +98,9 @@ class User extends Authenticatable
             return $item['name'] !== config('multichain.currency');
         })->count();
     }
+
+    public static function newUserRequests()
+    {
+        return static::whereNull('wallet_address')->get();
+    }
 }

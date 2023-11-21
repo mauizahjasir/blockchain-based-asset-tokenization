@@ -24,21 +24,20 @@
                                     </tr>
                                     </thead>
 
-                                    @foreach ($requests as $request)
+                                    @foreach ($assetsRequest as $assetRequest)
                                         <tr>
-                                            <td>{{ $request->asset }}</td>
+                                            <td>{{ $assetRequest->asset }}</td>
                                             <td>
-                                                @if($request->status === \App\Models\AssetsRequest::AWAITING_OWNER_APPROVAL)
+                                                @if($assetRequest->isAwaitingOwnersApproval())
                                                     <div class="badge badge-warning">Pending</div>
                                                 @else
                                                     <div class="badge badge-success">Done</div>
                                                 @endif
                                             </td>
                                             <td>
-                                                @if($request->status === \App\Models\AssetsRequest::AWAITING_BUYERS_APPROVAL)
-
+                                                @if($assetRequest->isAwaitingBuyersApproval())
                                                     <form method="POST"
-                                                          action="{{ route('outgoing-requests-approve', ['assetRequest' => $request->meta_id]) }}">
+                                                          action="{{ route('outgoing-requests-approve', ['assetRequest' => $assetRequest->meta_id]) }}">
                                                         @csrf
                                                         <!-- Submit Button -->
                                                         <div class="mb-1 ml-1">
@@ -47,7 +46,7 @@
                                                         </div>
                                                     </form>
                                                     <div class="badge badge-warning">Pending</div>
-                                                @elseif ($request->status === \App\Models\AssetsRequest::AWAITING_OWNER_APPROVAL)
+                                                @elseif ($assetRequest->isAwaitingOwnersApproval())
                                                     <div class="badge badge-warning">Pending</div>
                                                 @else
                                                     <div class="badge badge-success">Done</div>
@@ -55,7 +54,7 @@
                                             </td>
 
                                             <td>
-                                                @if($request->status === \App\Models\AssetsRequest::RESOLVED)
+                                                @if($assetRequest->isResolved())
                                                     <div class="badge badge-success">Done</div>
                                                 @else
                                                     <div class="badge badge-warning">Pending</div>
@@ -63,7 +62,7 @@
                                             </td>
 
                                             <td>
-                                                @if($request->status === \App\Models\AssetsRequest::RESOLVED)
+                                                @if($assetRequest->isResolved())
                                                     <div class="badge badge-success">Resolved</div>
                                                 @else
                                                     <div class="badge badge-warning">Pending</div>
@@ -71,7 +70,6 @@
                                             </td>
                                         </tr>
                                     @endforeach
-
                                 </table>
                             </div>
                         </div>

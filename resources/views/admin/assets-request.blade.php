@@ -23,11 +23,11 @@
                                     </tr>
                                     </thead>
 
-                                    @foreach ($requests as $request)
+                                    @foreach ($assetsRequest as $assetRequest)
                                         <tr>
-                                            <td>{{ $request->asset }}</td>
+                                            <td>{{ $assetRequest->asset }}</td>
                                             <td>
-                                                @if($request->status === \App\Models\AssetsRequest::AWAITING_ADMINS_APPROVAL || $request->status === \App\Models\AssetsRequest::AWAITING_BUYERS_APPROVAL)
+                                                @if($assetRequest->isApprovedByOwner())
                                                     <div class="badge badge-success">Done</div>
                                                 @else
                                                     <div class="badge badge-warning">Pending</div>
@@ -35,7 +35,7 @@
                                             </td>
 
                                             <td>
-                                                @if($request->status === \App\Models\AssetsRequest::AWAITING_ADMINS_APPROVAL)
+                                                @if($assetRequest->isAwaitingAdminsApproval())
                                                     <div class="badge badge-success">Done</div>
                                                 @else
                                                     <div class="badge badge-warning">Pending</div>
@@ -43,19 +43,17 @@
                                             </td>
 
                                             <td>
-                                                @if($request->status === \App\Models\AssetsRequest::RESOLVED)
+                                                @if($assetRequest->isResolved())
                                                     <div class="badge badge-success">Approved</div>
-                                                @elseif ($request->status === \App\Models\AssetsRequest::REJECTED)
+                                                @elseif ($assetRequest->isRejected())
                                                     <div class="badge badge-danger">Rejected</div>
                                                 @else
                                                     <form method="GET"
-                                                          action="{{ route('request-details', ['assetRequest' => $request->meta_id]) }}">
+                                                          action="{{ route('request-details', ['assetRequest' => $assetRequest->meta_id]) }}">
                                                         @csrf
                                                         <!-- Submit Button -->
                                                         <div class="mt-2">
-                                                            <button type="submit" class="btn btn-primary">Verify
-                                                                Request
-                                                            </button>
+                                                            <button type="submit" class="btn btn-primary">Verify Request</button>
                                                         </div>
                                                     </form>
                                                 @endif

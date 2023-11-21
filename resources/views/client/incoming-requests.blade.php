@@ -24,13 +24,13 @@
                                     </tr>
                                     </thead>
 
-                                    @foreach ($requests as $request)
+                                    @foreach ($assetsRequest as $assetRequest)
                                         <tr>
-                                            <td>{{ $request->asset }}</td>
+                                            <td>{{ $assetRequest->asset }}</td>
                                             <td>
-                                                @if($request->status === \App\Models\AssetsRequest::AWAITING_OWNER_APPROVAL)
+                                                @if($assetRequest->isAwaitingOwnersApproval())
 
-                                                    <form method="POST" action="{{ route('incoming-requests-approve', ['assetRequest' => $request->meta_id]) }}">
+                                                    <form method="POST" action="{{ route('incoming-requests-approve', ['assetRequest' => $assetRequest->meta_id]) }}">
                                                         @csrf
                                                         <!-- Submit Button -->
                                                         <div class="mb-1 ml-1">
@@ -44,7 +44,7 @@
                                             </td>
 
                                             <td>
-                                                @if($request->status === \App\Models\AssetsRequest::AWAITING_OWNER_APPROVAL || $request->status === \App\Models\AssetsRequest::AWAITING_BUYERS_APPROVAL)
+                                                @if($assetRequest->isAwaitingRequestorsApproval())
                                                     <div class="badge badge-warning">Pending</div>
                                                 @else
                                                     <div class="badge badge-success">Done</div>
@@ -52,7 +52,7 @@
                                             </td>
 
                                             <td>
-                                                @if($request->status === \App\Models\AssetsRequest::RESOLVED)
+                                                @if($assetRequest->isResolved())
                                                     <div class="badge badge-success">Done</div>
                                                 @else
                                                     <div class="badge badge-warning">Pending</div>
@@ -60,7 +60,7 @@
                                             </td>
 
                                             <td>
-                                                @if($request->status === \App\Models\AssetsRequest::RESOLVED)
+                                                @if($assetRequest->isResolved())
                                                     <div class="badge badge-success">Done</div>
                                                 @else
                                                     <div class="badge badge-warning">Pending</div>

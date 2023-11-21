@@ -14,9 +14,9 @@ class AssetsRequestController extends Controller
 {
     public function index()
     {
-        $requests = AssetsRequest::all();
+        $assetsRequest = AssetsRequest::all();
 
-        return view('admin/assets-request', compact('requests'));
+        return view('admin/assets-request', compact('assetsRequest'));
     }
 
     public function requestPurchase(AssetsOnSale $assetOnSale, Request $request)

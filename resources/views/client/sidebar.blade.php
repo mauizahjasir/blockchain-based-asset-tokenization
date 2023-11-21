@@ -1,11 +1,3 @@
-{{--
-<div class="w3-bar-block">
-    <a href="{{ route('home') }}" class="w3-bar-item w3-button w3-padding w3-text-white{{ Request::is('home') ? ' active' : '' }}">Home</a>
-    <a href="{{ route('bank-assets') }}" class="w3-bar-item w3-button w3-padding w3-text-white{{ Request::is('bank-assets') ? ' active' : '' }}">Bank Assets</a>
-    <a href="{{ route('client-assets') }}" class="w3-bar-item w3-button w3-padding w3-text-white{{ Request::is('client-assets') ? ' active' : '' }}">My Assets</a>
-</div>
---}}
-
 <style>
     .badge {
         background-color: #3f6ad8; /* Background color for the badge */
@@ -61,25 +53,29 @@
 
                 <li class="app-sidebar__heading">Assets</li>
                 <li>
-                    <a href="{{ route('client-assets') }}" class="{{ Request::is('client/my-assets') ? 'mm-active' : '' }}">
-                        My Assets
+                    <a href="{{ route('client-assets') }}"
+                       class="{{ Request::is('client/my-assets') ? 'mm-active' : '' }}">
+                        Sell
                     </a>
 
-                    <a href="{{ route('assets-on-sale') }}" class="{{ Request::is('assets/assets-on-sale') ? 'mm-active' : '' }}">
-                        Buy Assets
+                    <a href="{{ route('assets-on-sale') }}"
+                       class="{{ Request::is('assets/assets-on-sale') ? 'mm-active' : '' }}">
+                        Buy
                     </a>
                 </li>
 
                 <li class="app-sidebar__heading">Requests</li>
                 <li>
-                    <a href="{{ route('incoming-requests') }}" class="{{ Request::is('assets/request/incoming-requests') ? 'mm-active' : '' }}">
+                    <a href="{{ route('incoming-requests') }}"
+                       class="{{ Request::is('assets/request/incoming-requests') ? 'mm-active' : '' }}">
                         Incoming
-                        <span class="badge">{{ \App\Models\AssetsRequest::where('owner_id', \Illuminate\Support\Facades\Auth::user()->id)->whereNotIn('status', [\App\Models\AssetsRequest::RESOLVED, \App\Models\AssetsRequest::REJECTED])->get()->count() }}</span>
+                        <span class="badge">{{ \App\Models\AssetsRequest::incomingRequests()->count() }}</span>
                     </a>
 
-                    <a href="{{ route('outgoing-requests') }}" class="{{ Request::is('assets/request/outgoing-requests') ? 'mm-active' : '' }}">
+                    <a href="{{ route('outgoing-requests') }}"
+                       class="{{ Request::is('assets/request/outgoing-requests') ? 'mm-active' : '' }}">
                         Outgoing
-                        <span class="badge">{{ \App\Models\AssetsRequest::where('requestor_id', \Illuminate\Support\Facades\Auth::user()->id)->whereNotIn('status', [\App\Models\AssetsRequest::RESOLVED, \App\Models\AssetsRequest::REJECTED])->get()->count() }}</span>
+                        <span class="badge">{{ \App\Models\AssetsRequest::outgoingRequests()->count() }}</span>
                     </a>
                 </li>
 

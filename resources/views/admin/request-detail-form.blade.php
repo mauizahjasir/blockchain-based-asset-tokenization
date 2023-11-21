@@ -14,9 +14,7 @@
                             <div class="card-header">Request Details</div>
                             <div class="stamp-card">
                                 <div class="ml-2 mt-2">
-                                    <div class="mb-3"><b>Please review the following details and choose to accept or
-                                            decline
-                                            the request:</b></div>
+                                    <div class="mb-3"><b>Please review the following details and choose to accept or decline the request:</b></div>
 
                                     <div><b>Requestor's name:</b> {{ $assetRequest->requestor->name }}</div>
                                     <div><b>Owner's name:</b> {{ $assetRequest->owner->name }}</div>
@@ -40,7 +38,7 @@
                                 <form action="{{ route('request-approve', $assetRequest->meta_id) }}" method="POST">
                                     @csrf
                                     <button type="submit"
-                                            class="btn btn-success mr-2" {{ !$assetTransferred || in_array($assetRequest->status, [\App\Models\AssetsRequest::RESOLVED. \App\Models\AssetsRequest::REJECTED, \App\Models\AssetsRequest::AWAITING_BUYERS_APPROVAL])  ? 'disabled' : '' }}>
+                                            class="btn btn-success mr-2" {{ !$assetTransferred || $assetRequest->isPending()  ? 'disabled' : '' }}>
                                         Approve
                                     </button>
                                 </form>
@@ -48,7 +46,7 @@
                                 <form action="{{ route('request-reject', $assetRequest->meta_id) }}" method="POST">
                                     @csrf
                                     <button type="submit"
-                                            class="btn btn-danger mr-2" {{ !$assetTransferred || in_array($assetRequest->status, [\App\Models\AssetsRequest::RESOLVED. \App\Models\AssetsRequest::REJECTED, \App\Models\AssetsRequest::AWAITING_BUYERS_APPROVAL])  ? 'disabled' : '' }}>
+                                            class="btn btn-danger mr-2" {{ !$assetTransferred || $assetRequest->isPending()  ? 'disabled' : '' }}>
                                         Reject
                                     </button>
                                 </form>
