@@ -44,6 +44,14 @@ class OutgoingRequestController extends Controller
         $assetsRequest = AssetsRequest::where('requestor_id', $request->user()->id)
             ->whereIn('status', [AssetsRequest::RESOLVED, AssetsRequest::REJECTED])->get();
 
-        return view('client.incoming-requests', compact('assetsRequest'));
+        return view('client.outgoing-requests-history', compact('assetsRequest'));
+    }
+
+    public function reject(AssetsRequest $assetRequest)
+    {
+        $assetRequest->status = AssetsRequest::REJECTED_BY_BUYER;
+        $assetRequest->save();
+
+        return redirect()->back()->with('success', 'Request has been rejected');
     }
 }

@@ -103,4 +103,9 @@ class User extends Authenticatable
     {
         return static::whereNull('wallet_address')->get();
     }
+
+    public function canSubmitPurchaseRequest($asset)
+    {
+        return $this->assetsRequests->where('asset', $asset)->whereNotIn('status', [AssetsRequest::REJECTED, AssetsRequest::RESOLVED])->isNotEmpty();
+    }
 }

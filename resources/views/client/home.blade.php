@@ -53,7 +53,7 @@
                                     <div class="widget-subheading">Total # of buying proposal</div>
                                 </div>
                                 <div class="widget-content-right">
-                                    <div class="widget-numbers text-white"><span>0</span></div>
+                                    <div class="widget-numbers text-white"><span>{{ \App\Models\AssetsRequest::incomingRequests()->count() }}</span></div>
                                 </div>
                             </div>
                         </div>

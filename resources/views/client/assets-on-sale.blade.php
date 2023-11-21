@@ -34,7 +34,7 @@
                                                 <form method="POST" action="{{ route('request-purchase', ['assetOnSale' => $asset->meta_id]) }}">
                                                     @csrf
                                                     <!-- Submit Button -->
-                                                    <button type="submit" class="btn btn-primary mt-2">Submit Purchase Request</button>
+                                                    <button type="submit" class="btn btn-primary mt-2 {{ \Illuminate\Support\Facades\Auth::user()->canSubmitPurchaseRequest($asset->asset)  ? 'disabled' : '' }}">Submit Purchase Request</button>
                                                 </form>
                                             </td>
                                         </tr>

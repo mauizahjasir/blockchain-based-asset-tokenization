@@ -52,7 +52,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/request/incoming-requests', [IncomingRequestController::class, 'index'])->name('incoming-requests');
         Route::get('/request/incoming-requests/history', [IncomingRequestController::class, 'historicalData'])->name('incoming-requests-history');
         Route::post('/request/incoming-requests/{assetRequest}/approve', [IncomingRequestController::class, 'approve'])->name('incoming-requests-approve');
+        Route::post('/request/incoming-requests/{assetRequest}/reject', [IncomingRequestController::class, 'reject'])->name('incoming-requests-reject');
         Route::post('/request/outgoing-requests/{assetRequest}/approve', [OutgoingRequestController::class, 'approve'])->name('outgoing-requests-approve');
+        Route::post('/request/outgoing-requests/{assetRequest}/reject', [OutgoingRequestController::class, 'reject'])->name('outgoing-requests-reject');
     });
 
     Route::prefix('client')->group(function () {

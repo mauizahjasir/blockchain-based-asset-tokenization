@@ -23,7 +23,7 @@ class AssetsRequestController extends Controller
     {
         $assetsRequest = AssetsRequest::whereIn('status', [AssetsRequest::RESOLVED, AssetsRequest::REJECTED])->get();
 
-        return view('admin/assets-request', compact('assetsRequest'));
+        return view('admin/assets-request-history', compact('assetsRequest'));
     }
 
     public function requestPurchase(AssetsOnSale $assetOnSale, Request $request)
@@ -31,7 +31,7 @@ class AssetsRequestController extends Controller
         /** @var User $user */
         $user = $request->user();
 
-        if ($user->assetsRequests->where('asset', $assetOnSale->asset)->isNotEmpty()) {
+        if ($user->canSubmitPurchaseRequest($assetOnSale->asset)) {
             return redirect()->back()->with('errors', ["You have already requested the purchase of this Asset, please wait for administrator's response"]);
         }
 
@@ -55,6 +55,10 @@ class AssetsRequestController extends Controller
 
     public function requestApprove(AssetsRequest $assetRequest, Request $request)
     {
+        if (in_array($assetRequest->status, [AssetsRequest::REJECTED_BY_BUYER, AssetsRequest::REJECTED_BY_OWNER])) {
+            return redirect()->back()->with('errors', 'The request has been rejected by collaborating parties');
+        }
+
         $isValidPerson = MultichainService::isValidAddress($assetRequest->requestor->wallet_address);
         $hasPermission = MultichainService::hasPermissions(['receive'], $assetRequest->requestor->wallet_address);
         $user = $request->user();
@@ -109,8 +113,16 @@ class AssetsRequestController extends Controller
         return view('admin.request-detail-form', compact('assetRequest', 'assetTransferred'));
     }
 
-    public function requestReject(AssetsRequest $assetRequest)
+    public function requestReject(AssetsRequest $assetRequest, Request $request)
     {
+        $assetInfo = MultichainService::assetInfo($assetRequest->asset);
+        MultichainService::sendAssetFrom($request->user()->wallet_address, $assetRequest->owner->wallet_address, $assetRequest->asset, (int)$assetInfo['issueqty']);
 
+        MultichainService::multichain()->lockunspent(true, [$assetRequest->request_payload]);
+
+        $assetRequest->status = AssetsRequest::REJECTED;
+        $assetRequest->save();
+
+        return redirect()->back()->with('success', 'Request disapproved');
     }
 }

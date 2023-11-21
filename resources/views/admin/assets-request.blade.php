@@ -27,7 +27,9 @@
                                         <tr>
                                             <td>{{ $assetRequest->asset }}</td>
                                             <td>
-                                                @if($assetRequest->isApprovedByOwner())
+                                                @if($assetRequest->isRejectedByOwner() || $assetRequest->isRejectedByBuyer())
+                                                    <div class="badge badge-danger">Rejected</div>
+                                                @elseif($assetRequest->isApprovedByOwner())
                                                     <div class="badge badge-success">Done</div>
                                                 @else
                                                     <div class="badge badge-warning">Pending</div>
@@ -35,7 +37,9 @@
                                             </td>
 
                                             <td>
-                                                @if($assetRequest->isAwaitingAdminsApproval())
+                                                @if($assetRequest->isRejectedByOwner() || $assetRequest->isRejectedByBuyer())
+                                                    <div class="badge badge-danger">Rejected</div>
+                                                @elseif($assetRequest->isAwaitingAdminsApproval())
                                                     <div class="badge badge-success">Done</div>
                                                 @else
                                                     <div class="badge badge-warning">Pending</div>
@@ -53,7 +57,9 @@
                                                         @csrf
                                                         <!-- Submit Button -->
                                                         <div class="mt-2">
-                                                            <button type="submit" class="btn btn-primary">Verify Request</button>
+                                                            <button type="submit" class="btn btn-primary">Verify
+                                                                Request
+                                                            </button>
                                                         </div>
                                                     </form>
                                                 @endif

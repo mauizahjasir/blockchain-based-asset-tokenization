@@ -30,24 +30,42 @@
                                             <td>
                                                 @if($assetRequest->isAwaitingOwnersApproval())
                                                     <div class="badge badge-warning">Pending</div>
+                                                @elseif ($assetRequest->isRejectedByOwner())
+                                                    <div class="badge badge-danger">Rejected</div>
                                                 @else
                                                     <div class="badge badge-success">Done</div>
                                                 @endif
                                             </td>
                                             <td>
                                                 @if($assetRequest->isAwaitingBuyersApproval())
-                                                    <form method="POST"
-                                                          action="{{ route('outgoing-requests-approve', ['assetRequest' => $assetRequest->meta_id]) }}">
-                                                        @csrf
-                                                        <!-- Submit Button -->
-                                                        <div class="mb-1 ml-1">
-                                                            <button type="submit" class="btn btn-primary">Approve
-                                                            </button>
-                                                        </div>
-                                                    </form>
+                                                    <div class="row">
+                                                        <form method="POST"
+                                                              action="{{ route('outgoing-requests-approve', ['assetRequest' => $assetRequest->meta_id]) }}">
+                                                            @csrf
+                                                            <!-- Submit Button -->
+                                                            <div class="mb-1 ml-1">
+                                                                <button type="submit" class="btn btn-primary">Approve
+                                                                </button>
+                                                            </div>
+                                                        </form>
+
+                                                        <form method="POST"
+                                                              action="{{ route('outgoing-requests-reject', ['assetRequest' => $assetRequest->meta_id]) }}">
+                                                            @csrf
+                                                            <!-- Submit Button -->
+                                                            <div class="mb-1 ml-1">
+                                                                <button type="submit" class="btn btn-danger">Reject
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
                                                     <div class="badge badge-warning">Pending</div>
                                                 @elseif ($assetRequest->isAwaitingOwnersApproval())
                                                     <div class="badge badge-warning">Pending</div>
+                                                @elseif ($assetRequest->isRejectedByOwner())
+                                                    <div class="badge badge-danger">Rejected by Owner</div>
+                                                @elseif ($assetRequest->isRejectedByBuyer())
+                                                    <div class="badge badge-danger">Rejected</div>
                                                 @else
                                                     <div class="badge badge-success">Done</div>
                                                 @endif

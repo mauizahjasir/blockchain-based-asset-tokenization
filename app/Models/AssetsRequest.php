@@ -17,6 +17,8 @@ class AssetsRequest extends Model
     public const AWAITING_OWNER_APPROVAL = 'Awaiting Owner Approval';
     public const AWAITING_BUYERS_APPROVAL = 'Awaiting Buyers Approval';
     public const AWAITING_ADMINS_APPROVAL = 'Awaiting Admin Approval';
+    public const REJECTED_BY_OWNER = 'Rejected by Owner';
+    public const REJECTED_BY_BUYER = 'Rejected by Buyer';
 
     protected $fillable = [
         'asset',
@@ -90,6 +92,16 @@ class AssetsRequest extends Model
     public function isRejected(): bool
     {
         return $this->status === static::REJECTED;
+    }
+
+    public function isRejectedByOwner(): bool
+    {
+        return $this->status === static::REJECTED_BY_OWNER;
+    }
+
+    public function isRejectedByBuyer(): bool
+    {
+        return $this->status === static::REJECTED_BY_BUYER;
     }
 
     public function isAwaitingRequestorsApproval(): bool

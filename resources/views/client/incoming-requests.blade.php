@@ -29,22 +29,39 @@
                                             <td>{{ $assetRequest->asset }}</td>
                                             <td>
                                                 @if($assetRequest->isAwaitingOwnersApproval())
+                                                    <div class="row">
+                                                        <form method="POST"
+                                                              action="{{ route('incoming-requests-approve', ['assetRequest' => $assetRequest->meta_id]) }}">
+                                                            @csrf
+                                                            <div class="mb-1 ml-1">
+                                                                <button type="submit" class="btn btn-primary">
+                                                                    Approve
+                                                                </button>
+                                                            </div>
+                                                        </form>
 
-                                                    <form method="POST" action="{{ route('incoming-requests-approve', ['assetRequest' => $assetRequest->meta_id]) }}">
-                                                        @csrf
-                                                        <!-- Submit Button -->
-                                                        <div class="mb-1 ml-1">
-                                                            <button type="submit" class="btn btn-primary">Approve</button>
-                                                        </div>
-                                                    </form>
+                                                        <form method="POST"
+                                                              action="{{ route('incoming-requests-reject', ['assetRequest' => $assetRequest->meta_id]) }}">
+                                                            @csrf
+                                                            <div class="mb-1 ml-1">
+                                                                <button type="submit" class="btn btn-danger">
+                                                                    Reject
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
                                                     <div class="badge badge-warning">Pending</div>
+                                                @elseif ($assetRequest->isRejectedByOwner())
+                                                    <div class="badge badge-danger">Rejected</div>
                                                 @else
                                                     <div class="badge badge-success">Done</div>
                                                 @endif
                                             </td>
 
                                             <td>
-                                                @if($assetRequest->isAwaitingRequestorsApproval())
+                                                @if($assetRequest->isRejectedByOwner())
+                                                    <div class="badge badge-danger">Rejected by Owner</div>
+                                                @elseif($assetRequest->isAwaitingRequestorsApproval())
                                                     <div class="badge badge-warning">Pending</div>
                                                 @else
                                                     <div class="badge badge-success">Done</div>

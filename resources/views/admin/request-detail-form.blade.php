@@ -34,11 +34,10 @@
                             </div>
 
                             <div class="row mt-2 ml-4">
-
                                 <form action="{{ route('request-approve', $assetRequest->meta_id) }}" method="POST">
                                     @csrf
                                     <button type="submit"
-                                            class="btn btn-success mr-2" {{ !$assetTransferred || $assetRequest->isPending()  ? 'disabled' : '' }}>
+                                            class="btn btn-success mr-2" {{ !$assetTransferred || $assetRequest->isPending() || in_array($assetRequest->status, [\App\Models\AssetsRequest::REJECTED_BY_OWNER, \App\Models\AssetsRequest::REJECTED_BY_BUYER])  ? 'disabled' : '' }}>
                                         Approve
                                     </button>
                                 </form>
@@ -46,8 +45,8 @@
                                 <form action="{{ route('request-reject', $assetRequest->meta_id) }}" method="POST">
                                     @csrf
                                     <button type="submit"
-                                            class="btn btn-danger mr-2" {{ !$assetTransferred || $assetRequest->isPending()  ? 'disabled' : '' }}>
-                                        Reject
+                                            class="btn btn-danger mr-2" {{ (!$assetTransferred || $assetRequest->isPending()) && !in_array($assetRequest->status, [\App\Models\AssetsRequest::REJECTED_BY_OWNER, \App\Models\AssetsRequest::REJECTED_BY_BUYER])  ? 'disabled' : '' }}>
+                                        Reject & Revert
                                     </button>
                                 </form>
 
