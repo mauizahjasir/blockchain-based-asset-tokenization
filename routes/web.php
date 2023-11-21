@@ -48,7 +48,9 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/{assetOnSale}/request-purchase', [AssetsRequestController::class, 'requestPurchase'])->name('request-purchase');
         Route::post('/{assetOnSale}/request-purchase', [AssetsRequestController::class, 'requestPurchase'])->name('request-purchase');
         Route::get('/request/outgoing-requests', [OutgoingRequestController::class, 'index'])->name('outgoing-requests');
+        Route::get('/request/outgoing-requests/history', [OutgoingRequestController::class, 'historicalData'])->name('outgoing-requests-history');
         Route::get('/request/incoming-requests', [IncomingRequestController::class, 'index'])->name('incoming-requests');
+        Route::get('/request/incoming-requests/history', [IncomingRequestController::class, 'historicalData'])->name('incoming-requests-history');
         Route::post('/request/incoming-requests/{assetRequest}/approve', [IncomingRequestController::class, 'approve'])->name('incoming-requests-approve');
         Route::post('/request/outgoing-requests/{assetRequest}/approve', [OutgoingRequestController::class, 'approve'])->name('outgoing-requests-approve');
     });
@@ -74,6 +76,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('assets/create-asset-type', [AssetTypeController::class, 'store'])->name('create-asset-type');
 
         Route::get('assets/requests', [AssetsRequestController::class, 'index'])->name('asset-requests');
+        Route::get('assets/requests/history', [AssetsRequestController::class, 'historicalData'])->name('asset-requests-history');
         Route::post('assets/requests/{assetRequest}/approve', [AssetsRequestController::class, 'requestApprove'])->name('request-approve');
         Route::post('assets/requests/{assetRequest}/reject', [AssetsRequestController::class, 'requestReject'])->name('request-reject');
         Route::get('assets/requests/{assetRequest}/details', [AssetsRequestController::class, 'requestDetails'])->name('request-details');

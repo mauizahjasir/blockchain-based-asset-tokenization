@@ -12,7 +12,8 @@ class OutgoingRequestController extends Controller
 {
     public function index(Request $request)
     {
-        $assetsRequest = AssetsRequest::where('requestor_id', $request->user()->id)->get();
+        $assetsRequest = AssetsRequest::where('requestor_id', $request->user()->id)
+            ->whereNotIn('status', [AssetsRequest::RESOLVED, AssetsRequest::REJECTED])->get();
 
         return view('client.outgoing-requests', compact('assetsRequest'));
     }
@@ -36,5 +37,13 @@ class OutgoingRequestController extends Controller
         $assetRequest->save();
 
         return redirect()->back()->with('success', "Your amount has been locked until the admin approves / disapproves your request");
+    }
+
+    public function historicalData(Request $request)
+    {
+        $assetsRequest = AssetsRequest::where('requestor_id', $request->user()->id)
+            ->whereIn('status', [AssetsRequest::RESOLVED, AssetsRequest::REJECTED])->get();
+
+        return view('client.incoming-requests', compact('assetsRequest'));
     }
 }

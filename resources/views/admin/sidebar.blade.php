@@ -60,7 +60,7 @@
 
                         <span class="badge">{{ \App\Models\User::newUserRequests()->count() }}</span>
                     </a>
-                    <a href="{{ route('manage-permissions') }}" class="{{ Request::is('manage-permissions') ? 'mm-active' : '' }}">
+                    <a href="{{ route('manage-permissions') }}" class="{{ Request::is('multichain/manage-permissions') ? 'mm-active' : '' }}">
                         Manage Permissions
                     </a>
 
@@ -78,10 +78,16 @@
 
                 <li class="app-sidebar__heading">Requests</li>
                 <li>
-                    <a href="{{ route('asset-requests') }}" class="{{ Request::is('assets/requests') ? 'mm-active' : '' }}">
-                        Pending Requests
+                    <a href="{{ route('asset-requests') }}" class="{{ Request::is('multichain/assets/requests') ? 'mm-active' : '' }}">
+                        Pending
 
                         <span class="badge">{{ \App\Models\AssetsRequest::pendingRequests()->count() }}</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('asset-requests-history') }}" class="{{ Request::is('multichain/assets/requests/history') ? 'mm-active' : '' }}">
+                        Completed
                     </a>
                 </li>
             </ul>

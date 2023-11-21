@@ -13,7 +13,8 @@ class IncomingRequestController extends Controller
 {
     public function index(Request $request)
     {
-        $assetsRequest = AssetsRequest::where('owner_id', $request->user()->id)->get();
+        $assetsRequest = AssetsRequest::where('owner_id', $request->user()->id)
+            ->whereNotIn('status', [AssetsRequest::RESOLVED, AssetsRequest::REJECTED])->get();
 
         return view('client.incoming-requests', compact('assetsRequest'));
     }
@@ -39,5 +40,13 @@ class IncomingRequestController extends Controller
         $assetRequest->save();
 
         return redirect()->back()->with('success', "Your asset has been transferred to Bank's wallet and awaiting approval");
+    }
+
+    public function historicalData(Request $request)
+    {
+        $assetsRequest = AssetsRequest::where('owner_id', $request->user()->id)
+            ->whereIn('status', [AssetsRequest::RESOLVED, AssetsRequest::REJECTED])->get();
+
+        return view('client.incoming-requests', compact('assetsRequest'));
     }
 }

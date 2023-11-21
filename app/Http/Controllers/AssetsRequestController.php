@@ -14,7 +14,14 @@ class AssetsRequestController extends Controller
 {
     public function index()
     {
-        $assetsRequest = AssetsRequest::all();
+        $assetsRequest = AssetsRequest::whereNotIn('status', [AssetsRequest::RESOLVED, AssetsRequest::REJECTED])->get();
+
+        return view('admin/assets-request', compact('assetsRequest'));
+    }
+
+    public function historicalData()
+    {
+        $assetsRequest = AssetsRequest::whereIn('status', [AssetsRequest::RESOLVED, AssetsRequest::REJECTED])->get();
 
         return view('admin/assets-request', compact('assetsRequest'));
     }

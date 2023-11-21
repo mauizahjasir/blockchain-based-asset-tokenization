@@ -65,20 +65,46 @@
                 </li>
 
                 <li class="app-sidebar__heading">Requests</li>
+
                 <li>
-                    <a href="{{ route('incoming-requests') }}"
-                       class="{{ Request::is('assets/request/incoming-requests') ? 'mm-active' : '' }}">
-                        Incoming
-                        <span class="badge">{{ \App\Models\AssetsRequest::incomingRequests()->count() }}</span>
-                    </a>
-
-                    <a href="{{ route('outgoing-requests') }}"
-                       class="{{ Request::is('assets/request/outgoing-requests') ? 'mm-active' : '' }}">
-                        Outgoing
-                        <span class="badge">{{ \App\Models\AssetsRequest::outgoingRequests()->count() }}</span>
-                    </a>
+                    Incoming
                 </li>
+                <ul>
+                    <li>
+                        <a href="{{ route('incoming-requests') }}"
+                           class="{{ Request::is('assets/request/incoming-requests') ? 'mm-active' : '' }}">
+                            In Process
+                            <span class="badge">{{ \App\Models\AssetsRequest::incomingRequests()->count() }}</span>
+                        </a>
+                    </li>
 
+                    <li>
+                        <a href="{{ route('incoming-requests-history') }}"
+                           class="{{ Request::is('assets/request/incoming-requests/history') ? 'mm-active' : '' }}">
+                            Completed
+                        </a>
+                    </li>
+                </ul>
+
+                <li>
+                    Outgoing
+                </li>
+                <ul>
+                    <li>
+                        <a href="{{ route('outgoing-requests') }}"
+                           class="{{ Request::is('assets/request/outgoing-requests') ? 'mm-active' : '' }}">
+                            In Process
+                            <span class="badge">{{ \App\Models\AssetsRequest::outgoingRequests()->count() }}</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ route('outgoing-requests-history') }}"
+                           class="{{ Request::is('assets/request/outgoing-requests/history') ? 'mm-active' : '' }}">
+                            Completed
+                        </a>
+                    </li>
+                </ul>
             </ul>
         </div>
     </div>
