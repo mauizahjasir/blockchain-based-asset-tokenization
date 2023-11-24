@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Facades\MultichainService;
 use App\Helpers\MessageHelper;
 use App\Models\AssetsOnSale;
+use App\Models\AssetsRequest;
 use Illuminate\Http\Request;
 
 class AssetOnSaleController extends Controller
@@ -43,7 +44,14 @@ class AssetOnSaleController extends Controller
             'asset' => 'required'
         ]);
 
-        $id = AssetsOnSale::where('asset', $request->get('asset'))->get()->first()?->id;
+        $asset = $request->get('asset');
+        $assetRequests = AssetsRequest::where('asset', $asset)->whereNotIn('status', [AssetsRequest::RESOLVED, AssetsRequest::REJECTED])->get()->count();
+
+        if ($assetRequests > 0) {
+            return redirect()->back()->with('errors', "You cannot remove this asset from sale as it has $assetRequests request(s) in pending");
+        }
+
+        $id = AssetsOnSale::where('asset', $asset)->get()->first()?->id;
 
         if (empty($id)) {
             return redirect()->back()->with('errors', MessageHelper::submissionFailure());
