@@ -37,8 +37,6 @@ class AssetTypeController extends Controller
             'alias' => StringHelper::hyphenated($request->input('name'))
         ]);
 
-        Session::flash('success', 'Asset Type created successfully');
-
-        return redirect()->route('create-asset-type');
+        return redirect()->back()->with('success', 'Asset Type created successfully');
     }
 }

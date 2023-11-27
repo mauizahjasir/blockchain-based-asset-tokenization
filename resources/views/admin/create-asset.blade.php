@@ -13,7 +13,7 @@
                         <div class="main-card mb-3 card">
                             <div class="card-header">Create Asset</div>
 
-                            <form method="POST" action="{{ route('create-asset') }}">
+                            <form method="POST" action="{{ route('assets.create') }}">
                                 @csrf
 
                                 <div class="form-group ml-3 mr-4 mt-2">

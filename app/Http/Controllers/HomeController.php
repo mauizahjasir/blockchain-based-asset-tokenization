@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Facades\MultichainService;
 use App\Models\User;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -19,28 +20,21 @@ class HomeController extends Controller
         $this->middleware('auth');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function index()
+    public function __invoke(Request $request): View
     {
-        $user = Auth::user();
-
-        return $user->isAdmin()
+        return $request->user()->isAdmin()
             ? $this->adminView()
             : $this->clientView();
     }
 
-    private function adminView()
+    private function adminView(): View
     {
         $information = MultichainService::getInfo();
 
         return view('admin.home', ['data' => $information]);
     }
 
-    private function clientView()
+    private function clientView(): View
     {
         /** @var User $user */
         $user = Auth::user();

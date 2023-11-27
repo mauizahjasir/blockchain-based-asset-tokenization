@@ -13,20 +13,6 @@ use Illuminate\Http\Request;
 
 class AssetsRequestController extends Controller
 {
-    public function index()
-    {
-        $assetsRequest = AssetsRequest::whereNotIn('status', [AssetsRequest::RESOLVED, AssetsRequest::REJECTED])->get();
-
-        return view('admin/assets-request', compact('assetsRequest'));
-    }
-
-    public function historicalData()
-    {
-        $assetsRequest = AssetsRequest::whereIn('status', [AssetsRequest::RESOLVED, AssetsRequest::REJECTED])->get();
-
-        return view('admin/assets-request-history', compact('assetsRequest'));
-    }
-
     public function requestPurchase(AssetsOnSale $assetOnSale, Request $request)
     {
         /** @var User $user */
@@ -54,114 +40,6 @@ class AssetsRequestController extends Controller
         return redirect()->back()->with('success', MessageHelper::submissionSuccess());
     }
 
-    public function requestApprove(AssetsRequest $assetRequest, Request $request)
-    {
-        if (in_array($assetRequest->status, [AssetsRequest::REJECTED_BY_BUYER, AssetsRequest::REJECTED_BY_OWNER])) {
-            return redirect()->back()->with('errors', 'The request has been rejected by collaborating parties');
-        }
-
-        $isValidPerson = MultichainService::isValidAddress($assetRequest->requestor->wallet_address);
-        $hasPermission = MultichainService::hasPermissions(['receive'], $assetRequest->requestor->wallet_address);
-        $user = $request->user();
-
-        if (!$isValidPerson) {
-            return redirect()->back()->with('errors', [MessageHelper::notAuthorizedUser()]);
-        }
-
-        if (!$hasPermission) {
-            return redirect()->back()->with('errors', [MessageHelper::doesNotHavePermission()]);
-        }
-
-        $txPayload = $assetRequest->request_payload;
-        $asset = MultichainService::assetInfo($assetRequest->asset);
-
-        $txHex = MultichainService::multichain()->createrawexchange($txPayload['txid'], $txPayload['vout'], [$asset['name'] => $asset['issueqty']]);
-        $decodedHex = MultichainService::multichain()->decoderawexchange($txHex);
-
-        if (empty($decodedHex) || !$decodedHex['cancomplete']) {
-            return redirect()->back()->with('errors', [MessageHelper::transactionFailure()]);
-        }
-
-        $lockedHex = MultichainService::multichain()->preparelockunspentfrom($user->wallet_address, [$asset['name'] => $asset['issueqty']]);
-        $appendedTx = MultichainService::multichain()->appendrawexchange($txHex, $lockedHex['txid'], $lockedHex['vout'], [config('multichain.currency') => $assetRequest->commit_amount]);
-        $txId = MultichainService::multichain()->sendrawtransaction($appendedTx['hex']);
-
-        if ($txId === null) {
-            return redirect()->back()->with('errors', [MessageHelper::transactionFailure()]);
-        }
-
-        MultichainService::sendAssetFrom($user->wallet_address, $assetRequest->owner->wallet_address, config('multichain.currency'), (float)$assetRequest->commit_amount);
-
-        Transaction::create([
-            'tx_hex' => $txId
-        ]);
-
-        AssetsOnSale::where('asset', $assetRequest->asset)
-            ->delete();
-
-        $assetRequest->status = AssetsRequest::RESOLVED;
-        $assetRequest->save();
-
-        return redirect()->route('asset-requests')->with([
-            'success' => 'Transaction has been successful',
-            'data' => "Transaction Hash: $txId"
-        ]);
-    }
-
-    public function adminRequestApprove(AssetsRequest $assetRequest, Request $request)
-    {
-        $isValidPerson = MultichainService::isValidAddress($assetRequest->requestor->wallet_address);
-        $hasPermission = MultichainService::hasPermissions(['receive'], $assetRequest->requestor->wallet_address);
-        $user = $request->user();
-
-        if (!$isValidPerson) {
-            return redirect()->back()->with('errors', [MessageHelper::notAuthorizedUser()]);
-        }
-
-        if (!$hasPermission) {
-            return redirect()->back()->with('errors', [MessageHelper::doesNotHavePermission()]);
-        }
-
-        $txPayload = $assetRequest->request_payload;
-        $asset = MultichainService::assetInfo($assetRequest->asset);
-
-        $txHex = MultichainService::multichain()->createrawexchange($txPayload['txid'], $txPayload['vout'], [$asset['name'] => $asset['issueqty']]);
-        $decodedHex = MultichainService::multichain()->decoderawexchange($txHex);
-
-        if (empty($decodedHex) || !$decodedHex['cancomplete']) {
-            return redirect()->back()->with('errors', [MessageHelper::transactionFailure()]);
-        }
-
-        $lockedHex = MultichainService::multichain()->preparelockunspentfrom($user->wallet_address, [$asset['name'] => $asset['issueqty']]);
-        $appendedTx = MultichainService::multichain()->appendrawexchange($txHex, $lockedHex['txid'], $lockedHex['vout'], [config('multichain.currency') => $assetRequest->commit_amount]);
-        $txId = MultichainService::multichain()->sendrawtransaction($appendedTx['hex']);
-
-        if ($txId === null) {
-            return redirect()->back()->with('errors', [MessageHelper::transactionFailure()]);
-        }
-
-        Transaction::create([
-            'tx_hex' => $txId
-        ]);
-
-        $assetRequest->status = AssetsRequest::RESOLVED;
-        $assetRequest->save();
-
-        $remainingRequests = AssetsRequest::where('owner_id', $user->id)->whereIn('status', [AssetsRequest::AWAITING_ADMINS_APPROVAL])->get();
-
-        foreach ($remainingRequests as $remReq) {
-            MultichainService::multichain()->lockunspent(true, [$remReq->request_payload]);
-
-            $remReq->status = AssetsRequest::REJECTED;
-            $remReq->save();
-        }
-
-        return redirect()->route('my-requests')->with([
-            'success' => 'Transaction has been successful',
-            'data' => "Transaction Hash: $txId",
-        ]);
-    }
-
     public function requestDetails(AssetsRequest $assetRequest, Request $request)
     {
         $user = $request->user();
@@ -169,38 +47,6 @@ class AssetsRequestController extends Controller
         $assetTransferred = collect(MultichainService::getAddressBalances($user->wallet_address))->where('name', $assetRequest->asset)->isNotEmpty();
 
         return view('admin.request-detail-form', compact('assetRequest', 'assetTransferred'));
-    }
-
-    public function adminRequestsDetails(AssetsRequest $assetRequest, Request $request)
-    {
-        $user = $request->user();
-
-        $assetTransferred = collect(MultichainService::getAddressBalances($user->wallet_address))->where('name', $assetRequest->asset)->isNotEmpty();
-
-        return view('admin.admin-request-detail-form', compact('assetRequest', 'assetTransferred'));
-    }
-
-    public function requestReject(AssetsRequest $assetRequest, Request $request)
-    {
-        $assetInfo = MultichainService::assetInfo($assetRequest->asset);
-        MultichainService::sendAssetFrom($request->user()->wallet_address, $assetRequest->owner->wallet_address, $assetRequest->asset, (int)$assetInfo['issueqty']);
-
-        MultichainService::multichain()->lockunspent(true, [$assetRequest->request_payload]);
-
-        $assetRequest->status = AssetsRequest::REJECTED;
-        $assetRequest->save();
-
-        return redirect()->back()->with('success', 'Request disapproved');
-    }
-
-    public function adminRequestReject(AssetsRequest $assetRequest, Request $request)
-    {
-        MultichainService::multichain()->lockunspent(true, [$assetRequest->request_payload]);
-
-        $assetRequest->status = AssetsRequest::REJECTED;
-        $assetRequest->save();
-
-        return redirect()->back()->with('success', 'Request disapproved');
     }
 
     public function bankAssetPurchase(Request $request)
@@ -242,12 +88,5 @@ class AssetsRequestController extends Controller
         ]);
 
         return redirect()->back()->with('success', MessageHelper::submissionSuccess());
-    }
-
-    public function adminRequests(Request $request)
-    {
-        $assetsRequest = AssetsRequest::whereNotIn('status', [AssetsRequest::RESOLVED, AssetsRequest::REJECTED])->whereIn('owner_id', [$request->user()->id])->get();
-
-        return view('admin/my-requests', compact('assetsRequest'));
     }
 }

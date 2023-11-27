@@ -11,7 +11,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="main-card mb-3 card">
-                            <div class="card-header">Pending Requests</div>
+                            <div class="card-header">Pending Transactions</div>
                             <div class="table-responsive">
                                 <table class="align-middle mb-0 table table-borderless table-striped table-hover">
                                     <thead>
@@ -53,11 +53,11 @@
                                                     <div class="badge badge-danger">Rejected</div>
                                                 @else
                                                     <form method="GET"
-                                                          action="{{ route('request-details', ['assetRequest' => $assetRequest->meta_id]) }}">
+                                                          action="{{ route('assets.transactions.detail', ['assetRequest' => $assetRequest->meta_id]) }}">
                                                         @csrf
                                                         <!-- Submit Button -->
                                                         <div class="mt-2">
-                                                            <button type="submit" class="btn btn-primary">Request Details</button>
+                                                            <button type="submit" class="btn btn-primary">View Details</button>
                                                         </div>
                                                     </form>
                                                 @endif

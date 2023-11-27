@@ -13,35 +13,6 @@ use Illuminate\Validation\Rule;
 
 class AssetController extends Controller
 {
-    public function index(Request $request)
-    {
-        $assets = MultichainService::multichain()->gettotalbalances();
-
-        foreach ($assets as &$asset) {
-            $assetDetails = MultichainService::assetInfo($asset['name']);
-
-            $asset['info'] = $assetDetails;
-        }
-
-        return view('admin.all-assets', compact('assets'));
-    }
-
-    public function adminAssets(Request $request)
-    {
-        // For admin
-        $adminAssets = MultichainService::getAddressBalances($request->user()->wallet_address);
-
-        $assets = collect($adminAssets)->reject(function ($item) {
-            return $item['name'] === config('multichain.currency');
-        })->map(function ($item) {
-            $assetDetails = MultichainService::assetInfo($item['name']);
-            $item['info'] = $assetDetails;
-            return $item;
-        });
-
-        return view('admin.my-assets', compact('assets'));
-    }
-
     public function clientAssets(Request $request)
     {
         // For admin
@@ -56,57 +27,6 @@ class AssetController extends Controller
         });
 
         return view('client.my-assets', compact('assets'));
-    }
-
-    public function createAssetForm()
-    {
-        $assetTypes = AssetType::all();
-
-        return view('admin.create-asset', compact('assetTypes'));
-    }
-
-    public function store(Request $request)
-    {
-        // Validate the input
-        $validator = Validator::make($request->all(), [
-            'name' => [
-                'required',
-                'string',
-                Rule::unique('assets', 'name'),
-            ],
-            'quantity' => 'required|integer',
-            'asset_type_id' => 'string',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()->back()->with('errors', $validator->errors()->all());
-        }
-
-        $name = $request->input('name', '');
-        $quantity = $request->input('quantity', 0);
-        $unit = $request->input('unit', 1);
-        $type = $request->input('asset_type_id');
-        $details = $request->input('details', []);
-        $user = $request->user();
-
-        $hasIssuePermission = MultichainService::hasPermissions(['issue'], $user->wallet_address);
-
-        if (!$hasIssuePermission) {
-            return redirect()->back()->with('errors', MessageHelper::doesNotHavePermission());
-        }
-
-        $customFields = array_merge($details, ['type' => AssetType::find($type)?->alias]);
-        $txId = MultichainService::issueAsset($user->wallet_address, StringHelper::hyphenated($name), $quantity, $unit, $customFields);
-
-        if ($txId === null) {
-            return redirect()->back()->with('errors', MessageHelper::submissionFailure());
-        }
-
-//        return redirect()->back()->with('success', MessageHelper::createSuccess('Asset'));
-        return redirect()->back()->with([
-            'success' => MessageHelper::createSuccess('Asset'),
-            'data' => "Response Hash: $txId"
-        ]);
     }
 
     public function bankAssets()

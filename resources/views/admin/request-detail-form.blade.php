@@ -33,7 +33,7 @@
                             </div>
 
                             <div class="row mt-2 ml-4">
-                                <form action="{{ route('request-approve', $assetRequest->meta_id) }}" method="POST">
+                                <form action="{{ route('assets.transactions.approve', $assetRequest->meta_id) }}" method="POST">
                                     @csrf
                                     <button type="submit"
                                             class="btn btn-success mr-2" {{ !$assetTransferred || $assetRequest->isPending() || in_array($assetRequest->status, [\App\Models\AssetsRequest::REJECTED_BY_OWNER, \App\Models\AssetsRequest::REJECTED_BY_BUYER])  ? 'disabled' : '' }}>
@@ -41,7 +41,7 @@
                                     </button>
                                 </form>
 
-                                <form action="{{ route('request-reject', $assetRequest->meta_id) }}" method="POST">
+                                <form action="{{ route('assets.transactions.reject', $assetRequest->meta_id) }}" method="POST">
                                     @csrf
                                     <button type="submit"
                                             class="btn btn-danger mr-2" {{ (!$assetTransferred || $assetRequest->isPending()) && !in_array($assetRequest->status, [\App\Models\AssetsRequest::REJECTED_BY_OWNER, \App\Models\AssetsRequest::REJECTED_BY_BUYER])  ? 'disabled' : '' }}>
@@ -49,7 +49,7 @@
                                     </button>
                                 </form>
 
-                                <a href="{{ route('asset-requests') }}" class="btn btn-secondary mb-4">Back</a>
+                                <a href="{{ route('assets.transactions') }}" class="btn btn-secondary mb-4">Back</a>
                             </div>
                         </div>
                     </div>

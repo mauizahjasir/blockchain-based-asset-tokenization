@@ -29,11 +29,11 @@
 
                                             <td>
                                                 <form method="GET"
-                                                      action="{{ route('admin-request-details', ['assetRequest' => $assetRequest->meta_id]) }}">
+                                                      action="{{ route('admin.requests.details', ['assetRequest' => $assetRequest->meta_id]) }}">
                                                     @csrf
                                                     <!-- Submit Button -->
                                                     <div class="mt-2">
-                                                        <button type="submit" class="btn btn-primary">Request Details
+                                                        <button type="submit" class="btn btn-primary">View Details
                                                         </button>
                                                     </div>
                                                 </form>

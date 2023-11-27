@@ -24,7 +24,7 @@
                             </div>
 
                             <div class="row mt-2 ml-4">
-                                <form action="{{ route('admin-request-approve', $assetRequest->meta_id) }}" method="POST">
+                                <form action="{{ route('admin.requests.approve', $assetRequest->meta_id) }}" method="POST">
                                     @csrf
                                     <button type="submit"
                                             class="btn btn-success mr-2">
@@ -32,7 +32,7 @@
                                     </button>
                                 </form>
 
-                                <form action="{{ route('admin-request-reject', $assetRequest->meta_id) }}" method="POST">
+                                <form action="{{ route('admin.requests.reject', $assetRequest->meta_id) }}" method="POST">
                                     @csrf
                                     <button type="submit"
                                             class="btn btn-danger mr-2">
@@ -40,7 +40,7 @@
                                     </button>
                                 </form>
 
-                                <a href="{{ route('my-requests') }}" class="btn btn-secondary mb-4">Back</a>
+                                <a href="{{ route('admin.requests') }}" class="btn btn-secondary mb-4">Back</a>
                             </div>
                         </div>
                     </div>
