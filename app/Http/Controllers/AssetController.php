@@ -29,13 +29,15 @@ class AssetController extends Controller
     public function adminAssets(Request $request)
     {
         // For admin
-        $assets = MultichainService::getAddressBalances($request->user()->wallet_address);
+        $adminAssets = MultichainService::getAddressBalances($request->user()->wallet_address);
 
-        foreach ($assets as &$asset) {
-            $assetDetails = MultichainService::assetInfo($asset['name']);
-
-            $asset['info'] = $assetDetails;
-        }
+        $assets = collect($adminAssets)->reject(function ($item) {
+            return $item['name'] === config('multichain.currency');
+        })->map(function ($item) {
+            $assetDetails = MultichainService::assetInfo($item['name']);
+            $item['info'] = $assetDetails;
+            return $item;
+        });
 
         return view('admin.my-assets', compact('assets'));
     }
@@ -73,7 +75,6 @@ class AssetController extends Controller
                 Rule::unique('assets', 'name'),
             ],
             'quantity' => 'required|integer',
-            'unit' => 'required|string',
             'asset_type_id' => 'string',
         ]);
 
@@ -83,7 +84,7 @@ class AssetController extends Controller
 
         $name = $request->input('name', '');
         $quantity = $request->input('quantity', 0);
-        $unit = $request->input('unit', 0);
+        $unit = $request->input('unit', 1);
         $type = $request->input('asset_type_id');
         $details = $request->input('details', []);
         $user = $request->user();
@@ -101,7 +102,11 @@ class AssetController extends Controller
             return redirect()->back()->with('errors', MessageHelper::submissionFailure());
         }
 
-        return redirect()->back()->with('success', MessageHelper::createSuccess('Asset'));
+//        return redirect()->back()->with('success', MessageHelper::createSuccess('Asset'));
+        return redirect()->back()->with([
+            'success' => MessageHelper::createSuccess('Asset'),
+            'data' => "Response Hash: $txId"
+        ]);
     }
 
     public function bankAssets()

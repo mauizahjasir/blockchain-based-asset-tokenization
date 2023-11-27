@@ -21,3 +21,11 @@
         @endif
     </div>
 @endif
+
+@if (Session::has('data'))
+    <div class="alert-container">
+        <div class="alert alert-success">
+            {{ Session::get('data') }}
+        </div>
+    </div>
+@endif

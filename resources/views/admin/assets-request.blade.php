@@ -57,9 +57,7 @@
                                                         @csrf
                                                         <!-- Submit Button -->
                                                         <div class="mt-2">
-                                                            <button type="submit" class="btn btn-primary">Verify
-                                                                Request
-                                                            </button>
+                                                            <button type="submit" class="btn btn-primary">Request Details</button>
                                                         </div>
                                                     </form>
                                                 @endif

@@ -53,9 +53,9 @@ class MultichainService implements IMultichainInterface
         return collect($this->multichainService->listpermissions($permission))->first();
     }
 
-    public function issueAsset($address, $name, $quantity = 0, $unit = 0, $customFields = [])
+    public function issueAsset($address, $name, $quantity = 0, $unit = 1, $customFields = [])
     {
-        return $this->multichainService->issue($address, ['name' => $name, 'open' => true], (int)$quantity, (float)$unit, 0, $customFields);
+        return $this->multichainService->issue($address, ['name' => $name, 'open' => true], (int)$quantity, (int)$unit, 0, $customFields);
     }
 
     public function sendAssetFrom($fromAddress, $toAddress, $name, $quantity = 0)

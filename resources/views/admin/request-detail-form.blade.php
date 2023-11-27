@@ -16,14 +16,13 @@
                                 <div class="ml-2 mt-2">
                                     <div class="mb-3"><b>Please review the following details and choose to accept or decline the request:</b></div>
 
-                                    <div><b>Requestor's name:</b> {{ $assetRequest->requestor->name }}</div>
-                                    <div><b>Owner's name:</b> {{ $assetRequest->owner->name }}</div>
-                                    <div><b>Requestor's wallet
-                                            address:</b> {{ $assetRequest->requestor->wallet_address }}
+                                    <div><b>Requestor's name (Buyer):</b> {{ $assetRequest->requestor->name }}</div>
+                                    <div><b>Owner's name (Sender):</b> {{ $assetRequest->owner->name }}</div>
+                                    <div><b>Buyer's wallet address:</b> {{ $assetRequest->requestor->wallet_address }}
                                     </div>
-                                    <div><b>Owner's wallet address:</b> {{ $assetRequest->owner->wallet_address }}</div>
-                                    <div><b>Amount committed by requestor:</b> {{ $assetRequest->commit_amount }}</div>
-                                    <div><b>Has the owner transferred asset to my wallet? </b>
+                                    <div><b>Seller's wallet address:</b> {{ $assetRequest->owner->wallet_address }}</div>
+                                    <div><b>Amount committed by buyer:</b> {{ $assetRequest->commit_amount }}</div>
+                                    <div><b>Has the seller transferred asset to my wallet? </b>
                                         @if ($assetTransferred)
                                             <div class="badge badge-success">Successfully transferred</div>
                                         @else

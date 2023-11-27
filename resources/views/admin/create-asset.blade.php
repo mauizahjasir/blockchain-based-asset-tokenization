@@ -26,10 +26,10 @@
                                     <input type="number" name="quantity" id="quantity" class="form-control" required>
                                 </div>
 
-                                <div class="form-group ml-3 mr-4 mt-2">
+                                {{--<div class="form-group ml-3 mr-4 mt-2">
                                     <label for="unit">Asset Unit</label>
                                     <input type="text" name="unit" id="unit" class="form-control" required>
-                                </div>
+                                </div>--}}
 
                                 <div class="form-group ml-3 mr-4 mt-2">
                                     <label for="asset_type_id">Asset Type</label>

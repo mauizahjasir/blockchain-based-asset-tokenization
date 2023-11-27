@@ -68,6 +68,9 @@
 
                 <li class="app-sidebar__heading">Assets</li>
                 <li>
+                    <a href="{{ route('my-assets') }}" class="{{ Request::is('multichain/admin/my-assets') ? 'mm-active' : '' }}">
+                        My Assets
+                    </a>
                     <a href="{{ route('create-asset-type') }}" class="{{ Request::is('multichain/assets/create-asset-type') ? 'mm-active' : '' }}">
                         Create Asset Type
                     </a>
