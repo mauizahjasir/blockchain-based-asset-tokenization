@@ -17,39 +17,30 @@
                                     <div class="mb-3"><b>Please review the following details and choose to accept or decline the request:</b></div>
 
                                     <div><b>Requestor's name (Buyer):</b> {{ $assetRequest->requestor->name }}</div>
-                                    <div><b>Owner's name (Sender):</b> {{ $assetRequest->owner->name }}</div>
                                     <div><b>Buyer's wallet address:</b> {{ $assetRequest->requestor->wallet_address }}
                                     </div>
-                                    <div><b>Seller's wallet address:</b> {{ $assetRequest->owner->wallet_address }}</div>
                                     <div><b>Amount committed by buyer:</b> {{ $assetRequest->commit_amount }}</div>
-                                    <div><b>Has the seller transferred asset to my wallet? </b>
-                                        @if ($assetTransferred)
-                                            <div class="badge badge-success">Successfully transferred</div>
-                                        @else
-                                            <div class="badge badge-danger">Not transferred</div>
-                                        @endif
-                                    </div>
                                 </div>
                             </div>
 
                             <div class="row mt-2 ml-4">
-                                <form action="{{ route('request-approve', $assetRequest->meta_id) }}" method="POST">
+                                <form action="{{ route('admin-request-approve', $assetRequest->meta_id) }}" method="POST">
                                     @csrf
                                     <button type="submit"
-                                            class="btn btn-success mr-2" {{ !$assetTransferred || $assetRequest->isPending() || in_array($assetRequest->status, [\App\Models\AssetsRequest::REJECTED_BY_OWNER, \App\Models\AssetsRequest::REJECTED_BY_BUYER])  ? 'disabled' : '' }}>
+                                            class="btn btn-success mr-2">
                                         Approve
                                     </button>
                                 </form>
 
-                                <form action="{{ route('request-reject', $assetRequest->meta_id) }}" method="POST">
+                                <form action="{{ route('admin-request-reject', $assetRequest->meta_id) }}" method="POST">
                                     @csrf
                                     <button type="submit"
-                                            class="btn btn-danger mr-2" {{ (!$assetTransferred || $assetRequest->isPending()) && !in_array($assetRequest->status, [\App\Models\AssetsRequest::REJECTED_BY_OWNER, \App\Models\AssetsRequest::REJECTED_BY_BUYER])  ? 'disabled' : '' }}>
+                                            class="btn btn-danger mr-2">
                                         Reject & Revert
                                     </button>
                                 </form>
 
-                                <a href="{{ route('asset-requests') }}" class="btn btn-secondary mb-4">Back</a>
+                                <a href="{{ route('my-requests') }}" class="btn btn-secondary mb-4">Back</a>
                             </div>
                         </div>
                     </div>
@@ -60,3 +51,4 @@
     </div>
 </div>
 </body>
+

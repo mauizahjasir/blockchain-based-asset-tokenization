@@ -17,6 +17,7 @@
                                     <thead>
                                     <tr>
                                         <th>Request for</th>
+                                        <th>Requested By</th>
                                         <th>Your Approval</th>
                                         <th>Requestor's Approval</th>
                                         <th>Admin's Approval</th>
@@ -27,6 +28,7 @@
                                     @foreach ($assetsRequest as $assetRequest)
                                         <tr>
                                             <td>{{ $assetRequest->asset }}</td>
+                                            <td>{{ $assetRequest->requestor->name }}</td>
                                             <td>
                                                 @if($assetRequest->isAwaitingOwnersApproval())
                                                     <div class="row">

@@ -44,9 +44,14 @@ class AssetsRequest extends Model
         return $this->belongsTo(User::class, 'owner_id', 'id');
     }
 
+    public static function pendingTransactions()
+    {
+        return static::whereNotIn('status', [static::RESOLVED, static::REJECTED])->whereNotIn('owner_id', [User::adminId()])->get();
+    }
+
     public static function pendingRequests()
     {
-        return static::whereNotIn('status', [static::RESOLVED, static::REJECTED])->get();
+        return static::whereNotIn('status', [static::RESOLVED, static::REJECTED])->whereIn('owner_id', [User::adminId()])->get();
     }
 
     public static function incomingRequests()

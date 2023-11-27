@@ -17,6 +17,7 @@
                                     <thead>
                                     <tr>
                                         <th>Request for</th>
+                                        <th>To</th>
                                         <th>Status</th>
                                     </tr>
                                     </thead>
@@ -24,6 +25,7 @@
                                     @foreach ($assetsRequest as $assetRequest)
                                         <tr>
                                             <td>{{ $assetRequest->asset }}</td>
+                                            <td>{{ $assetRequest->owner->name }}</td>
                                             <td>
                                                 @if($assetRequest->isResolved())
                                                     <div class="badge badge-success">Approved</div>

@@ -90,6 +90,11 @@ class User extends Authenticatable
         return static::where('user_type', Role::ADMIN)->get()->first()->wallet_address;
     }
 
+    public static function adminId()
+    {
+        return static::where('user_type', Role::ADMIN)->get()->first()->id;
+    }
+
     public function assetsCount()
     {
         $assets = MultichainService::getAddressBalances($this->wallet_address);
@@ -101,11 +106,13 @@ class User extends Authenticatable
 
     public static function newUserRequests()
     {
-        return static::whereNull('wallet_address')->get();
+        return static::whereNull('wallet_address')->orWhere('wallet_address', '=', '')->get();
     }
 
     public function canSubmitPurchaseRequest($asset)
     {
-        return $this->assetsRequests->where('asset', $asset)->whereNotIn('status', [AssetsRequest::REJECTED, AssetsRequest::RESOLVED])->isNotEmpty();
+        return $this->assetsRequests->where('asset', $asset)
+            ->whereNotIn('status', [AssetsRequest::REJECTED, AssetsRequest::RESOLVED])
+            ->isNotEmpty();
     }
 }

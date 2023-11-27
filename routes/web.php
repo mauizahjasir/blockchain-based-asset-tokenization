@@ -45,7 +45,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/remove-from-sale', [AssetOnSaleController::class, 'removeFromSale'])->name('remove-from-sale');
         Route::get('/assets-on-sale', [AssetOnSaleController::class, 'assetsOnSalePage'])->name('assets-on-sale');
         Route::post('/{assetOnSale}/request-purchase', [AssetsRequestController::class, 'requestPurchase'])->name('request-purchase');
-        Route::post('/{assetOnSale}/request-purchase', [AssetsRequestController::class, 'requestPurchase'])->name('request-purchase');
+        Route::post('/bank/assets/request-purchase', [AssetsRequestController::class, 'bankAssetPurchase'])->name('bank-request-purchase');
         Route::get('/request/outgoing-requests', [OutgoingRequestController::class, 'index'])->name('outgoing-requests');
         Route::get('/request/outgoing-requests/history', [OutgoingRequestController::class, 'historicalData'])->name('outgoing-requests-history');
         Route::get('/request/incoming-requests', [IncomingRequestController::class, 'index'])->name('incoming-requests');
@@ -77,10 +77,14 @@ Route::middleware(['auth'])->group(function () {
         Route::post('assets/create-asset-type', [AssetTypeController::class, 'store'])->name('create-asset-type');
 
         Route::get('assets/requests', [AssetsRequestController::class, 'index'])->name('asset-requests');
+        Route::get('assets/my-requests', [AssetsRequestController::class, 'adminRequests'])->name('my-requests');
         Route::get('assets/requests/history', [AssetsRequestController::class, 'historicalData'])->name('asset-requests-history');
         Route::post('assets/requests/{assetRequest}/approve', [AssetsRequestController::class, 'requestApprove'])->name('request-approve');
+        Route::post('assets/admin/requests/{assetRequest}/approve', [AssetsRequestController::class, 'adminRequestApprove'])->name('admin-request-approve');
         Route::post('assets/requests/{assetRequest}/reject', [AssetsRequestController::class, 'requestReject'])->name('request-reject');
+        Route::post('assets/admin/requests/{assetRequest}/reject', [AssetsRequestController::class, 'adminRequestReject'])->name('admin-request-reject');
         Route::get('assets/requests/{assetRequest}/details', [AssetsRequestController::class, 'requestDetails'])->name('request-details');
+        Route::get('assets/admin/requests/{assetRequest}/details', [AssetsRequestController::class, 'adminRequestsDetails'])->name('admin-request-details');
         Route::get('assets/requests/{assetRequest}/details', [AssetsRequestController::class, 'requestDetails'])->name('request-details');
     });
 

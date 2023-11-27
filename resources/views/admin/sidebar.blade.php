@@ -60,7 +60,8 @@
 
                         <span class="badge">{{ \App\Models\User::newUserRequests()->count() }}</span>
                     </a>
-                    <a href="{{ route('manage-permissions') }}" class="{{ Request::is('multichain/manage-permissions') ? 'mm-active' : '' }}">
+                    <a href="{{ route('manage-permissions') }}"
+                       class="{{ Request::is('multichain/manage-permissions') ? 'mm-active' : '' }}">
                         Manage Permissions
                     </a>
 
@@ -68,28 +69,40 @@
 
                 <li class="app-sidebar__heading">Assets</li>
                 <li>
-                    <a href="{{ route('my-assets') }}" class="{{ Request::is('multichain/admin/my-assets') ? 'mm-active' : '' }}">
+                    <a href="{{ route('my-assets') }}"
+                       class="{{ Request::is('multichain/admin/my-assets') ? 'mm-active' : '' }}">
                         My Assets
                     </a>
-                    <a href="{{ route('create-asset-type') }}" class="{{ Request::is('multichain/assets/create-asset-type') ? 'mm-active' : '' }}">
+                    <a href="{{ route('create-asset-type') }}"
+                       class="{{ Request::is('multichain/assets/create-asset-type') ? 'mm-active' : '' }}">
                         Create Asset Type
                     </a>
-                    <a href="{{ route('create-asset') }}" class="{{ Request::is('multichain/assets/create-asset') ? 'mm-active' : '' }}">
+                    <a href="{{ route('create-asset') }}"
+                       class="{{ Request::is('multichain/assets/create-asset') ? 'mm-active' : '' }}">
                         Create Asset
                     </a>
-                </li>
 
-                <li class="app-sidebar__heading">Requests</li>
-                <li>
-                    <a href="{{ route('asset-requests') }}" class="{{ Request::is('multichain/assets/requests') ? 'mm-active' : '' }}">
-                        Pending
+                    <a href="{{ route('my-requests') }}"
+                       class="{{ Request::is('multichain/assets/my-requests') ? 'mm-active' : '' }}">
+                        Requests
 
                         <span class="badge">{{ \App\Models\AssetsRequest::pendingRequests()->count() }}</span>
                     </a>
                 </li>
 
+                <li class="app-sidebar__heading">Transactions</li>
                 <li>
-                    <a href="{{ route('asset-requests-history') }}" class="{{ Request::is('multichain/assets/requests/history') ? 'mm-active' : '' }}">
+                    <a href="{{ route('asset-requests') }}"
+                       class="{{ Request::is('multichain/assets/requests') ? 'mm-active' : '' }}">
+                        Pending
+
+                        <span class="badge">{{ \App\Models\AssetsRequest::pendingTransactions()->count() }}</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('asset-requests-history') }}"
+                       class="{{ Request::is('multichain/assets/requests/history') ? 'mm-active' : '' }}">
                         Completed
                     </a>
                 </li>

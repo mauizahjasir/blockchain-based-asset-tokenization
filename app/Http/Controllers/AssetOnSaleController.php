@@ -65,7 +65,12 @@ class AssetOnSaleController extends Controller
     public function assetsOnSalePage(Request $request)
     {
         $user = $request->user();
-        $assets = AssetsOnSale::where('owner_id', '!=', $user->id)->where('status', AssetsOnSale::OPEN)->get()->all();
+        $assets = AssetsOnSale::where('owner_id', '!=', $user->id)->where('status', AssetsOnSale::OPEN)->get()
+            ->reject(function (AssetsOnSale $assetsOnSale) {
+                return AssetsRequest::where('asset', $assetsOnSale->asset)->where('status', '=', AssetsRequest::AWAITING_OWNER_APPROVAL)
+                    ->get()
+                    ->isEmpty();
+            });
 
         foreach ($assets as &$asset) {
             $assetDetails = MultichainService::assetInfo($asset->asset);

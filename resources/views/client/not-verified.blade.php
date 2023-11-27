@@ -1,23 +1,19 @@
 @extends('layouts.app')
+<body>
+<div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+    @include('client.topbar')
 
-@section('content')
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">{{ __('Dashboard') }}</div>
 
-                    <div class="card-body">
-                        @if (session('status'))
-                            <div class="alert alert-success" role="alert">
-                                {{ session('status') }}
-                            </div>
-                        @endif
+    @include('alert')
+    <div class="card mt-3">
+        <div class="card-header">{{ __('Dashboard') }}</div>
 
-                        <div>Your account is not verified yet. Please contact network administrator.</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="card-body">
+            <div>Your account is not verified yet. Please contact network administrator.</div>
         </div>
-@endsection
+    </div>
+
+
+</div>
+</body>
+

@@ -39,6 +39,13 @@ class IncomingRequestController extends Controller
         $assetRequest->status = AssetsRequest::AWAITING_BUYERS_APPROVAL;
         $assetRequest->save();
 
+        $remainingRequests = AssetsRequest::where('asset', $assetRequest->asset)->whereIn('status', [AssetsRequest::AWAITING_OWNER_APPROVAL])->get();
+
+        foreach ($remainingRequests as $remReq) {
+            $remReq->status = AssetsRequest::REJECTED;
+            $remReq->save();
+        }
+
         return redirect()->back()->with('success', "Your asset has been transferred to Bank's wallet and awaiting approval");
     }
 

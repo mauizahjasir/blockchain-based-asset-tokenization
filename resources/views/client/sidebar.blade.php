@@ -51,7 +51,7 @@
                     </a>
                 </li>
 
-                <li class="app-sidebar__heading">Assets</li>
+                <li class="app-sidebar__heading">My Assets</li>
                 <li>
                     <a href="{{ route('client-assets') }}"
                        class="{{ Request::is('client/my-assets') ? 'mm-active' : '' }}">
@@ -64,7 +64,15 @@
                     </a>
                 </li>
 
-                <li class="app-sidebar__heading">Requests</li>
+                <li class="app-sidebar__heading">Bank Assets</li>
+                <li>
+                    <a href="{{ route('bank-assets') }}"
+                       class="{{ Request::is('client/bank-assets') ? 'mm-active' : '' }}">
+                        Buy
+                    </a>
+                </li>
+
+                <li class="app-sidebar__heading">My Requests</li>
 
                 <li>
                     Incoming

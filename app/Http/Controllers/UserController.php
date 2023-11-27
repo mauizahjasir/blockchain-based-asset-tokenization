@@ -13,7 +13,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::whereNull('wallet_address')->get()->all();
+        $users = User::whereNull('wallet_address')->orWhere('wallet_address', '=', '')->get()->all();
 
         return view('admin.new-users', compact('users'));
     }
@@ -27,6 +27,10 @@ class UserController extends Controller
 
     public function approve(User $user, Request $request)
     {
+        if ($request->user()->walletBalance(false) < (int)config('multichain.default_amount')) {
+            return redirect()->back()->with('errors', 'You do not have enough wallet balance to approve this user.');
+        }
+
         $newAddress = MultichainService::getNewAddress();
 
         if (empty($newAddress)) {
@@ -34,15 +38,17 @@ class UserController extends Controller
         }
 
         MultichainService::grantPermission($newAddress, 'receive');
+        MultichainService::grantPermission($newAddress, 'send');
         MultichainService::sendAssetFrom($request->user()->wallet_address, $newAddress, config('multichain.currency'), (int)config('multichain.default_amount'));
 
         $user->wallet_address = $newAddress;
         $user->email_verified_at = Carbon::now();
         $user->save();
 
-        Session::flash('success', 'User has been approved');
-
-        return redirect()->route('new-users');
+        return redirect()->back()->with([
+            'success' => 'User has been approved',
+            'data' => "Wallet Address: $newAddress"
+        ]);
     }
 
     public function grantPermission(User $user, Request $request)
