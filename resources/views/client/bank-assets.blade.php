@@ -31,7 +31,7 @@
                                             <td>{{ $asset['info'] && $asset['info']['units'] ? $asset['info']['units'] : '' }}</td>
                                             <td>{{ $asset['info'] && $asset['info']['details'] ? $asset['info']['details']['type'] ?? '' : '' }}</td>
                                             <td>
-                                                <form method="POST" action="{{ route('bank-request-purchase', ['asset' => $asset['name']]) }}">
+                                                <form method="POST" action="{{ route('bank.assets.purchase', ['asset' => $asset['name']]) }}">
                                                     @csrf
                                                     <!-- Submit Button -->
                                                     <button type="submit" class="btn btn-primary mt-2 {{ \Illuminate\Support\Facades\Auth::user()->canSubmitPurchaseRequest($asset['name'])  ? 'disabled' : '' }}">Submit Purchase Request</button>

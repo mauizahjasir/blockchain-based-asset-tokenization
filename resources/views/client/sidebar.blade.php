@@ -53,21 +53,21 @@
 
                 <li class="app-sidebar__heading">My Assets</li>
                 <li>
-                    <a href="{{ route('client-assets') }}"
-                       class="{{ Request::is('client/my-assets') ? 'mm-active' : '' }}">
+                    <a href="{{ route('client.assets') }}"
+                       class="{{ Request::is('client/assets') ? 'mm-active' : '' }}">
                         Sell
                     </a>
 
-                    <a href="{{ route('assets-on-sale') }}"
-                       class="{{ Request::is('assets/assets-on-sale') ? 'mm-active' : '' }}">
+                    <a href="{{ route('assets.on-sale') }}"
+                       class="{{ Request::is('client/assets/on-sale') ? 'mm-active' : '' }}">
                         Buy
                     </a>
                 </li>
 
                 <li class="app-sidebar__heading">Bank Assets</li>
                 <li>
-                    <a href="{{ route('bank-assets') }}"
-                       class="{{ Request::is('client/bank-assets') ? 'mm-active' : '' }}">
+                    <a href="{{ route('bank.assets') }}"
+                       class="{{ Request::is('client/bank/assets') ? 'mm-active' : '' }}">
                         Buy
                     </a>
                 </li>
@@ -80,7 +80,7 @@
                 <ul>
                     <li>
                         <a href="{{ route('incoming-requests') }}"
-                           class="{{ Request::is('assets/request/incoming-requests') ? 'mm-active' : '' }}">
+                           class="{{ Request::is('client/assets/request/incoming-requests') ? 'mm-active' : '' }}">
                             In Process
                             <span class="badge">{{ \App\Models\AssetsRequest::incomingRequests()->count() }}</span>
                         </a>
@@ -88,7 +88,7 @@
 
                     <li>
                         <a href="{{ route('incoming-requests-history') }}"
-                           class="{{ Request::is('assets/request/incoming-requests/history') ? 'mm-active' : '' }}">
+                           class="{{ Request::is('client/assets/request/incoming-requests/history') ? 'mm-active' : '' }}">
                             Completed
                         </a>
                     </li>
@@ -100,7 +100,7 @@
                 <ul>
                     <li>
                         <a href="{{ route('outgoing-requests') }}"
-                           class="{{ Request::is('assets/request/outgoing-requests') ? 'mm-active' : '' }}">
+                           class="{{ Request::is('client/assets/request/outgoing-requests') ? 'mm-active' : '' }}">
                             In Process
                             <span class="badge">{{ \App\Models\AssetsRequest::outgoingRequests()->count() }}</span>
                         </a>
@@ -108,7 +108,7 @@
 
                     <li>
                         <a href="{{ route('outgoing-requests-history') }}"
-                           class="{{ Request::is('assets/request/outgoing-requests/history') ? 'mm-active' : '' }}">
+                           class="{{ Request::is('client/assets/request/outgoing-requests/history') ? 'mm-active' : '' }}">
                             Completed
                         </a>
                     </li>

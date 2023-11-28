@@ -2,12 +2,13 @@
 
 use App\Http\Controllers\AdminAssetController;
 use App\Http\Controllers\AdminAssetsRequestController;
-use App\Http\Controllers\AssetController;
+use App\Http\Controllers\BankAssetController;
 use App\Http\Controllers\AssetOnSaleController;
 use App\Http\Controllers\AssetTypeController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\AssetsRequestController;
+use App\Http\Controllers\ClientAssetController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IncomingRequestController;
 use App\Http\Controllers\PermissionController;
@@ -42,29 +43,31 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/home', HomeController::class)->name('home');
     Route::get('/', LoginController::class);
 
-    Route::prefix('assets')->group(function () {
-        Route::post('/put-on-sale', [AssetOnSaleController::class, 'putOnSale'])->name('put-on-sale');
-        Route::post('/remove-from-sale', [AssetOnSaleController::class, 'removeFromSale'])->name('remove-from-sale');
-        Route::get('/assets-on-sale', [AssetOnSaleController::class, 'assetsOnSalePage'])->name('assets-on-sale');
-        Route::post('/{assetOnSale}/request-purchase', [AssetsRequestController::class, 'requestPurchase'])->name('request-purchase');
-        Route::post('/bank/assets/request-purchase', [AssetsRequestController::class, 'bankAssetPurchase'])->name('bank-request-purchase');
-        Route::get('/request/outgoing-requests', [OutgoingRequestController::class, 'index'])->name('outgoing-requests');
-        Route::get('/request/outgoing-requests/history', [OutgoingRequestController::class, 'historicalData'])->name('outgoing-requests-history');
-        Route::get('/request/incoming-requests', [IncomingRequestController::class, 'index'])->name('incoming-requests');
-        Route::get('/request/incoming-requests/history', [IncomingRequestController::class, 'historicalData'])->name('incoming-requests-history');
-        Route::post('/request/incoming-requests/{assetRequest}/approve', [IncomingRequestController::class, 'approve'])->name('incoming-requests-approve');
-        Route::post('/request/incoming-requests/{assetRequest}/reject', [IncomingRequestController::class, 'reject'])->name('incoming-requests-reject');
-        Route::post('/request/outgoing-requests/{assetRequest}/approve', [OutgoingRequestController::class, 'approve'])->name('outgoing-requests-approve');
-        Route::post('/request/outgoing-requests/{assetRequest}/reject', [OutgoingRequestController::class, 'reject'])->name('outgoing-requests-reject');
-    });
-
+    /** Client Routes */
     Route::prefix('client')->group(function () {
-        Route::get('/bank-assets', [AssetController::class, 'bankAssets'])->name('bank-assets');
-        Route::get('/my-assets', [AssetController::class, 'clientAssets'])->name('client-assets');
+        Route::get('/bank/assets', [BankAssetController::class, 'index'])->name('bank.assets');
+
+        Route::prefix('assets')->group(function () {
+            Route::get('/', [ClientAssetController::class, 'index'])->name('client.assets');
+
+            Route::get('/on-sale', [AssetOnSaleController::class, 'index'])->name('assets.on-sale');
+            Route::post('/put-on-sale', [AssetOnSaleController::class, 'putOnSale'])->name('put-on-sale');
+            Route::post('/remove-from-sale', [AssetOnSaleController::class, 'removeFromSale'])->name('remove-from-sale');
+            Route::post('/{assetOnSale}/request-purchase', [AssetsRequestController::class, 'requestPurchase'])->name('request-purchase');
+            Route::post('/bank/request-purchase', [AssetsRequestController::class, 'requestBankAssetPurchase'])->name('bank.assets.purchase');
+
+            Route::get('/request/outgoing-requests', [OutgoingRequestController::class, 'index'])->name('outgoing-requests');
+            Route::get('/request/outgoing-requests/history', [OutgoingRequestController::class, 'historicalData'])->name('outgoing-requests-history');
+            Route::get('/request/incoming-requests', [IncomingRequestController::class, 'index'])->name('incoming-requests');
+            Route::get('/request/incoming-requests/history', [IncomingRequestController::class, 'historicalData'])->name('incoming-requests-history');
+            Route::post('/request/incoming-requests/{assetRequest}/approve', [IncomingRequestController::class, 'approve'])->name('incoming-requests-approve');
+            Route::post('/request/incoming-requests/{assetRequest}/reject', [IncomingRequestController::class, 'reject'])->name('incoming-requests-reject');
+            Route::post('/request/outgoing-requests/{assetRequest}/approve', [OutgoingRequestController::class, 'approve'])->name('outgoing-requests-approve');
+            Route::post('/request/outgoing-requests/{assetRequest}/reject', [OutgoingRequestController::class, 'reject'])->name('outgoing-requests-reject');
+        });
     });
 
-    //...................................//
-
+    /** Admin Routes */
     Route::prefix('admin')->middleware(['admin'])->group(function () {
         Route::get('users', [UserController::class, 'index'])->name('all-users');
         Route::get('new-users', [UserController::class, 'newUsers'])->name('new-users');
@@ -101,5 +104,4 @@ Route::middleware(['auth'])->group(function () {
             });
         });
     });
-
 });

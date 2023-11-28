@@ -11,6 +11,24 @@ use Illuminate\Http\Request;
 
 class AssetOnSaleController extends Controller
 {
+    public function index(Request $request)
+    {
+        $user = $request->user();
+        $assets = AssetsOnSale::where('owner_id', '!=', $user->id)->where('status', AssetsOnSale::OPEN)->get()
+            ->reject(function (AssetsOnSale $assetsOnSale) {
+                return AssetsRequest::where('asset', $assetsOnSale->asset)->where('status', '=', AssetsRequest::AWAITING_OWNER_APPROVAL)
+                    ->get()
+                    ->isEmpty();
+            });
+
+        foreach ($assets as &$asset) {
+            $assetDetails = MultichainService::assetInfo($asset->asset);
+            $asset->setAttribute('info', $assetDetails);
+        }
+
+        return view('client.assets-on-sale', compact('assets'));
+    }
+
     public function putOnSale(Request $request)
     {
         $request->validate([
@@ -60,23 +78,5 @@ class AssetOnSaleController extends Controller
         AssetsOnSale::destroy($id);
 
         return redirect()->back()->with('success', 'Status changed successfully');
-    }
-
-    public function assetsOnSalePage(Request $request)
-    {
-        $user = $request->user();
-        $assets = AssetsOnSale::where('owner_id', '!=', $user->id)->where('status', AssetsOnSale::OPEN)->get()
-            ->reject(function (AssetsOnSale $assetsOnSale) {
-                return AssetsRequest::where('asset', $assetsOnSale->asset)->where('status', '=', AssetsRequest::AWAITING_OWNER_APPROVAL)
-                    ->get()
-                    ->isEmpty();
-            });
-
-        foreach ($assets as &$asset) {
-            $assetDetails = MultichainService::assetInfo($asset->asset);
-            $asset->setAttribute('info', $assetDetails);
-        }
-
-        return view('client.assets-on-sale', compact('assets'));
     }
 }

@@ -9,11 +9,12 @@ use App\Models\AssetsRequest;
 use App\Models\Role;
 use App\Models\Transaction;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class AssetsRequestController extends Controller
 {
-    public function requestPurchase(AssetsOnSale $assetOnSale, Request $request)
+    public function requestPurchase(AssetsOnSale $assetOnSale, Request $request): RedirectResponse
     {
         /** @var User $user */
         $user = $request->user();
@@ -49,7 +50,7 @@ class AssetsRequestController extends Controller
         return view('admin.request-detail-form', compact('assetRequest', 'assetTransferred'));
     }
 
-    public function bankAssetPurchase(Request $request)
+    public function requestBankAssetPurchase(Request $request): RedirectResponse
     {
         $request->validate(['asset' => 'required']);
         $asset = $request->input('asset');
