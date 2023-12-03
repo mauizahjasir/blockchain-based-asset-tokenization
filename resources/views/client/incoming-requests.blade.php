@@ -63,6 +63,8 @@
                                             <td>
                                                 @if($assetRequest->isRejectedByOwner())
                                                     <div class="badge badge-danger">Rejected by Owner</div>
+                                                @elseif($assetRequest->isRejectedByBuyer())
+                                                    <div class="badge badge-danger">Rejected By Buyer</div>
                                                 @elseif($assetRequest->isAwaitingRequestorsApproval())
                                                     <div class="badge badge-warning">Pending</div>
                                                 @else
