@@ -46,6 +46,7 @@ Route::middleware(['auth'])->group(function () {
     /** Client Routes */
     Route::prefix('client')->group(function () {
         Route::get('/bank/assets', [BankAssetController::class, 'index'])->name('bank.assets');
+        Route::post('/bank/assets/request-purchase', [AssetsRequestController::class, 'requestBankAssetPurchase'])->name('bank-assets-purchase');
 
         Route::prefix('assets')->group(function () {
             Route::get('/', [ClientAssetController::class, 'index'])->name('client.assets');
@@ -54,7 +55,6 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/put-on-sale', [AssetOnSaleController::class, 'putOnSale'])->name('put-on-sale');
             Route::post('/remove-from-sale', [AssetOnSaleController::class, 'removeFromSale'])->name('remove-from-sale');
             Route::post('/{assetOnSale}/request-purchase', [AssetsRequestController::class, 'requestPurchase'])->name('request-purchase');
-            Route::post('/bank/request-purchase', [AssetsRequestController::class, 'requestBankAssetPurchase'])->name('bank.assets.purchase');
 
             Route::get('/request/outgoing-requests', [OutgoingRequestController::class, 'index'])->name('outgoing-requests');
             Route::get('/request/outgoing-requests/history', [OutgoingRequestController::class, 'historicalData'])->name('outgoing-requests-history');

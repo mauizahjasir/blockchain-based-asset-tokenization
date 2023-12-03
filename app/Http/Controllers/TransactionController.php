@@ -83,4 +83,13 @@ class TransactionController extends Controller
 
         return redirect()->back()->with('success', 'Request disapproved');
     }
+
+    public function requestDetails(AssetsRequest $assetRequest, Request $request)
+    {
+        $user = $request->user();
+
+        $assetTransferred = collect(MultichainService::getAddressBalances($user->wallet_address))->where('name', $assetRequest->asset)->isNotEmpty();
+
+        return view('admin.request-detail-form', compact('assetRequest', 'assetTransferred'));
+    }
 }

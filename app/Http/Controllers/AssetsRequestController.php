@@ -6,8 +6,6 @@ use App\Facades\MultichainService;
 use App\Helpers\MessageHelper;
 use App\Models\AssetsOnSale;
 use App\Models\AssetsRequest;
-use App\Models\Role;
-use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -39,15 +37,6 @@ class AssetsRequestController extends Controller
         ]);
 
         return redirect()->back()->with('success', MessageHelper::submissionSuccess());
-    }
-
-    public function requestDetails(AssetsRequest $assetRequest, Request $request)
-    {
-        $user = $request->user();
-
-        $assetTransferred = collect(MultichainService::getAddressBalances($user->wallet_address))->where('name', $assetRequest->asset)->isNotEmpty();
-
-        return view('admin.request-detail-form', compact('assetRequest', 'assetTransferred'));
     }
 
     public function requestBankAssetPurchase(Request $request): RedirectResponse

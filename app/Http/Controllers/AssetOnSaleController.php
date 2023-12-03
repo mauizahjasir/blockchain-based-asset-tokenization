@@ -16,9 +16,10 @@ class AssetOnSaleController extends Controller
         $user = $request->user();
         $assets = AssetsOnSale::where('owner_id', '!=', $user->id)->where('status', AssetsOnSale::OPEN)->get()
             ->reject(function (AssetsOnSale $assetsOnSale) {
-                return AssetsRequest::where('asset', $assetsOnSale->asset)->where('status', '=', AssetsRequest::AWAITING_OWNER_APPROVAL)
+                return AssetsRequest::where('asset', $assetsOnSale->asset)
+                    ->whereIn('status', [AssetsRequest::AWAITING_OWNER_APPROVAL, AssetsRequest::AWAITING_ADMINS_APPROVAL, AssetsRequest::AWAITING_BUYERS_APPROVAL])
                     ->get()
-                    ->isEmpty();
+                    ->isNotEmpty();
             });
 
         foreach ($assets as &$asset) {

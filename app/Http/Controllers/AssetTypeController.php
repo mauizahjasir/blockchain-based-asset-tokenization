@@ -22,8 +22,7 @@ class AssetTypeController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => [
                 'required',
-                'string',
-                Rule::unique('assets', 'name'),
+                'string'
             ]
         ]);
 
