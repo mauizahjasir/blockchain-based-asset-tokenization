@@ -81,7 +81,7 @@ class AdminAssetsRequestController extends Controller
         $assetRequest->status = AssetsRequest::REJECTED;
         $assetRequest->save();
 
-        return redirect()->back()->with('success', 'Request disapproved');
+        return redirect()->route('admin.requests')->with('success', 'Request disapproved');
     }
 
     public function details(AssetsRequest $assetRequest, Request $request): View
