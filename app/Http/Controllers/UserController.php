@@ -21,7 +21,8 @@ class UserController extends Controller
 
     public function newUsers(): View
     {
-        $users = User::whereNull('wallet_address')->orWhere('wallet_address', '=', '')->get()->all();
+//        $users = User::whereNull('wallet_address')->orWhere('wallet_address', '=', '')->get()->all();
+        $users = User::whereNull('email_verified_at')->orWhere('wallet_address', '=', '')->get()->all();
 
         return view('admin.new-users', compact('users'));
     }
@@ -40,7 +41,12 @@ class UserController extends Controller
         }
 
         MultichainService::grantPermission($newAddress, 'receive,send');
-        MultichainService::sendAssetFrom($request->user()->wallet_address, $newAddress, config('multichain.currency'), (int)config('multichain.default_amount'));
+
+        $txid = MultichainService::signedTransaction($request->user()->wallet_address, $newAddress, config('multichain.currency'), config('multichain.default_amount'));
+
+        if ($txid === null) {
+           return redirect()->back()->with('errors', 'Error occurred while transferring account opening balance.');
+       }
 
         $user->wallet_address = $newAddress;
         $user->email_verified_at = Carbon::now();

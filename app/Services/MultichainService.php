@@ -114,4 +114,14 @@ class MultichainService implements IMultichainInterface
     {
         return $this->multichainService->preparelockunspentfrom($address, [$asset => (int)$amount]);
     }
+
+    public function signedTransaction($fromAddress, $toAddress, $asset, $quantity)
+    {
+        $txhex = $this->multichainService->createrawsendfrom($fromAddress, [$toAddress => [$asset => (int)$quantity]]);
+        $result = $this->multichainService->signrawtransaction($txhex);
+
+        $txid = $this->multichainService->sendrawtransaction($result['hex']);
+
+        return $txid;
+    }
 }
