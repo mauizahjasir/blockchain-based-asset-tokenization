@@ -30,10 +30,10 @@ class IncomingRequestController extends Controller
         $assetInfo = MultichainService::assetInfo($assetRequest->asset);
 
         // Transferring asset to admin's wallet for approval
-        $transfer = MultichainService::sendAssetFrom($user->wallet_address, User::adminWalletAddress(), $assetRequest->asset, (int)$assetInfo['issueqty']);
+        $txid = MultichainService::signedTransaction($user->wallet_address, User::adminWalletAddress(), $assetRequest->asset, $assetInfo['issueqty']);
 
-        if ($transfer === null) {
-            return redirect()->back()->with('errors', MessageHelper::submissionFailure());
+        if ($txid === null) {
+            return redirect()->back()->with('errors', 'Failed transferring asset to Admin.');
         }
 
         $assetRequest->status = AssetsRequest::AWAITING_BUYERS_APPROVAL;

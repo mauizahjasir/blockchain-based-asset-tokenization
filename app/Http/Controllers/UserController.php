@@ -46,7 +46,7 @@ class UserController extends Controller
 
         if ($txid === null) {
            return redirect()->back()->with('errors', 'Error occurred while transferring account opening balance.');
-       }
+        }
 
         $user->wallet_address = $newAddress;
         $user->email_verified_at = Carbon::now();

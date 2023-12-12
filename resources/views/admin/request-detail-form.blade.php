@@ -26,7 +26,7 @@
 
                                     @if ($assetRequest->isRejected())
                                         <div class="badge badge-danger mt-1">Transaction reverted</div>
-                                    @elseif ($assetRequest->isApproved())
+                                    @elseif ($assetRequest->isResolved())
                                         <div class="badge badge-danger mt-1">Transaction completed</div>
                                     @else
                                         @if ($assetRequest->isRejectedByBuyer())

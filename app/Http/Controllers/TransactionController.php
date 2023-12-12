@@ -56,7 +56,7 @@ class TransactionController extends Controller
             return redirect()->back()->with('errors', [MessageHelper::transactionFailure()]);
         }
 
-        MultichainService::sendAssetFrom($user->wallet_address, $assetRequest->owner->wallet_address, config('multichain.currency'), (float)$assetRequest->commit_amount);
+        MultichainService::signedTransaction($user->wallet_address, $assetRequest->owner->wallet_address, config('multichain.currency'), $assetRequest->commit_amount);
 
         Transaction::create([
             'tx_hex' => $txId
@@ -74,7 +74,12 @@ class TransactionController extends Controller
     public function reject(AssetsRequest $assetRequest, Request $request): RedirectResponse
     {
         $assetInfo = MultichainService::assetInfo($assetRequest->asset);
-        MultichainService::sendAssetFrom($request->user()->wallet_address, $assetRequest->owner->wallet_address, $assetRequest->asset, (int)$assetInfo['issueqty']);
+
+        $txid = MultichainService::signedTransaction($request->user()->wallet_address, $assetRequest->owner->wallet_address, $assetRequest->asset, $assetInfo['issueqty']);
+
+        if ($txid === null) {
+            return redirect()->back()->with('errors', 'Failed reverting the transaction.');
+        }
 
         MultichainService::multichain()->lockunspent(true, [$assetRequest->request_payload]);
 
